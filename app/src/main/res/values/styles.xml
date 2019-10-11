@@ -6,6 +6,21 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="GlobalTextStyle">
+        <item name="android:textSize">@dimen/global_text_size</item>
+        <item name="android:textColor">@color/colorTextColor</item>
+    </style>
+
+    <style name="GlobalSecondaryTextStyle">
+        <item name="android:textSize">@dimen/global_text_size</item>
+        <item name="android:textColor">@color/colorSecondaryTextColor</item>
+    </style>
 </resources>

@@ -1,5 +1,4 @@
 package com.lizl.mydiary.mvp.activity
-
 import com.lizl.mydiary.R
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.EmptyContract

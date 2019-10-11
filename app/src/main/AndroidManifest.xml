@@ -5,6 +5,7 @@
 
     <dist:module dist:instant="true" />
 
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <application
         android:name=".UiApplication"
         android:allowBackup="true"
