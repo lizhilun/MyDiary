@@ -18,6 +18,8 @@ class UiUtil
 {
     companion object
     {
+        private val screenSize = intArrayOf(0, 0)
+
         private var noWrapOrSpaceFilter: InputFilter? = null
 
         /**
@@ -151,6 +153,40 @@ class UiUtil
         {
             val scale = UiApplication.instance.resources.displayMetrics.density
             return (dpValue * scale + 0.5f).toInt()
+        }
+
+        /**
+         * 获取屏幕宽度
+         */
+        fun getScreenWidth(): Int
+        {
+            if (screenSize[0] == 0)
+            {
+                getScreenSize()
+            }
+            return screenSize[0]
+        }
+
+        /**
+         * 获取屏幕高度
+         */
+        fun getScreenHeight(): Int
+        {
+            if (screenSize[1] == 0)
+            {
+                getScreenSize()
+            }
+            return screenSize[1]
+        }
+
+        /**
+         * 获取屏幕尺寸
+         */
+        private fun getScreenSize()
+        {
+            val dm = UiApplication.instance.resources.displayMetrics
+            screenSize[0] = dm.widthPixels
+            screenSize[1] = dm.heightPixels
         }
     }
 }

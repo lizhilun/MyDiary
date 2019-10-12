@@ -7,4 +7,8 @@
     <fragment
         android:id="@+id/diaryListFragment"
         android:name="com.lizl.mydiary.mvp.fragment.DiaryListFragment" />
+
+    <fragment
+        android:id="@+id/diaryContentFragment"
+        android:name="com.lizl.mydiary.mvp.fragment.DiaryContentFragment" />
 </navigation>
