@@ -1,6 +1,5 @@
 package com.lizl.mydiary.util
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Environment
@@ -21,15 +20,23 @@ class FileUtil
          */
         fun getSystemFilePath(): String
         {
-            return if ((Environment.MEDIA_MOUNTED == Environment.getExternalStorageState() || !Environment.isExternalStorageRemovable())
-                       && UiApplication.instance.getExternalFilesDir(null) != null)
+            val systemFilePath = if ((Environment.MEDIA_MOUNTED == Environment.getExternalStorageState() || !Environment.isExternalStorageRemovable())
+                                     && UiApplication.instance.getExternalFilesDir(null) != null)
+                {
+                    UiApplication.instance.getExternalFilesDir(null)!!.path
+                }
+                else
+                {
+                    UiApplication.instance.filesDir.path
+                }
+
+            val systemFileDir = File(systemFilePath)
+            if (!systemFileDir.exists())
             {
-                UiApplication.instance.getExternalFilesDir(null)!!.path
+                systemFileDir.mkdirs()
             }
-            else
-            {
-                UiApplication.instance.filesDir.path
-            }
+
+            return systemFilePath
         }
 
         /**

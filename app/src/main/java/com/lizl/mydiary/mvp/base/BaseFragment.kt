@@ -24,11 +24,13 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
+        Log.d(TAG, "onCreateView")
         return inflater.inflate(getLayoutResId(), container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?)
     {
+        Log.d(TAG, "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
 
         presenter = initPresenter()
@@ -100,7 +102,7 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
         try
         {
             val options = NavOptions.Builder().setEnterAnim(R.anim.slide_right_in).setExitAnim(R.anim.slide_left_out).setPopEnterAnim(R.anim.slide_left_in)
-                .setPopExitAnim(R.anim.slide_right_out).build()
+                    .setPopExitAnim(R.anim.slide_right_out).build()
             Navigation.findNavController(checkNotNull(view)).navigate(fragmentId, bundle, options)
         }
         catch (e: Exception)

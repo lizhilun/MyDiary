@@ -8,12 +8,17 @@ import com.lizl.mydiary.bean.BaseDiaryBean
 import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.DiaryCategoryBean
+import com.lizl.mydiary.util.RichTextUtil
+import kotlinx.android.synthetic.main.item_diary_category.view.*
 import kotlinx.android.synthetic.main.item_diary_list.view.*
+import java.lang.StringBuilder
 
 class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>()
 {
     private val DIARY_TYPE_DIARY = 1
     private val DIARY_TYPE_CATEGORY = 2
+
+    private var onDiaryItemClick: ((DiaryBean) -> Unit)? = null
 
     override fun createCustomViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
     {
@@ -55,12 +60,35 @@ class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>
             val dateBean = DateBean(diaryBean.createTime)
             itemView.tv_day.text = dateBean.day.toString()
             itemView.tv_month.text = "${dateBean.month}/${dateBean.week}"
-            itemView.tv_content.text = diaryBean.content
+            val textList = RichTextUtil.cutStringByImgTag(diaryBean.content)
+            val stringBuilder = StringBuilder()
+            for (text in textList)
+            {
+                if (text.contains("<img") && text.contains("src="))
+                {
+                    stringBuilder.append("\n图片\n")
+                }
+                else
+                {
+                    stringBuilder.append(text)
+                }
+            }
+            itemView.tv_diary_content.text = stringBuilder.toString()
+
+            itemView.setOnClickListener {
+                onDiaryItemClick?.invoke(diaryBean)
+            }
         }
 
         fun bindCategoryViewHolder(diaryCategoryBean: DiaryCategoryBean)
         {
-            itemView.tv_content.text = diaryCategoryBean.content
+            itemView.tv_category_content.text = diaryCategoryBean.content
         }
     }
+
+    fun setOnDiaryItemClick(onDiaryItemClick: (DiaryBean) -> Unit)
+    {
+        this.onDiaryItemClick = onDiaryItemClick
+    }
+
 }

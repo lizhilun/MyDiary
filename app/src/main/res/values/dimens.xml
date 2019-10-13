@@ -27,6 +27,4 @@
     <dimen name="toolbar_text_button_height">32dp</dimen>
     <dimen name="toolbar_text_button_width">60dp</dimen>
     <dimen name="toolbar_text_button_text_size">14sp</dimen>
-
-    <dimen name="grid_expected_size">120dp</dimen>
 </resources>

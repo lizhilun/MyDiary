@@ -6,18 +6,16 @@
     android:paddingTop="5dp"
     android:paddingBottom="5dp">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_left"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/diary_category_line"
-        android:textColor="@color/colorSecondaryTextColor"
-        android:textSize="@dimen/global_text_size_smaller"
-        app:layout_constraintEnd_toStartOf="@+id/tv_content" />
+    <View
+        android:layout_width="50dp"
+        android:layout_height="1px"
+        android:background="@color/colorSecondaryTextColor"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_category_content"
+        app:layout_constraintEnd_toStartOf="@+id/tv_category_content"
+        app:layout_constraintTop_toTopOf="@+id/tv_category_content" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_content"
+        android:id="@+id/tv_category_content"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -28,14 +26,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_right"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/diary_category_line"
-        android:textColor="@color/colorSecondaryTextColor"
-        android:textSize="@dimen/global_text_size_smaller"
-        app:layout_constraintStart_toEndOf="@+id/tv_content" />
+    <View
+        android:layout_width="50dp"
+        android:layout_height="1px"
+        android:background="@color/colorSecondaryTextColor"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_category_content"
+        app:layout_constraintStart_toEndOf="@+id/tv_category_content"
+        app:layout_constraintTop_toTopOf="@+id/tv_category_content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

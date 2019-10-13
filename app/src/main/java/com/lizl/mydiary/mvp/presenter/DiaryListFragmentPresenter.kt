@@ -16,23 +16,7 @@ class DiaryListFragmentPresenter(private val view: DiaryListFragmentContract.Vie
         GlobalScope.launch {
             val diaryList = mutableListOf<BaseDiaryBean>()
             diaryList.add(DiaryCategoryBean("test"))
-            val list = AppDatabase.instance.getDiaryDao().getAllDiary()
-            if (list.isEmpty())
-            {
-                for (i in 1..10)
-                {
-                    val diaryBean = DiaryBean()
-                    diaryBean.createTime = System.currentTimeMillis()
-                    val text = "12312313213213"
-                    for (j in 1 until i)
-                    {
-                        diaryBean.content += ("$text\n")
-                    }
-                    diaryBean.content += text
-                    list.add(diaryBean)
-                }
-            }
-            diaryList.addAll(list)
+            diaryList.addAll(AppDatabase.instance.getDiaryDao().getAllDiary())
 
             GlobalScope.launch(Dispatchers.Main) {
                 view.onMoreDiaries(diaryList, true)
