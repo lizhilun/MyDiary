@@ -42,7 +42,7 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
         ctb_title.setOnBackBtnClickListener { backToPreFragment() }
 
         diaryImageListAdapter.setOnAddImageBtnClickListener {
-            presenter.selectImage(this@DiaryContentFragment)
+            presenter.selectImage(this@DiaryContentFragment, 9 - diaryImageListAdapter.getImageList().size)
         }
 
         diaryImageListAdapter.setOnImageClickListener {

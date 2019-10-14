@@ -17,7 +17,7 @@ class DiaryContentFragmentContract
 
     interface Presenter : BasePresenter<View>
     {
-        fun selectImage(context: Fragment)
+        fun selectImage(context: Fragment, maxCount : Int)
 
         fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
 

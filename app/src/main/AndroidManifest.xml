@@ -27,6 +27,17 @@
         </activity>
 
         <activity android:name=".mvp.activity.ImageBrowserActivity"/>
+
+        <!--知乎图片选择器，适配7.0系统-->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.sendtion.matisse.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>
