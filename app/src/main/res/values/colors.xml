@@ -9,6 +9,7 @@
 
     <color name="transparent">#00000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="black">#000000</color>
 
     <color name="color_toolbar_text_button_bg">#0f000000</color>
     <color name="color_toolbar_text_button_stroke">#28000000</color>

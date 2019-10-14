@@ -11,6 +11,7 @@ import com.lizl.mydiary.bean.BaseDiaryBean
 import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.DiaryCategoryBean
+import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.item_diary_category.view.*
 import kotlinx.android.synthetic.main.item_diary_list.view.*
@@ -77,6 +78,12 @@ class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>
                 itemView.rv_image_list.layoutManager = GridLayoutManager(context, 3)
                 diaryImageListAdapter.addImageList(diaryBean.imageList!!)
                 itemView.rv_image_list.adapter = diaryImageListAdapter
+
+                diaryImageListAdapter.setOnImageClickListener {
+                    val imageList = arrayListOf<String>()
+                    imageList.addAll(diaryImageListAdapter.getImageList())
+                    (itemView.context as BaseActivity<*>).turnToImageBrowserActivity(imageList, it)
+                }
             }
 
             itemView.rv_image_list.setOnEmptyClickListener {
@@ -100,5 +107,4 @@ class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>
     {
         this.onDiaryItemClick = onDiaryItemClick
     }
-
 }

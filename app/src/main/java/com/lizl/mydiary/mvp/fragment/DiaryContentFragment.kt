@@ -6,6 +6,7 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.DiaryImageListAdapter
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.TitleBarBtnBean
+import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.contract.DiaryContentFragmentContract
 import com.lizl.mydiary.mvp.presenter.DiaryContentFragmentPresenter
@@ -26,7 +27,7 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
     override fun initView()
     {
         val bundle = arguments
-        diaryBean = bundle?.getSerializable(AppConstant.BUNDLE_DATA) as DiaryBean?
+        diaryBean = bundle?.getSerializable(AppConstant.BUNDLE_DATA_OBJECT) as DiaryBean?
 
         val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
         titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_confirm) {
@@ -42,6 +43,12 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
 
         diaryImageListAdapter.setOnAddImageBtnClickListener {
             presenter.selectImage(this@DiaryContentFragment)
+        }
+
+        diaryImageListAdapter.setOnImageClickListener {
+            val imageList = arrayListOf<String>()
+            imageList.addAll(diaryImageListAdapter.getImageList())
+            (activity as BaseActivity<*>).turnToImageBrowserActivity(imageList, it)
         }
 
         showDiaryContent(diaryBean)

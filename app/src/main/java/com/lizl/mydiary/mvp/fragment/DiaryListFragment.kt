@@ -34,7 +34,7 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
 
         diaryListAdapter.setOnDiaryItemClick {
             val bundle = Bundle()
-            bundle.putSerializable(AppConstant.BUNDLE_DATA, it)
+            bundle.putSerializable(AppConstant.BUNDLE_DATA_OBJECT, it)
             turnToFragment(R.id.diaryContentFragment, bundle)
         }
 

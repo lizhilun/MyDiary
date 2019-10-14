@@ -1,10 +1,9 @@
 package com.lizl.mydiary.mvp.activity
 import com.lizl.mydiary.R
 import com.lizl.mydiary.mvp.base.BaseActivity
-import com.lizl.mydiary.mvp.contract.EmptyContract
 import com.lizl.mydiary.mvp.presenter.EmptyPresenter
 
-class MainActivity : BaseActivity<EmptyPresenter>(), EmptyContract.View
+class MainActivity : BaseActivity<EmptyPresenter>()
 {
     override fun getLayoutResId() = R.layout.activity_main
 

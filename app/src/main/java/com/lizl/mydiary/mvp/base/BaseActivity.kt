@@ -1,10 +1,13 @@
 package com.lizl.mydiary.mvp.base
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.lizl.mydiary.mvp.activity.ImageBrowserActivity
+import com.lizl.mydiary.util.AppConstant
 import com.lizl.mydiary.util.UiUtil
 
 abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
@@ -87,5 +90,18 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         }
 
         return super.dispatchTouchEvent(ev)
+    }
+
+    /**
+     * 跳转到图片浏览界面
+     */
+    fun turnToImageBrowserActivity(imageUrlList: ArrayList<String>, selectImageUrl: String)
+    {
+        val intent = Intent(this, ImageBrowserActivity::class.java)
+        val bundle = Bundle()
+        bundle.putStringArrayList(AppConstant.BUNDLE_DATA_STRING_ARRAY, imageUrlList)
+        bundle.putString(AppConstant.BUNDLE_DATA_STRING, selectImageUrl)
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 }
