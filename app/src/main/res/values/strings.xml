@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">MyDiary</string>
 
+    <string name="cancel">取消</string>
+    <string name="confirm">确认</string>
+
     <string name="monday">周一</string>
     <string name="tuesday">周二</string>
     <string name="wednesday">周三</string>
@@ -11,4 +14,5 @@
 
     <string name="diary_total_count">总共 %d 篇</string>
 
+    <string name="in_save">保存中</string>
 </resources>

@@ -6,6 +6,7 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.DiaryImageListAdapter
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.TitleBarBtnBean
+import com.lizl.mydiary.custom.dialog.DialogLoading
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.contract.DiaryContentFragmentContract
@@ -20,6 +21,8 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
     private lateinit var diaryImageListAdapter: DiaryImageListAdapter
     private var diaryBean: DiaryBean? = null
 
+    private var dialogLoading: DialogLoading? = null
+
     override fun getLayoutResId() = R.layout.fragment_diary_content
 
     override fun initPresenter() = DiaryContentFragmentPresenter(this)
@@ -31,6 +34,10 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
 
         val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
         titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_confirm) {
+            if (dialogLoading == null)
+            {
+                dialogLoading = DialogLoading(context!!, getString(R.string.in_save))
+            }
             presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList())
         })
         ctb_title.setBtnList(titleBtnList)
