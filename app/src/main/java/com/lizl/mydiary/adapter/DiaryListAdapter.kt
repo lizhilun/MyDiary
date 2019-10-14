@@ -3,15 +3,14 @@ package com.lizl.mydiary.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.BaseDiaryBean
 import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.DiaryCategoryBean
-import com.lizl.mydiary.util.RichTextUtil
 import kotlinx.android.synthetic.main.item_diary_category.view.*
 import kotlinx.android.synthetic.main.item_diary_list.view.*
-import java.lang.StringBuilder
 
 class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>()
 {
@@ -60,20 +59,24 @@ class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>
             val dateBean = DateBean(diaryBean.createTime)
             itemView.tv_day.text = dateBean.day.toString()
             itemView.tv_month.text = "${dateBean.month}/${dateBean.week}"
-            val textList = RichTextUtil.cutStringByImgTag(diaryBean.content)
-            val stringBuilder = StringBuilder()
-            for (text in textList)
+            itemView.tv_diary_content.text = diaryBean.content
+
+            if (diaryBean.imageList.isNullOrEmpty())
             {
-                if (text.contains("<img") && text.contains("src="))
-                {
-                    stringBuilder.append("\n图片\n")
-                }
-                else
-                {
-                    stringBuilder.append(text)
-                }
+                itemView.rv_image_list.visibility = View.GONE
             }
-            itemView.tv_diary_content.text = stringBuilder.toString()
+            else
+            {
+                itemView.rv_image_list.visibility = View.VISIBLE
+                val diaryImageListAdapter = DiaryImageListAdapter(false, 3)
+                itemView.rv_image_list.layoutManager = GridLayoutManager(context, 3)
+                diaryImageListAdapter.addImageList(diaryBean.imageList!!)
+                itemView.rv_image_list.adapter = diaryImageListAdapter
+            }
+
+            itemView.rv_image_list.setOnClickListener {
+                onDiaryItemClick?.invoke(diaryBean)
+            }
 
             itemView.setOnClickListener {
                 onDiaryItemClick?.invoke(diaryBean)
