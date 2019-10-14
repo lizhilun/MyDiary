@@ -12,12 +12,14 @@ class DiaryContentFragmentContract
     {
         fun onImageSelectedFinish(picList: List<String>)
 
+        fun onDiarySaving()
+
         fun onDiarySaveSuccess()
     }
 
     interface Presenter : BasePresenter<View>
     {
-        fun selectImage(context: Fragment, maxCount : Int)
+        fun selectImage(context: Fragment, maxCount: Int)
 
         fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
 

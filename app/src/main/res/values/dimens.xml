@@ -32,4 +32,5 @@
     <dimen name="dialog_button_height">60dp</dimen>
     <dimen name="dialog_button_width">60dp</dimen>
     <dimen name="dialog_title_text_size">20sp</dimen>
+    <dimen name="dialog_loading_height">72dp</dimen>
 </resources>

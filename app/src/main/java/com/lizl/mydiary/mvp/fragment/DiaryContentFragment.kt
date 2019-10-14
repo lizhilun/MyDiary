@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.fragment_diary_content.*
 
 class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), DiaryContentFragmentContract.View
 {
-
     private lateinit var diaryImageListAdapter: DiaryImageListAdapter
     private var diaryBean: DiaryBean? = null
 
@@ -34,10 +33,6 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
 
         val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
         titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_confirm) {
-            if (dialogLoading == null)
-            {
-                dialogLoading = DialogLoading(context!!, getString(R.string.in_save))
-            }
             presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList())
         })
         ctb_title.setBtnList(titleBtnList)
@@ -76,8 +71,18 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
         presenter.handleActivityResult(requestCode, resultCode, data)
     }
 
+    override fun onDiarySaving()
+    {
+        if (dialogLoading == null)
+        {
+            dialogLoading = DialogLoading(context!!, getString(R.string.in_save))
+        }
+        dialogLoading?.show()
+    }
+
     override fun onDiarySaveSuccess()
     {
+        dialogLoading?.dismiss()
         backToPreFragment()
     }
 

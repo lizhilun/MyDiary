@@ -3,13 +3,15 @@ package com.lizl.mydiary.custom.dialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
-import android.view.View
+import androidx.core.view.isVisible
 import com.lizl.mydiary.R
+import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.layout_base_dialog.*
 
 
-abstract class BaseDialog(context: Context, private val title: String, private val hasBottomButton: Boolean) : Dialog(context, R.style.GlobalDialogStyle)
+abstract class BaseDialog(context: Context, private val title: String?, private val hasBottomButton: Boolean) : Dialog(context, R.style.GlobalDialogStyle)
 {
     constructor(context: Context, title: String) : this(context, title, true)
 
@@ -29,12 +31,12 @@ abstract class BaseDialog(context: Context, private val title: String, private v
         val contentView = layoutInflater.inflate(getDialogContentViewResId(), null)
         fl_content_view.addView(contentView)
 
-        group_bottom_view.visibility = if (hasBottomButton) View.VISIBLE else View.GONE
+        group_bottom_view.isVisible = hasBottomButton
+        tv_title.isVisible = !TextUtils.isEmpty(title)
         tv_title.text = title
 
         tv_confirm.setOnClickListener {
             dismiss()
-            onConfirmButtonClick()
             onConfirmButtonClickListener?.onConfirmButtonClick()
         }
 
@@ -52,11 +54,8 @@ abstract class BaseDialog(context: Context, private val title: String, private v
 
         // 设置Dialog宽度
         val params = window!!.attributes
-        val display = context.resources.displayMetrics
-        var min = display.heightPixels
-        // 宽度设置为宽高最小值的80%（兼容横屏）
-        if (min > display.widthPixels) min = display.widthPixels
-        params.width = (min * 0.8).toInt()
+        val dialogWidth = getDialogWidth()
+        params.width = if (dialogWidth == 0) (UiUtil.getScreenWidth() * 0.8).toInt() else dialogWidth
         window!!.attributes = params
     }
 
@@ -64,7 +63,7 @@ abstract class BaseDialog(context: Context, private val title: String, private v
 
     abstract fun initView()
 
-    abstract fun onConfirmButtonClick()
+    abstract fun getDialogWidth(): Int
 
     interface OnConfirmButtonClickListener
     {

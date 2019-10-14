@@ -2,10 +2,12 @@ package com.lizl.mydiary.custom.dialog
 
 import android.content.Context
 import com.lizl.mydiary.R
+import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.dialog_loading.*
 
-class DialogLoading(context: Context, title: String) : BaseDialog(context, title, false)
+class DialogLoading(context: Context, private val loadingText: String) : BaseDialog(context, null, false)
 {
+
     override fun getDialogContentViewResId(): Int
     {
         return R.layout.dialog_loading
@@ -13,13 +15,10 @@ class DialogLoading(context: Context, title: String) : BaseDialog(context, title
 
     override fun initView()
     {
+        tv_text.text = loadingText
         setCanceledOnTouchOutside(false)
         loading_view.smoothToShow()
     }
 
-    override fun onConfirmButtonClick()
-    {
-
-    }
-
+    override fun getDialogWidth() = (UiUtil.getScreenWidth() * 0.9).toInt()
 }
