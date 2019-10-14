@@ -15,4 +15,7 @@
     <string name="diary_total_count">总共 %d 篇</string>
 
     <string name="in_save">保存中</string>
+    <string name="notify_failed_to_get_permission">权限获取失败</string>
+    <string name="notify_permission_be_refused">权限获取被拒绝，请重新授权</string>
+    <string name="notify_permission_be_refused_and_never_ask_again">权限获取被拒绝，请在设置界面中开启</string>
 </resources>

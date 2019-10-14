@@ -16,7 +16,11 @@ class DiaryListFragmentPresenter(private val view: DiaryListFragmentContract.Vie
     {
         GlobalScope.launch {
             val diaryList = mutableListOf<BaseDiaryBean>()
-            diaryList.add(DiaryCategoryBean(UiApplication.instance.getString(R.string.diary_total_count, AppDatabase.instance.getDiaryDao().getDiaryCount())))
+            val diaryCount = AppDatabase.instance.getDiaryDao().getDiaryCount()
+            if (diaryCount > 0)
+            {
+                diaryList.add(DiaryCategoryBean(UiApplication.instance.getString(R.string.diary_total_count, diaryCount)))
+            }
             diaryList.addAll(AppDatabase.instance.getDiaryDao().getAllDiary())
 
             GlobalScope.launch(Dispatchers.Main) {

@@ -228,6 +228,8 @@ abstract class BaseAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter<BaseVi
         return mData
     }
 
+    fun getFooter() = footer
+
     private fun scrollTop()
     {
         recyclerView.scrollToPosition(0)
