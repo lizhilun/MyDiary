@@ -1,8 +1,9 @@
 package com.lizl.mydiary.mvp.fragment
 
-import android.content.Context
 import android.content.Intent
+import androidx.recyclerview.widget.GridLayoutManager
 import com.lizl.mydiary.R
+import com.lizl.mydiary.adapter.DiaryImageListAdapter
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.TitleBarBtnBean
 import com.lizl.mydiary.mvp.base.BaseFragment
@@ -15,6 +16,9 @@ import kotlinx.android.synthetic.main.fragment_diary_content.*
 class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), DiaryContentFragmentContract.View
 {
 
+    private lateinit var diaryImageListAdapter: DiaryImageListAdapter
+    private var diaryBean: DiaryBean? = null
+
     override fun getLayoutResId() = R.layout.fragment_diary_content
 
     override fun initPresenter() = DiaryContentFragmentPresenter(this)
@@ -22,23 +26,49 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
     override fun initView()
     {
         val bundle = arguments
-        val diaryBean = bundle?.getSerializable(AppConstant.BUNDLE_DATA) as DiaryBean?
+        diaryBean = bundle?.getSerializable(AppConstant.BUNDLE_DATA) as DiaryBean?
 
         val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
         titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_confirm) {
-            dcv_diary_content.saveDiary()
-            backToPreFragment()
+            presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList())
         })
         ctb_title.setBtnList(titleBtnList)
+
+        diaryImageListAdapter = DiaryImageListAdapter(true, 9)
+        rv_image_list.layoutManager = GridLayoutManager(context, 3)
+        rv_image_list.adapter = diaryImageListAdapter
+
         ctb_title.setOnBackBtnClickListener { backToPreFragment() }
 
-        dcv_diary_content.bindParentFragment(this@DiaryContentFragment)
-        dcv_diary_content.bindDiaryBean(diaryBean)
+        diaryImageListAdapter.setOnAddImageBtnClickListener {
+            presenter.selectImage(this@DiaryContentFragment)
+        }
+
+        showDiaryContent(diaryBean)
+    }
+
+    private fun showDiaryContent(diaryBean: DiaryBean?)
+    {
+        et_diary_content.setText(diaryBean?.content)
+        if (diaryBean?.imageList != null)
+        {
+            diaryImageListAdapter.addImageList(diaryBean.imageList!!)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
         super.onActivityResult(requestCode, resultCode, data)
-        dcv_diary_content.handleActivityResult(requestCode, resultCode, data)
+        presenter.handleActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onDiarySaveSuccess()
+    {
+        backToPreFragment()
+    }
+
+    override fun onImageSelectedFinish(picList: List<String>)
+    {
+        diaryImageListAdapter.addImageList(picList)
     }
 }

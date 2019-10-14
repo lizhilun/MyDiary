@@ -92,4 +92,6 @@ class DiaryImageListAdapter(private val editable: Boolean, private val maxImageC
         this.imageList.addAll(imageList)
         notifyDataSetChanged()
     }
+
+    fun getImageList() = imageList
 }
