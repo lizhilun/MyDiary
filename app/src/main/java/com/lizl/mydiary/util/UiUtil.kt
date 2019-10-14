@@ -155,6 +155,12 @@ class UiUtil
             return (dpValue * scale + 0.5f).toInt()
         }
 
+        fun pxToDp(pxValue: Float): Int
+        {
+            val scale = UiApplication.instance.resources.displayMetrics.density
+            return ((pxValue - 0.5f) / scale).toInt()
+        }
+
         /**
          * 获取屏幕宽度
          */

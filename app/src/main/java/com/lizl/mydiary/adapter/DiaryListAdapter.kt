@@ -1,14 +1,17 @@
 package com.lizl.mydiary.adapter
 
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.BaseDiaryBean
 import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.DiaryCategoryBean
+import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.item_diary_category.view.*
 import kotlinx.android.synthetic.main.item_diary_list.view.*
 
@@ -47,7 +50,7 @@ class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>
         when (getItemViewType(position))
         {
             DIARY_TYPE_DIARY    -> holder.bindDiaryViewHolder(bean as DiaryBean)
-            DIARY_TYPE_CATEGORY -> holder.bindCategoryViewHolder(bean as DiaryCategoryBean)
+            DIARY_TYPE_CATEGORY -> holder.bindCategoryViewHolder(bean as DiaryCategoryBean, position)
         }
 
     }
@@ -61,13 +64,15 @@ class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>
             itemView.tv_month.text = "${dateBean.month}/${dateBean.week}"
             itemView.tv_diary_content.text = diaryBean.content
 
+            itemView.tv_diary_content.isVisible = !TextUtils.isEmpty(diaryBean.content)
+
             if (diaryBean.imageList.isNullOrEmpty())
             {
-                itemView.rv_image_list.visibility = View.GONE
+                itemView.rv_image_list.isVisible = false
             }
             else
             {
-                itemView.rv_image_list.visibility = View.VISIBLE
+                itemView.rv_image_list.isVisible = true
                 val diaryImageListAdapter = DiaryImageListAdapter(false, 3)
                 itemView.rv_image_list.layoutManager = GridLayoutManager(context, 3)
                 diaryImageListAdapter.addImageList(diaryBean.imageList!!)
@@ -83,8 +88,10 @@ class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>
             }
         }
 
-        fun bindCategoryViewHolder(diaryCategoryBean: DiaryCategoryBean)
+        fun bindCategoryViewHolder(diaryCategoryBean: DiaryCategoryBean, position: Int)
         {
+            val itemSpace = UiUtil.pxToDp(context.resources.getDimension(R.dimen.diary_item_space))
+            itemView.setPadding(0, if (position == 0) itemSpace * 2 else itemSpace, 0, itemSpace)
             itemView.tv_category_content.text = diaryCategoryBean.content
         }
     }

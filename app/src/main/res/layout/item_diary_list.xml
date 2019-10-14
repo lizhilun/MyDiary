@@ -3,26 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/diary_item_space">
+    android:paddingTop="@dimen/diary_item_space"
+    android:paddingBottom="@dimen/diary_item_space">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_day"
+        style="@style/GlobalTextStyle"
         android:layout_width="@dimen/diary_item_time_width"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:textColor="@color/colorTextColor"
-        android:textSize="@dimen/global_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_month"
+        style="@style/GlobalSecondaryTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textColor="@color/colorSecondaryTextColor"
-        android:textSize="@dimen/global_text_size_smaller"
         app:layout_constraintEnd_toEndOf="@id/tv_day"
         app:layout_constraintStart_toStartOf="@id/tv_day"
         app:layout_constraintTop_toBottomOf="@+id/tv_day" />
@@ -47,17 +46,16 @@
                 style="@style/GlobalTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
                 android:maxLines="10"
-                app:layout_constraintBottom_toTopOf="@+id/rv_image_list"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_goneMarginBottom="0dp" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.lizl.mydiary.custom.view.EmptyClickRecyclerView
                 android:id="@+id/rv_image_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_diary_content"
+                app:layout_goneMarginTop="0dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

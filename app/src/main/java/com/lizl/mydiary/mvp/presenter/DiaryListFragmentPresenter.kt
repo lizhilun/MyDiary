@@ -1,7 +1,8 @@
 package com.lizl.mydiary.mvp.presenter
 
+import com.lizl.mydiary.R
+import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.bean.BaseDiaryBean
-import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.DiaryCategoryBean
 import com.lizl.mydiary.mvp.contract.DiaryListFragmentContract
 import com.lizl.mydiary.util.AppDatabase
@@ -15,7 +16,7 @@ class DiaryListFragmentPresenter(private val view: DiaryListFragmentContract.Vie
     {
         GlobalScope.launch {
             val diaryList = mutableListOf<BaseDiaryBean>()
-            diaryList.add(DiaryCategoryBean("test"))
+            diaryList.add(DiaryCategoryBean(UiApplication.instance.getString(R.string.diary_total_count, AppDatabase.instance.getDiaryDao().getDiaryCount())))
             diaryList.addAll(AppDatabase.instance.getDiaryDao().getAllDiary())
 
             GlobalScope.launch(Dispatchers.Main) {

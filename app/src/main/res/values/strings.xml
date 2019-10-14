@@ -9,4 +9,6 @@
     <string name="saturday">周六</string>
     <string name="sunday">周日</string>
 
+    <string name="diary_total_count">总共 %d 篇</string>
+
 </resources>

@@ -22,6 +22,7 @@
         app:fabSize="normal"
         app:layout_anchor="@id/rv_diary_list"
         app:layout_anchorGravity="bottom|end"
-        app:layout_behavior=".custom.others.ScrollAwareBehavior" />
+        app:layout_behavior=".custom.others.ScrollAwareBehavior"
+        app:srcCompat="@mipmap/ic_write" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

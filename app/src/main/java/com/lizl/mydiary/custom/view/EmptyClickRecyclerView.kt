@@ -11,6 +11,8 @@ class EmptyClickRecyclerView(context: Context, attrs: AttributeSet?, defStyleAtt
 {
     private var onEmptyClickListener: (() -> Unit)? = null
 
+    private var lastTouchTime = 0L
+
     private val mTouchFrame: Rect by lazy { Rect() }
 
     constructor(context: Context) : this(context, null)
@@ -19,9 +21,23 @@ class EmptyClickRecyclerView(context: Context, attrs: AttributeSet?, defStyleAtt
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean
     {
-        if (ev.action == MotionEvent.ACTION_DOWN && pointToPosition(ev.x.toInt(), ev.y.toInt()) == -1)
+        when (ev.action)
         {
-            onEmptyClickListener?.invoke()
+            MotionEvent.ACTION_DOWN ->
+            {
+                if (pointToPosition(ev.x.toInt(), ev.y.toInt()) == -1)
+                {
+                    lastTouchTime = System.currentTimeMillis()
+                }
+            }
+            MotionEvent.ACTION_MOVE -> lastTouchTime = 0
+            MotionEvent.ACTION_UP   ->
+            {
+                if (System.currentTimeMillis() - lastTouchTime < 500)
+                {
+                    onEmptyClickListener?.invoke()
+                }
+            }
         }
         return super.dispatchTouchEvent(ev)
     }
