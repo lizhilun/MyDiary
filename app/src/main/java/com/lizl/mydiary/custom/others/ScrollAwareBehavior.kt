@@ -28,7 +28,6 @@ class ScrollAwareBehavior(context: Context, attrs: AttributeSet) : FloatingActio
     override fun onNestedScroll(coordinatorLayout: CoordinatorLayout, child: FloatingActionButton, target: View, dxConsumed: Int, dyConsumed: Int,
             dxUnconsumed: Int, dyUnconsumed: Int)
     {
-        Log.d("ScrollAwareBehavior", "onNestedScroll: dyConsumed/$dyConsumed")
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed)
         if (dyConsumed > 0 && !this.mIsAnimatingOut && child.visibility == View.VISIBLE)
         {

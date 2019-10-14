@@ -74,7 +74,7 @@ class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>
                 itemView.rv_image_list.adapter = diaryImageListAdapter
             }
 
-            itemView.rv_image_list.setOnClickListener {
+            itemView.rv_image_list.setOnEmptyClickListener {
                 onDiaryItemClick?.invoke(diaryBean)
             }
 

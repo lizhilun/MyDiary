@@ -25,8 +25,8 @@ class DiaryContentFragmentPresenter(private val view: DiaryContentFragmentContra
         {
             saveDiaryBean = DiaryBean()
             saveDiaryBean.createTime = System.currentTimeMillis()
-            saveDiaryBean.content = content
         }
+        saveDiaryBean.content = content
 
         val saveImageList = mutableListOf<String>()
         for (imageUrl in imageList)

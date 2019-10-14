@@ -27,7 +27,11 @@ class DiaryImageListAdapter(private val editable: Boolean, private val maxImageC
         {
             context = parent.context
         }
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_diary_image, parent, false))
+        return when (viewType)
+        {
+            VIEW_TYPE_IMAGE -> ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_diary_image, parent, false))
+            else            -> ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_diary_add_image_btn, parent, false))
+        }
     }
 
     override fun getItemCount(): Int
@@ -69,8 +73,6 @@ class DiaryImageListAdapter(private val editable: Boolean, private val maxImageC
 
         fun bindAddBtnViewHolder()
         {
-            itemView.iv_image.setImageResource(R.mipmap.ic_add)
-
             itemView.setOnClickListener {
                 onAddImageBtnClickListener?.invoke()
             }

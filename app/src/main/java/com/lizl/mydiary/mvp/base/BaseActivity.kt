@@ -1,8 +1,11 @@
 package com.lizl.mydiary.mvp.base
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
+import android.view.MotionEvent
+import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
+import com.lizl.mydiary.util.UiUtil
 
 abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
 {
@@ -12,7 +15,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
 
     abstract fun getLayoutResId(): Int
 
-    abstract fun initPresenter() : T
+    abstract fun initPresenter(): T
 
     abstract fun initView()
 
@@ -61,5 +64,28 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     {
         Log.d(TAG, "onDestroy")
         super.onDestroy()
+    }
+
+    /**
+     * 点击EditText外隐藏输入法
+     */
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean
+    {
+        val view = currentFocus
+        if (view is EditText)
+        {
+            val w = currentFocus
+            val location = IntArray(2)
+            w!!.getLocationOnScreen(location)
+            val x = ev.rawX + w.left - location[0]
+            val y = ev.rawY + w.top - location[1]
+
+            if (ev.action == MotionEvent.ACTION_UP && (x < w.left || x >= w.right || y < w.top || y > w.bottom))
+            {
+                UiUtil.hideInputKeyboard(view)
+            }
+        }
+
+        return super.dispatchTouchEvent(ev)
     }
 }
