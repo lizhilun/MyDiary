@@ -28,7 +28,7 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
     {
         val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
         titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_setting) {})
-        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_search) {})
+        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_search) { ctb_title.startSearchMode {presenter.searchDiary(it)} })
         ctb_title.setTitleText(getString(R.string.app_name))
         ctb_title.setBtnList(titleBtnList)
     }
@@ -79,5 +79,11 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
     override fun onDiaryDeleted(diaryBean: DiaryBean)
     {
         diaryListAdapter.remove(diaryBean)
+    }
+
+    override fun showDiarySearchResult(diaryList: List<BaseDiaryBean>)
+    {
+        diaryListAdapter.clear()
+        diaryListAdapter.addAll(diaryList)
     }
 }

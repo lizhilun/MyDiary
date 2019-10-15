@@ -1,5 +1,6 @@
 package com.lizl.mydiary.mvp.presenter
 
+import android.text.TextUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.bean.BaseDiaryBean
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 
 class DiaryListFragmentPresenter(private val view: DiaryListFragmentContract.View) : DiaryListFragmentContract.Presenter
 {
+
     override fun loadMoreDiary()
     {
         GlobalScope.launch {
@@ -37,6 +39,22 @@ class DiaryListFragmentPresenter(private val view: DiaryListFragmentContract.Vie
 
             GlobalScope.launch(Dispatchers.Main) {
                 view.onDiaryDeleted(diaryBean)
+            }
+        }
+    }
+
+    override fun searchDiary(keyword: String)
+    {
+        if (TextUtils.isEmpty(keyword))
+        {
+            loadMoreDiary()
+            return
+        }
+        GlobalScope.launch {
+            val diaryList = mutableListOf<DiaryBean>()
+            diaryList.addAll(AppDatabase.instance.getDiaryDao().searchDiary(keyword))
+            GlobalScope.launch(Dispatchers.Main) {
+                view.showDiarySearchResult(diaryList)
             }
         }
     }

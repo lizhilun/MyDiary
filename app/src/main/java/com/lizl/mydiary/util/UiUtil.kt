@@ -35,6 +35,18 @@ class UiUtil
         }
 
         /**
+         * 显示输入法
+         */
+        fun showInputKeyboard()
+        {
+            val manager = UiApplication.instance.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            if (manager.isActive)
+            {
+                manager.toggleSoftInput(InputMethodManager.RESULT_UNCHANGED_SHOWN, 0)
+            }
+        }
+
+        /**
          * 退回到桌面
          */
         fun backToLauncher()

@@ -12,6 +12,8 @@ class DiaryListFragmentContract
         fun onMoreDiaries(diaryList: List<BaseDiaryBean>, noMoreData: Boolean)
 
         fun onDiaryDeleted(diaryBean: DiaryBean)
+
+        fun showDiarySearchResult(diaryList: List<BaseDiaryBean>)
     }
 
     interface Presenter : BasePresenter<View>
@@ -19,5 +21,7 @@ class DiaryListFragmentContract
         fun loadMoreDiary()
 
         fun deleteDiary(diaryBean: DiaryBean)
+
+        fun searchDiary(keyword: String)
     }
 }

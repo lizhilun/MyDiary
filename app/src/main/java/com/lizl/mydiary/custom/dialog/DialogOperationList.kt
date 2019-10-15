@@ -24,6 +24,6 @@ class DialogOperationList(context: Context, private var operationList: List<Oper
         rv_operation_list.addItemDecoration(ListDividerItemDecoration(context))
         rv_operation_list.adapter = operationListAdapter
 
-        operationListAdapter.setOnOperationItemClickListener {dismiss()}
+        operationListAdapter.setOnOperationItemClickListener { dismiss() }
     }
 }
