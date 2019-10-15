@@ -7,15 +7,29 @@ import kotlinx.android.synthetic.main.dialog_operation_confirm.*
 /**
  * 用于操作确认的Dialog
  */
-class DialogOperationConfirm(context: Context, title: String, private val notify: String) : BaseDialog(context, title)
+class DialogOperationConfirm(context: Context, private val title: String, private val notify: String) : BaseDialog(context)
 {
+
+    private var onConfirmBtnClickListener: (() -> Unit)? = null
+
     override fun getDialogContentViewResId() = R.layout.dialog_operation_confirm
 
     override fun getDialogWidth() = 0
 
     override fun initView()
     {
+        tv_title.text = title
         tv_notify.text = notify
+
+        tv_cancel.setOnClickListener { dismiss() }
+        tv_confirm.setOnClickListener {
+            dismiss()
+            onConfirmBtnClickListener?.invoke()
+        }
     }
 
+    fun setOnConfirmBtnClickListener(onConfirmBtnClickListener: () -> Unit)
+    {
+        this.onConfirmBtnClickListener = onConfirmBtnClickListener
+    }
 }

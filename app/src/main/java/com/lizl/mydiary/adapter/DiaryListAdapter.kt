@@ -21,7 +21,8 @@ class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>
     private val DIARY_TYPE_DIARY = 1
     private val DIARY_TYPE_CATEGORY = 2
 
-    private var onDiaryItemClick: ((DiaryBean) -> Unit)? = null
+    private var onDiaryItemClickListener: ((DiaryBean) -> Unit)? = null
+    private var onDiaryItemLongClickListener: ((DiaryBean) -> Unit)? = null
 
     override fun createCustomViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
     {
@@ -87,11 +88,16 @@ class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>
             }
 
             itemView.rv_image_list.setOnEmptyClickListener {
-                onDiaryItemClick?.invoke(diaryBean)
+                onDiaryItemClickListener?.invoke(diaryBean)
             }
 
             itemView.setOnClickListener {
-                onDiaryItemClick?.invoke(diaryBean)
+                onDiaryItemClickListener?.invoke(diaryBean)
+            }
+
+            itemView.setOnLongClickListener {
+                onDiaryItemLongClickListener?.invoke(diaryBean)
+                true
             }
         }
 
@@ -103,8 +109,13 @@ class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>
         }
     }
 
-    fun setOnDiaryItemClick(onDiaryItemClick: (DiaryBean) -> Unit)
+    fun setOnDiaryItemClickListener(onDiaryItemClickListener: (DiaryBean) -> Unit)
     {
-        this.onDiaryItemClick = onDiaryItemClick
+        this.onDiaryItemClickListener = onDiaryItemClickListener
+    }
+
+    fun setOnDiaryItemClickLongListener(onDiaryItemLongClickListener: (DiaryBean) -> Unit)
+    {
+        this.onDiaryItemLongClickListener = onDiaryItemLongClickListener
     }
 }

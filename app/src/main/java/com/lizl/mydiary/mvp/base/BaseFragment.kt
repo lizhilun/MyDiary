@@ -36,6 +36,7 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
         presenter = initPresenter()
 
         initView()
+        initTitleBar()
     }
 
     override fun onStart()
@@ -79,6 +80,8 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
     abstract fun initPresenter(): T
 
     abstract fun initView()
+
+    abstract fun initTitleBar()
 
     protected fun backToPreFragment()
     {

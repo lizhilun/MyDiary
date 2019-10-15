@@ -8,15 +8,12 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.DiaryImageListAdapter
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.TitleBarBtnBean
-import com.lizl.mydiary.custom.dialog.BaseDialog
-import com.lizl.mydiary.custom.dialog.DialogLoading
-import com.lizl.mydiary.custom.dialog.DialogOperationConfirm
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.contract.DiaryContentFragmentContract
 import com.lizl.mydiary.mvp.presenter.DiaryContentFragmentPresenter
 import com.lizl.mydiary.util.AppConstant
-import com.lizl.mydiary.util.UiUtil
+import com.lizl.mydiary.util.DialogUtil
 import kotlinx.android.synthetic.main.fragment_diary_content.*
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
@@ -25,36 +22,35 @@ import permissions.dispatcher.RuntimePermissions
 
 @RuntimePermissions class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), DiaryContentFragmentContract.View
 {
+
     private lateinit var diaryImageListAdapter: DiaryImageListAdapter
     private var diaryBean: DiaryBean? = null
-
-    private var dialogLoading: DialogLoading? = null
-    private var dialogOperationConfirm: DialogOperationConfirm? = null
 
     override fun getLayoutResId() = R.layout.fragment_diary_content
 
     override fun initPresenter() = DiaryContentFragmentPresenter(this)
 
-    override fun initView()
+    override fun initTitleBar()
     {
-        val bundle = arguments
-        diaryBean = bundle?.getSerializable(AppConstant.BUNDLE_DATA_OBJECT) as DiaryBean?
-
         val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
         titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_confirm) {
             presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList())
         })
         ctb_title.setBtnList(titleBtnList)
 
+        ctb_title.setOnBackBtnClickListener { backToPreFragment() }
+    }
+
+    override fun initView()
+    {
+        val bundle = arguments
+        diaryBean = bundle?.getSerializable(AppConstant.BUNDLE_DATA_OBJECT) as DiaryBean?
+
         diaryImageListAdapter = DiaryImageListAdapter(true, 9)
         rv_image_list.layoutManager = GridLayoutManager(context, 3)
         rv_image_list.adapter = diaryImageListAdapter
 
-        ctb_title.setOnBackBtnClickListener { backToPreFragment() }
-
-        diaryImageListAdapter.setOnAddImageBtnClickListener {
-            selectImageWithPermissionCheck()
-        }
+        diaryImageListAdapter.setOnAddImageBtnClickListener { selectImageWithPermissionCheck() }
 
         diaryImageListAdapter.setOnImageClickListener {
             val imageList = arrayListOf<String>()
@@ -87,32 +83,18 @@ import permissions.dispatcher.RuntimePermissions
 
     @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA) fun onPermissionDenied()
     {
-        dialogOperationConfirm =
-            DialogOperationConfirm(context!!, getString(R.string.notify_failed_to_get_permission), getString(R.string.notify_permission_be_refused))
-        dialogOperationConfirm?.setOnConfirmButtonClickListener(object : BaseDialog.OnConfirmButtonClickListener
-        {
-            override fun onConfirmButtonClick()
-            {
-                selectImageWithPermissionCheck()
-            }
-        })
-        dialogOperationConfirm?.show()
+        DialogUtil.showOperationConfirmDialog(
+                context!!, getString(R.string.notify_failed_to_get_permission), getString(R.string.notify_permission_be_refused)
+        ) { selectImageWithPermissionCheck() }
     }
 
     @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA) fun onPermissionNeverAskAgain()
     {
         Log.d(TAG, "onPermissionNeverAskAgain")
 
-        dialogOperationConfirm = DialogOperationConfirm(context!!, getString(R.string.notify_failed_to_get_permission),
-                getString(R.string.notify_permission_be_refused_and_never_ask_again))
-        dialogOperationConfirm?.setOnConfirmButtonClickListener(object : BaseDialog.OnConfirmButtonClickListener
-        {
-            override fun onConfirmButtonClick()
-            {
-                UiUtil.goToAppDetailPage()
-            }
-        })
-        dialogOperationConfirm?.show()
+        DialogUtil.showOperationConfirmDialog(
+                context!!, getString(R.string.notify_failed_to_get_permission), getString(R.string.notify_permission_be_refused)
+        ) { selectImageWithPermissionCheck() }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray)
@@ -124,16 +106,12 @@ import permissions.dispatcher.RuntimePermissions
 
     override fun onDiarySaving()
     {
-        if (dialogLoading == null)
-        {
-            dialogLoading = DialogLoading(context!!, getString(R.string.in_save))
-        }
-        dialogLoading?.show()
+        DialogUtil.showLoadingDialog(context!!, getString(R.string.in_save))
     }
 
     override fun onDiarySaveSuccess()
     {
-        dialogLoading?.dismiss()
+        DialogUtil.dismissDialog()
         backToPreFragment()
     }
 

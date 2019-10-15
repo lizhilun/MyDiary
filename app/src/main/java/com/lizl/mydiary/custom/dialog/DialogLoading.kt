@@ -5,7 +5,7 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.dialog_loading.*
 
-class DialogLoading(context: Context, private val loadingText: String) : BaseDialog(context, null, false)
+class DialogLoading(context: Context, private val loadingText: String) : BaseDialog(context)
 {
 
     override fun getDialogContentViewResId(): Int

@@ -3,6 +3,7 @@ package com.lizl.mydiary.mvp.presenter
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.bean.BaseDiaryBean
+import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.DiaryCategoryBean
 import com.lizl.mydiary.mvp.contract.DiaryListFragmentContract
 import com.lizl.mydiary.util.AppDatabase
@@ -25,6 +26,17 @@ class DiaryListFragmentPresenter(private val view: DiaryListFragmentContract.Vie
 
             GlobalScope.launch(Dispatchers.Main) {
                 view.onMoreDiaries(diaryList, true)
+            }
+        }
+    }
+
+    override fun deleteDiary(diaryBean: DiaryBean)
+    {
+        GlobalScope.launch {
+            AppDatabase.instance.getDiaryDao().delete(diaryBean)
+
+            GlobalScope.launch(Dispatchers.Main) {
+                view.onDiaryDeleted(diaryBean)
             }
         }
     }
