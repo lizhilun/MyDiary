@@ -87,13 +87,11 @@ class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>
                 }
             }
 
-            itemView.rv_image_list.setOnEmptyClickListener {
-                onDiaryItemClickListener?.invoke(diaryBean)
-            }
+            itemView.rv_image_list.setOnEmptyClickListener { onDiaryItemClickListener?.invoke(diaryBean) }
 
-            itemView.setOnClickListener {
-                onDiaryItemClickListener?.invoke(diaryBean)
-            }
+            itemView.rv_image_list.setOnEmptyLongClickListener { onDiaryItemLongClickListener?.invoke(diaryBean) }
+
+            itemView.setOnClickListener { onDiaryItemClickListener?.invoke(diaryBean) }
 
             itemView.setOnLongClickListener {
                 onDiaryItemLongClickListener?.invoke(diaryBean)

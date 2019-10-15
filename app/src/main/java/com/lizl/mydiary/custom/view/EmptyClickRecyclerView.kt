@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 class EmptyClickRecyclerView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : RecyclerView(context, attrs, defStyleAttr)
 {
     private var onEmptyClickListener: (() -> Unit)? = null
+    private var onEmptyLongClickListener: (() -> Unit)? = null
 
     private var lastTouchTime = 0L
 
@@ -23,21 +24,29 @@ class EmptyClickRecyclerView(context: Context, attrs: AttributeSet?, defStyleAtt
     {
         when (ev.action)
         {
-            MotionEvent.ACTION_DOWN ->
+            MotionEvent.ACTION_DOWN   ->
             {
                 if (pointToPosition(ev.x.toInt(), ev.y.toInt()) == -1)
                 {
                     lastTouchTime = System.currentTimeMillis()
+                    resetLongClick()
                 }
             }
-            MotionEvent.ACTION_MOVE -> lastTouchTime = 0
-            MotionEvent.ACTION_UP   ->
+            MotionEvent.ACTION_CANCEL ->
             {
-                if (System.currentTimeMillis() - lastTouchTime < 500)
+                lastTouchTime = 0
+                cancelLongClick()
+            }
+            MotionEvent.ACTION_UP     ->
+            {
+                if (System.currentTimeMillis() - lastTouchTime < 300)
                 {
                     onEmptyClickListener?.invoke()
                 }
+                lastTouchTime = 0
+                cancelLongClick()
             }
+            else                      -> lastTouchTime = 0
         }
         return super.dispatchTouchEvent(ev)
     }
@@ -60,8 +69,27 @@ class EmptyClickRecyclerView(context: Context, attrs: AttributeSet?, defStyleAtt
         return -1
     }
 
+    private fun resetLongClick()
+    {
+        removeCallbacks(longClickListener)
+        postDelayed(longClickListener, 600)
+    }
+
+    private fun cancelLongClick()
+    {
+        removeCallbacks(longClickListener)
+    }
+
     fun setOnEmptyClickListener(onEmptyClickListener: () -> Unit)
     {
-        this.onEmptyClickListener = onEmptyClickListener;
+        this.onEmptyClickListener = onEmptyClickListener
     }
+
+    fun setOnEmptyLongClickListener(onEmptyLongClickListener: () -> Unit)
+    {
+        this.onEmptyLongClickListener = onEmptyLongClickListener
+    }
+
+    private val longClickListener = Runnable { onEmptyLongClickListener?.invoke() }
+
 }

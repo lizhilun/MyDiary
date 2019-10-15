@@ -7,7 +7,6 @@ import android.widget.ImageView
 import com.bumptech.glide.Priority
 import com.lizl.mydiary.GlideApp
 import com.zhihu.matisse.engine.ImageEngine
-import com.zhihu.matisse.engine.impl.GlideEngine
 
 class MyGlideEngine : ImageEngine
 {
