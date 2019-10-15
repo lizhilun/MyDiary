@@ -24,6 +24,12 @@ class DateBean(time: Long)
         private set
     var week = ""
         private set
+    var hour = 0
+        private set
+    var minute = 0
+        private set
+    var second = 0
+        private set
 
     init
     {
@@ -35,10 +41,33 @@ class DateBean(time: Long)
             month = calendar.get(Calendar.MONTH) + 1
             day = calendar.get(Calendar.DAY_OF_MONTH)
             week = weekList[calendar.get(Calendar.DAY_OF_WEEK) - 1]
+            hour = calendar.get(Calendar.HOUR_OF_DAY)
+            minute = calendar.get(Calendar.MINUTE)
+            second = calendar.get(Calendar.SECOND)
         }
         catch (e: Exception)
         {
             e.printStackTrace()
         }
+    }
+
+    fun getHourAndMinute(): String
+    {
+        val stringBuilder = StringBuilder()
+        if (hour < 10)
+        {
+            stringBuilder.append(0)
+        }
+        stringBuilder.append(hour)
+
+        stringBuilder.append(":")
+
+        if (minute < 10)
+        {
+            stringBuilder.append(0)
+        }
+        stringBuilder.append(minute)
+
+        return stringBuilder.toString()
     }
 }

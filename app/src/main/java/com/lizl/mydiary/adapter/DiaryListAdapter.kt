@@ -63,8 +63,10 @@ class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>
         {
             val dateBean = DateBean(diaryBean.createTime)
             itemView.tv_day.text = dateBean.day.toString()
-            itemView.tv_month.text = "${dateBean.month}/${dateBean.week}"
+            itemView.tv_week.text = dateBean.week
+            itemView.tv_year_and_month.text = "${dateBean.year}.${dateBean.month}"
             itemView.tv_diary_content.text = diaryBean.content
+            itemView.tv_hour_and_minute.text = dateBean.getHourAndMinute()
 
             itemView.tv_diary_content.isVisible = !TextUtils.isEmpty(diaryBean.content)
 
