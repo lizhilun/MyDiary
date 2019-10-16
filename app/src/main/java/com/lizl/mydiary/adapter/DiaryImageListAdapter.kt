@@ -9,7 +9,7 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.util.GlideUtil
 import kotlinx.android.synthetic.main.item_diary_image.view.*
 
-class DiaryImageListAdapter(private val editable: Boolean, private val maxImageCount: Int) : RecyclerView.Adapter<DiaryImageListAdapter.ViewHolder>()
+class DiaryImageListAdapter(private var editable: Boolean, private val maxImageCount: Int) : RecyclerView.Adapter<DiaryImageListAdapter.ViewHolder>()
 {
     private val VIEW_TYPE_ADD_BTN = 1
     private val VIEW_TYPE_IMAGE = 2
@@ -92,6 +92,12 @@ class DiaryImageListAdapter(private val editable: Boolean, private val maxImageC
     fun addImageList(imageList: List<String>)
     {
         this.imageList.addAll(imageList)
+        notifyDataSetChanged()
+    }
+
+    fun setEditable(editable: Boolean)
+    {
+        this.editable = editable
         notifyDataSetChanged()
     }
 

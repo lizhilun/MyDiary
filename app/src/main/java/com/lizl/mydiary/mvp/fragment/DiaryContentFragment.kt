@@ -3,11 +3,11 @@ package com.lizl.mydiary.mvp.fragment
 import android.Manifest
 import android.content.Intent
 import android.util.Log
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.DiaryImageListAdapter
 import com.lizl.mydiary.bean.DiaryBean
-import com.lizl.mydiary.bean.TitleBarBtnBean
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.contract.DiaryContentFragmentContract
@@ -26,27 +26,33 @@ import permissions.dispatcher.RuntimePermissions
     private lateinit var diaryImageListAdapter: DiaryImageListAdapter
     private var diaryBean: DiaryBean? = null
 
+    private var inEditMode = false
+
     override fun getLayoutResId() = R.layout.fragment_diary_content
 
     override fun initPresenter() = DiaryContentFragmentPresenter(this)
 
     override fun initTitleBar()
     {
-        val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
-        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_confirm) {
-            presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList())
-        })
-        ctb_title.setBtnList(titleBtnList)
-
-        ctb_title.setOnBackBtnClickListener { backToPreFragment() }
+        ctb_title.setOnBackBtnClickListener {
+            if (inEditMode)
+            {
+                presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList())
+            }
+            else
+            {
+                backToPreFragment()
+            }
+        }
     }
 
     override fun initView()
     {
         val bundle = arguments
         diaryBean = bundle?.getSerializable(AppConstant.BUNDLE_DATA_OBJECT) as DiaryBean?
+        inEditMode = diaryBean == null
 
-        diaryImageListAdapter = DiaryImageListAdapter(true, 9)
+        diaryImageListAdapter = DiaryImageListAdapter(inEditMode, 9)
         rv_image_list.layoutManager = GridLayoutManager(context, 3)
         rv_image_list.adapter = diaryImageListAdapter
 
@@ -58,7 +64,10 @@ import permissions.dispatcher.RuntimePermissions
             (activity as BaseActivity<*>).turnToImageBrowserActivity(imageList, it)
         }
 
+        fab_edit_diary.setOnClickListener { showEditView() }
+
         showDiaryContent(diaryBean)
+        if (inEditMode) showEditView() else showReadView()
     }
 
     private fun showDiaryContent(diaryBean: DiaryBean?)
@@ -112,11 +121,36 @@ import permissions.dispatcher.RuntimePermissions
     override fun onDiarySaveSuccess()
     {
         DialogUtil.dismissDialog()
-        backToPreFragment()
+        if (diaryBean == null)
+        {
+            backToPreFragment()
+        }
+        else
+        {
+            showReadView()
+        }
     }
 
     override fun onImageSelectedFinish(picList: List<String>)
     {
         diaryImageListAdapter.addImageList(picList)
+    }
+
+    private fun showEditView()
+    {
+        inEditMode = true
+        et_diary_content.isEnabled = true
+        diaryImageListAdapter.setEditable(true)
+        fab_edit_diary.isVisible = false
+        ctb_title.setBackBtnRedId(R.mipmap.ic_confirm)
+    }
+
+    private fun showReadView()
+    {
+        inEditMode = false
+        et_diary_content.isEnabled = false
+        diaryImageListAdapter.setEditable(false)
+        fab_edit_diary.isVisible = true
+        ctb_title.setBackBtnRedId(R.mipmap.ic_back)
     }
 }

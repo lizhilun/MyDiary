@@ -135,6 +135,11 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         btnListView.adapter = TitleBarBtnListAdapter(btnList)
     }
 
+    fun setBackBtnRedId(redId: Int)
+    {
+        backBtn.setImageResource(redId)
+    }
+
     fun setTitleText(text: String)
     {
         titleTextView.text = text
