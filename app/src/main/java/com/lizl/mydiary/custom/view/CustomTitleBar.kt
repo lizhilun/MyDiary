@@ -69,6 +69,7 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.resources.getDimension(R.dimen.toolbar_title_text_size))
         searchEditText.setTextColor(ContextCompat.getColor(context, R.color.white))
         searchEditText.gravity = Gravity.CENTER_VERTICAL
+        searchEditText.setLines(1)
         searchEditText.background = null
         addView(searchEditText)
 
@@ -106,7 +107,7 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         constraintSet.constrainHeight(searchEditText.id, LayoutParams.MATCH_PARENT)
         constraintSet.constrainWidth(searchEditText.id, LayoutParams.MATCH_CONSTRAINT)
         constraintSet.connect(searchEditText.id, ConstraintSet.START, titleTextView.id, ConstraintSet.END)
-        constraintSet.connect(searchEditText.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+        constraintSet.connect(searchEditText.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, padding)
 
         constraintSet.applyTo(this)
 
