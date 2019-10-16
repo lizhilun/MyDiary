@@ -29,7 +29,7 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
     override fun initTitleBar()
     {
         val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
-        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_setting) {})
+        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_setting) { turnToFragment(R.id.settingFragment) })
         titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_search) {
             ctb_title.startSearchMode({ presenter.searchDiary(it) }, { presenter.queryAllDiary() })
         })

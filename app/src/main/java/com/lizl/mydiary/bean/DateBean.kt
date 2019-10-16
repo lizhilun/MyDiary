@@ -8,12 +8,10 @@ class DateBean(time: Long)
 {
     companion object
     {
-        private val weekList = listOf(
-                UiApplication.instance.getString(R.string.sunday), UiApplication.instance.getString(R.string.monday),
+        private val weekList = listOf(UiApplication.instance.getString(R.string.sunday), UiApplication.instance.getString(R.string.monday),
                 UiApplication.instance.getString(R.string.tuesday), UiApplication.instance.getString(R.string.wednesday),
                 UiApplication.instance.getString(R.string.thursday), UiApplication.instance.getString(R.string.friday),
-                UiApplication.instance.getString(R.string.saturday)
-        )
+                UiApplication.instance.getString(R.string.saturday))
     }
 
     var year = 0

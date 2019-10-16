@@ -11,4 +11,8 @@
     <fragment
         android:id="@+id/diaryContentFragment"
         android:name="com.lizl.mydiary.mvp.fragment.DiaryContentFragment" />
+
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.lizl.mydiary.mvp.fragment.SettingFragment" />
 </navigation>

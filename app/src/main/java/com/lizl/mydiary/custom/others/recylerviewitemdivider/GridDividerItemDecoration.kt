@@ -1,8 +1,8 @@
 package com.lizl.mydiary.custom.others.recylerviewitemdivider
 
 import android.graphics.Rect
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 
 class GridDividerItemDecoration() : RecyclerView.ItemDecoration()
 {

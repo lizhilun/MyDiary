@@ -1,7 +1,9 @@
 package com.lizl.mydiary
 
 import android.app.Application
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import com.lizl.mydiary.config.AppConfig
+import com.lizl.mydiary.util.AppConstant
 import com.orhanobut.hawk.Hawk
 import kotlin.properties.Delegates
 
@@ -23,5 +25,36 @@ class UiApplication : Application()
         super.onCreate()
 
         Hawk.init(this).build()
+
+        checkFingerprintStatus()
+    }
+
+    /**
+     * 检查指纹识别状态
+     */
+    private fun checkFingerprintStatus()
+    {
+        // 只有在未检测过情况下才检测
+        if (AppConfig.instance.getAppFingerprintStatus() != AppConstant.APP_FINGERPRINT_STATUS_NOT_DETECT)
+        {
+            return
+        }
+
+        try
+        {
+            val mFingerprintManager = FingerprintManagerCompat.from(instance)
+            if (mFingerprintManager.isHardwareDetected)
+            {
+                AppConfig.instance.setAppFingerprintStatus(AppConstant.APP_FINGERPRINT_STATUS_SUPPORT)
+            }
+            else
+            {
+                AppConfig.instance.setAppFingerprintStatus(AppConstant.APP_FINGERPRINT_STATUS_NOT_SUPPORT)
+            }
+        }
+        catch (e: ClassNotFoundException)
+        {
+            AppConfig.instance.setAppFingerprintStatus(AppConstant.APP_FINGERPRINT_STATUS_NOT_SUPPORT)
+        }
     }
 }

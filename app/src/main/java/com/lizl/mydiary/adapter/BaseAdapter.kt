@@ -75,7 +75,8 @@ abstract class BaseAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter<BaseVi
         }
     }
 
-    fun inflateView(@LayoutRes resId: Int, parent: ViewGroup): View
+    fun inflateView(@LayoutRes
+                    resId: Int, parent: ViewGroup): View
     {
         return LayoutInflater.from(context).inflate(resId, parent, false)
     }
@@ -125,7 +126,8 @@ abstract class BaseAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter<BaseVi
         }
     }
 
-    @SafeVarargs fun addAll(vararg items: T)
+    @SafeVarargs
+    fun addAll(vararg items: T)
     {
         synchronized(this.mLock) {
             Collections.addAll<T>(mData, *items)

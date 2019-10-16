@@ -1,11 +1,8 @@
 package com.lizl.mydiary.mvp.presenter
 
 import android.text.TextUtils
-import com.lizl.mydiary.R
-import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.bean.BaseDiaryBean
 import com.lizl.mydiary.bean.DiaryBean
-import com.lizl.mydiary.bean.DiaryCategoryBean
 import com.lizl.mydiary.mvp.contract.DiaryListFragmentContract
 import com.lizl.mydiary.util.AppDatabase
 import com.lizl.mydiary.util.FileUtil

@@ -7,13 +7,19 @@ import androidx.room.TypeConverters
 import com.lizl.mydiary.bean.converter.StringToObjectConverter
 import java.io.Serializable
 
-@Entity(tableName = "diaries") @TypeConverters(StringToObjectConverter::class) class DiaryBean : BaseDiaryBean(), Serializable
+@Entity(tableName = "diaries")
+@TypeConverters(StringToObjectConverter::class)
+class DiaryBean : BaseDiaryBean(), Serializable
 {
-    @PrimaryKey(autoGenerate = true) var id = 0
+    @PrimaryKey(autoGenerate = true)
+    var id = 0
 
-    @ColumnInfo var createTime = 0L
+    @ColumnInfo
+    var createTime = 0L
 
-    @ColumnInfo var content = ""
+    @ColumnInfo
+    var content = ""
 
-    @ColumnInfo var imageList: List<String>? = null
+    @ColumnInfo
+    var imageList: List<String>? = null
 }

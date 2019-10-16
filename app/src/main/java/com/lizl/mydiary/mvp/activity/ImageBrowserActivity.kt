@@ -60,7 +60,8 @@ class ImageBrowserActivity : BaseActivity<EmptyPresenter>()
         if (imageSize == 1)
         {
             tv_cur_image.visibility = View.GONE
-        } else
+        }
+        else
         {
             tv_cur_image.visibility = View.VISIBLE
         }

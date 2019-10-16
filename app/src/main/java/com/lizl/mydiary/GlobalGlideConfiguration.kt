@@ -9,7 +9,8 @@ import com.bumptech.glide.load.engine.cache.LruResourceCache
 import com.bumptech.glide.module.AppGlideModule
 import com.lizl.mydiary.util.FileUtil
 
-@GlideModule class GlobalGlideConfiguration : AppGlideModule()
+@GlideModule
+class GlobalGlideConfiguration : AppGlideModule()
 {
     private val DISK_CACHE_SIZE = 1024 * 1024 * 2000L //最多可以缓存多少字节的数据
     private val DISK_CACHE_NAME = "glide"

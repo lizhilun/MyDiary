@@ -103,7 +103,8 @@ class UiUtil
                 {
                     //如果整行宽度在控件可用宽度之内，就不处理了
                     sb.append(rawTextLine)
-                } else
+                }
+                else
                 {
                     //如果整行宽度超过控件可用宽度，则按字符测量，在超过可用宽度的前一个字符处手动换行
                     var lineWidth = 0f
@@ -115,7 +116,8 @@ class UiUtil
                         if (lineWidth <= tvWidth)
                         {
                             sb.append(ch)
-                        } else
+                        }
+                        else
                         {
                             sb.append("\n")
                             lineWidth = 0f
@@ -146,7 +148,8 @@ class UiUtil
                     if (source == " " || source.toString().contentEquals("\n"))
                     {
                         ""
-                    } else
+                    }
+                    else
                     {
                         null
                     }

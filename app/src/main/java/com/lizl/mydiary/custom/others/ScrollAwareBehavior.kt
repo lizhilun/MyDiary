@@ -2,7 +2,6 @@ package com.lizl.mydiary.custom.others
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
@@ -17,16 +16,15 @@ class ScrollAwareBehavior(context: Context, attrs: AttributeSet) : FloatingActio
     private var mIsAnimatingOut = false
 
     override fun onStartNestedScroll(coordinatorLayout: CoordinatorLayout, child: FloatingActionButton, directTargetChild: View, target: View,
-            nestedScrollAxes: Int): Boolean
+                                     nestedScrollAxes: Int): Boolean
     {
         // Ensure we react to vertical scrolling
-        return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL || super.onStartNestedScroll(
-                coordinatorLayout, child, directTargetChild, target, nestedScrollAxes
-        )
+        return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL || super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target,
+                nestedScrollAxes)
     }
 
     override fun onNestedScroll(coordinatorLayout: CoordinatorLayout, child: FloatingActionButton, target: View, dxConsumed: Int, dyConsumed: Int,
-            dxUnconsumed: Int, dyUnconsumed: Int)
+                                dxUnconsumed: Int, dyUnconsumed: Int)
     {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed)
         if (dyConsumed > 0 && !this.mIsAnimatingOut && child.visibility == View.VISIBLE)

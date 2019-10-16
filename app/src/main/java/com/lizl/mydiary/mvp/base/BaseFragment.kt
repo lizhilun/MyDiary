@@ -1,11 +1,11 @@
 package com.lizl.mydiary.mvp.base
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.lizl.mydiary.R
@@ -83,7 +83,7 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
 
     abstract fun initTitleBar()
 
-    abstract fun onBackPressed() : Boolean
+    abstract fun onBackPressed(): Boolean
 
     protected fun backToPreFragment()
     {
@@ -107,7 +107,7 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
         try
         {
             val options = NavOptions.Builder().setEnterAnim(R.anim.slide_right_in).setExitAnim(R.anim.slide_left_out).setPopEnterAnim(R.anim.slide_left_in)
-                    .setPopExitAnim(R.anim.slide_right_out).build()
+                .setPopExitAnim(R.anim.slide_right_out).build()
             Navigation.findNavController(checkNotNull(view)).navigate(fragmentId, bundle, options)
         }
         catch (e: Exception)

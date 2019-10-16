@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".mvp.activity.ImageBrowserActivity"/>
+        <activity android:name=".mvp.activity.ImageBrowserActivity" />
 
         <!--知乎图片选择器，适配7.0系统-->
         <provider

@@ -21,7 +21,8 @@ import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.RuntimePermissions
 
-@RuntimePermissions class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), DiaryContentFragmentContract.View
+@RuntimePermissions
+class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), DiaryContentFragmentContract.View
 {
 
     private lateinit var diaryImageListAdapter: DiaryImageListAdapter
@@ -93,25 +94,26 @@ import permissions.dispatcher.RuntimePermissions
         presenter.handleActivityResult(requestCode, resultCode, data)
     }
 
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA) fun selectImage()
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+    fun selectImage()
     {
         presenter.selectImage(this@DiaryContentFragment, 9 - diaryImageListAdapter.getImageList().size)
     }
 
-    @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA) fun onPermissionDenied()
+    @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+    fun onPermissionDenied()
     {
-        DialogUtil.showOperationConfirmDialog(
-                context!!, getString(R.string.notify_failed_to_get_permission), getString(R.string.notify_permission_be_refused)
-        ) { selectImageWithPermissionCheck() }
+        DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify_failed_to_get_permission),
+                getString(R.string.notify_permission_be_refused)) { selectImageWithPermissionCheck() }
     }
 
-    @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA) fun onPermissionNeverAskAgain()
+    @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+    fun onPermissionNeverAskAgain()
     {
         Log.d(TAG, "onPermissionNeverAskAgain")
 
-        DialogUtil.showOperationConfirmDialog(
-                context!!, getString(R.string.notify_failed_to_get_permission), getString(R.string.notify_permission_be_refused)
-        ) { selectImageWithPermissionCheck() }
+        DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify_failed_to_get_permission),
+                getString(R.string.notify_permission_be_refused)) { selectImageWithPermissionCheck() }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray)

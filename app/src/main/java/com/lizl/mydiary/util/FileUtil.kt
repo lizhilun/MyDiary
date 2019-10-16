@@ -20,8 +20,7 @@ class FileUtil
         {
             val systemFilePath =
                     if ((Environment.MEDIA_MOUNTED == Environment.getExternalStorageState() || !Environment.isExternalStorageRemovable()) && UiApplication.instance.getExternalFilesDir(
-                                    null
-                            ) != null)
+                                    null) != null)
                     {
                         UiApplication.instance.getExternalFilesDir(null)!!.path
                     }
@@ -75,8 +74,7 @@ class FileUtil
             {
 
                 ignored.stackTrace
-            }
-            finally
+            } finally
             {
                 try
                 {
