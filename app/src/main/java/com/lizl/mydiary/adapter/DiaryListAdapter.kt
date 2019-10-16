@@ -1,6 +1,7 @@
 package com.lizl.mydiary.adapter
 
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,6 @@ import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.DiaryCategoryBean
 import com.lizl.mydiary.mvp.base.BaseActivity
-import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.item_diary_category.view.*
 import kotlinx.android.synthetic.main.item_diary_list.view.*
 
@@ -33,28 +33,23 @@ class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>
         }
     }
 
-    override fun getItemViewType(position: Int): Int
+    override fun getCustomItemViewType(position: Int): Int
     {
-        if (super.getItemViewType(position) == VIEW_TYPE_FOOTER)
-        {
-            return VIEW_TYPE_FOOTER
-        }
         return when (getItem(position))
         {
             is DiaryBean         -> DIARY_TYPE_DIARY
             is DiaryCategoryBean -> DIARY_TYPE_CATEGORY
-            else                 -> super.getItemViewType(position)
+            else                 -> VIEW_TYPE_UNKNOW
         }
     }
 
     override fun bindCustomViewHolder(holder: ViewHolder, bean: BaseDiaryBean, position: Int)
     {
-        when (getItemViewType(position))
+        when (getCustomItemViewType(position))
         {
             DIARY_TYPE_DIARY    -> holder.bindDiaryViewHolder(bean as DiaryBean)
             DIARY_TYPE_CATEGORY -> holder.bindCategoryViewHolder(bean as DiaryCategoryBean, position)
         }
-
     }
 
     inner class ViewHolder(itemView: View) : BaseViewHolder(itemView)
@@ -103,8 +98,6 @@ class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>
 
         fun bindCategoryViewHolder(diaryCategoryBean: DiaryCategoryBean, position: Int)
         {
-            val itemSpace = UiUtil.pxToDp(context.resources.getDimension(R.dimen.diary_item_space))
-            itemView.setPadding(0, if (position == 0) itemSpace * 2 else itemSpace, 0, itemSpace)
             itemView.tv_category_content.text = diaryCategoryBean.content
         }
     }

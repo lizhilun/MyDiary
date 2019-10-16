@@ -17,15 +17,26 @@ abstract class BaseAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter<BaseVi
     protected lateinit var context: Context
     protected lateinit var recyclerView: RecyclerView
     private var footer: View? = null
+    private var header: View? = null
     private var mData: MutableList<T> = ArrayList()
 
+    protected val VIEW_TYPE_UNKNOW = 0
     protected val VIEW_TYPE_FOOTER = 2333
+    protected val VIEW_TYPE_HEADER = 2444
 
-    override fun getItemCount() = if (footer != null) mData.size + 1 else mData.size
+    override fun getItemCount() = mData.size + (if (footer != null) 1 else 0) + (if (header != null) 1 else 0)
 
     override fun getItemViewType(position: Int): Int
     {
-        return if (footer != null && this.itemCount - 1 == position) VIEW_TYPE_FOOTER else super.getItemViewType(position)
+        if (header != null && position == 0)
+        {
+            return VIEW_TYPE_HEADER
+        }
+        else if (footer != null && position == itemCount - 1)
+        {
+            return VIEW_TYPE_FOOTER
+        }
+        return getCustomItemViewType(if (header != null) position - 1 else position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder
@@ -40,14 +51,27 @@ abstract class BaseAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter<BaseVi
             recyclerView = parent as RecyclerView
         }
 
-        return if (viewType == VIEW_TYPE_FOOTER) BaseViewHolder(footer!!) else this.createCustomViewHolder(parent, viewType)
+        return when (viewType)
+        {
+            VIEW_TYPE_HEADER -> BaseViewHolder(header!!)
+            VIEW_TYPE_FOOTER -> BaseViewHolder(footer!!)
+            else             -> createCustomViewHolder(parent, viewType)
+        }
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int)
     {
-        if (this.getItemViewType(position) != VIEW_TYPE_FOOTER)
+        if (getItemViewType(position) == VIEW_TYPE_HEADER || getItemViewType(position) == VIEW_TYPE_FOOTER)
         {
-            this.bindCustomViewHolder(holder as VH, mData[position], position)
+            return
+        }
+        if (header != null)
+        {
+            bindCustomViewHolder(holder as VH, mData[position - 1], position - 1)
+        }
+        else
+        {
+            bindCustomViewHolder(holder as VH, mData[position], position)
         }
     }
 
@@ -64,6 +88,18 @@ abstract class BaseAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter<BaseVi
     fun removeFooter()
     {
         footer = null
+        notifyDataSetChanged()
+    }
+
+    fun setHeader(header: View)
+    {
+        this.header = header
+    }
+
+    fun removeHeader()
+    {
+        header = null
+        notifyDataSetChanged()
     }
 
     fun add(`object`: T)
@@ -238,4 +274,6 @@ abstract class BaseAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter<BaseVi
     abstract fun createCustomViewHolder(parent: ViewGroup, viewType: Int): VH
 
     abstract fun bindCustomViewHolder(holder: VH, bean: T, position: Int)
+
+    abstract fun getCustomItemViewType(position: Int): Int
 }

@@ -2,6 +2,7 @@ package com.lizl.mydiary.mvp.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.DiaryListAdapter
@@ -24,6 +25,8 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
 
     override fun initPresenter() = DiaryListFragmentPresenter(this)
 
+    private lateinit var diaryHeaderText: AppCompatTextView
+
     override fun initTitleBar()
     {
         val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
@@ -40,8 +43,13 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
         diaryListAdapter = DiaryListAdapter()
         rv_diary_list.layoutManager = LinearLayoutManager(context)
         rv_diary_list.adapter = diaryListAdapter
+
         val footerView = LayoutInflater.from(context).inflate(R.layout.layout_end_footer, rv_diary_list, false)
         diaryListAdapter.setFooter(footerView)
+
+        val headerView = LayoutInflater.from(context).inflate(R.layout.layout_diary_list_herder, rv_diary_list, false)
+        diaryHeaderText = headerView.findViewById(R.id.tv_header_content)
+        diaryListAdapter.setHeader(headerView)
 
         fab_add_diary.setOnClickListener { turnToDiaryContentFragment(null) }
 
@@ -59,7 +67,8 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
             val bundle = Bundle()
             bundle.putSerializable(AppConstant.BUNDLE_DATA_OBJECT, diaryBean)
             turnToFragment(R.id.diaryContentFragment, bundle)
-        } else
+        }
+        else
         {
             turnToFragment(R.id.diaryContentFragment)
         }
@@ -76,16 +85,24 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
     {
         diaryListAdapter.clear()
         diaryListAdapter.addAll(diaryList)
+        updateDiaryListHeader()
     }
 
     override fun onDiaryDeleted(diaryBean: DiaryBean)
     {
         diaryListAdapter.remove(diaryBean)
+        updateDiaryListHeader()
     }
 
     override fun showDiarySearchResult(diaryList: List<BaseDiaryBean>)
     {
         diaryListAdapter.clear()
         diaryListAdapter.addAll(diaryList)
+        updateDiaryListHeader()
+    }
+
+    private fun updateDiaryListHeader()
+    {
+        diaryHeaderText.text = getString(R.string.diary_total_count, diaryListAdapter.getData().size)
     }
 }
