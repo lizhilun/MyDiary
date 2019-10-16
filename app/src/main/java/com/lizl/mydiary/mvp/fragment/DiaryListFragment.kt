@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.layout_diary_list_herder.*
 
 class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListFragmentContract.View
 {
+
     private lateinit var diaryListAdapter: DiaryListAdapter
 
     override fun getLayoutResId() = R.layout.fragment_diray_list
@@ -98,4 +99,6 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
         layout_diary_header.isVisible = diaryListAdapter.getData().isNotEmpty()
         tv_header_content.text = getString(R.string.diary_total_count, diaryListAdapter.getData().size)
     }
+
+    override fun onBackPressed() = false
 }

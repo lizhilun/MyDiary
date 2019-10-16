@@ -83,6 +83,8 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
 
     abstract fun initTitleBar()
 
+    abstract fun onBackPressed() : Boolean
+
     protected fun backToPreFragment()
     {
         try

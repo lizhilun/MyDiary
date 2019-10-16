@@ -4,6 +4,7 @@
     <string name="cancel">取消</string>
     <string name="confirm">确认</string>
     <string name="delete">删除</string>
+    <string name="notify">提示</string>
 
     <string name="monday">周一</string>
     <string name="tuesday">周二</string>
@@ -19,4 +20,6 @@
     <string name="notify_failed_to_get_permission">权限获取失败</string>
     <string name="notify_permission_be_refused">权限获取被拒绝，请重新授权</string>
     <string name="notify_permission_be_refused_and_never_ask_again">权限获取被拒绝，请在设置界面中开启</string>
+    <string name="notify_diary_has_not_save_sure_to_quit">编辑的内容还没有保存，确认退出？</string>
+    <string name="notify_empty_diary_cannot_save">内容为空，无法保存，是否退出？</string>
 </resources>

@@ -2,6 +2,7 @@ package com.lizl.mydiary.mvp.fragment
 
 import android.Manifest
 import android.content.Intent
+import android.text.TextUtils
 import android.util.Log
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
@@ -37,6 +38,13 @@ import permissions.dispatcher.RuntimePermissions
         ctb_title.setOnBackBtnClickListener {
             if (inEditMode)
             {
+                if (isEmptyDiary())
+                {
+                    DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify), getString(R.string.notify_empty_diary_cannot_save)) {
+                        backToPreFragment()
+                    }
+                    return@setOnBackBtnClickListener
+                }
                 presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList())
             }
             else
@@ -152,5 +160,24 @@ import permissions.dispatcher.RuntimePermissions
         diaryImageListAdapter.setEditable(false)
         fab_edit_diary.isVisible = true
         ctb_title.setBackBtnRedId(R.mipmap.ic_back)
+    }
+
+    override fun onBackPressed(): Boolean
+    {
+        if (inEditMode && (isEmptyDiary() || isDiaryModified(diaryBean)))
+        {
+            DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify), getString(R.string.notify_diary_has_not_save_sure_to_quit)) {
+                backToPreFragment()
+            }
+            return true
+        }
+        return false
+    }
+
+    private fun isEmptyDiary() = TextUtils.isEmpty(et_diary_content.text.toString()) && diaryImageListAdapter.getImageList().isNullOrEmpty()
+
+    private fun isDiaryModified(diaryBean: DiaryBean?): Boolean
+    {
+        return diaryBean?.content != et_diary_content.text.toString() || diaryBean.imageList != diaryImageListAdapter.getImageList()
     }
 }
