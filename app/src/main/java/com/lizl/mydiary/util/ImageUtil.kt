@@ -1,11 +1,11 @@
 package com.lizl.mydiary.util
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
+import android.util.Log
 import java.io.ByteArrayOutputStream
-import java.io.InputStream
+import java.io.File
+import java.io.FileOutputStream
 
 class ImageUtil
 {
@@ -42,7 +42,7 @@ class ImageUtil
          * @param reqHeight
          * @return
          */
-        fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int
+        private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int
         {
             // Raw height and width of image
             val height = options.outHeight
@@ -51,16 +51,8 @@ class ImageUtil
 
             if (height > reqHeight || width > reqWidth)
             {
-
-                // Calculate ratios of height and width to requested height and
-                // width
                 val heightRatio = Math.round(height.toFloat() / reqHeight.toFloat())
                 val widthRatio = Math.round(width.toFloat() / reqWidth.toFloat())
-
-                // Choose the smallest ratio as inSampleSize value, this will
-                // guarantee
-                // a final image with both dimensions larger than or equal to the
-                // requested height and width.
                 inSampleSize = if (heightRatio < widthRatio) heightRatio else widthRatio
             }
 
@@ -68,44 +60,11 @@ class ImageUtil
         }
 
         /**
-         * 把byte数据解析成图片
-         */
-        private fun decodeBitmap(path: String?, data: ByteArray?, context: Context, uri: Uri?, options: BitmapFactory.Options): Bitmap?
-        {
-            var result: Bitmap? = null
-            if (path != null)
-            {
-                result = BitmapFactory.decodeFile(path, options)
-            }
-            else if (data != null)
-            {
-                result = BitmapFactory.decodeByteArray(data, 0, data.size, options)
-            }
-            else if (uri != null)
-            {
-                val cr = context.contentResolver
-                var inputStream: InputStream? = null
-                try
-                {
-                    inputStream = cr.openInputStream(uri)
-                    result = BitmapFactory.decodeStream(inputStream, null, options)
-                    inputStream!!.close()
-                }
-                catch (e: Exception)
-                {
-                    e.printStackTrace()
-                }
-
-            }
-            return result
-        }
-
-        /**
          * 质量压缩
          * @param image
          * @param maxSize
          */
-        fun compressImage(image: Bitmap, maxSize: Int): Bitmap?
+        private fun compressImage(image: Bitmap, maxSize: Int): Bitmap?
         {
             val os = ByteArrayOutputStream()
             // scale
@@ -124,11 +83,43 @@ class ImageUtil
 
             var bitmap: Bitmap? = null
             val b = os.toByteArray()
-            if (b.size != 0)
+            if (b.isNotEmpty())
             {
                 bitmap = BitmapFactory.decodeByteArray(b, 0, b.size)
             }
             return bitmap
+        }
+
+        /**
+         * 图片保存到SD卡
+         * @param bitmap
+         * @return
+         */
+        fun saveImageToSdCard(bitmap: Bitmap): String
+        {
+            val imageSavePath = FileUtil.getSystemFilePath() + "/picture/"
+            val imageSaveDir = File(imageSavePath)
+            if (!imageSaveDir.exists())
+            {
+                imageSaveDir.mkdirs()
+            }
+            val imageUrl = imageSavePath + System.currentTimeMillis() + ".jpg"
+            val file = File(imageUrl)
+            try
+            {
+                val out = FileOutputStream(file)
+                if (bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out))
+                {
+                    out.flush()
+                    out.close()
+                }
+            }
+            catch (e: java.lang.Exception)
+            {
+                Log.e(FileUtil.TAG, "saveImageToSdCard error " + e.message)
+            }
+
+            return file.absolutePath
         }
 
     }

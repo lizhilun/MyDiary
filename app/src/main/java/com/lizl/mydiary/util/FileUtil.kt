@@ -1,9 +1,7 @@
 package com.lizl.mydiary.util
 
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Environment
-import android.util.Log
 import com.lizl.mydiary.UiApplication
 import java.io.File
 import java.io.FileInputStream
@@ -20,15 +18,17 @@ class FileUtil
          */
         fun getSystemFilePath(): String
         {
-            val systemFilePath = if ((Environment.MEDIA_MOUNTED == Environment.getExternalStorageState() || !Environment.isExternalStorageRemovable())
-                                     && UiApplication.instance.getExternalFilesDir(null) != null)
-                {
-                    UiApplication.instance.getExternalFilesDir(null)!!.path
-                }
-                else
-                {
-                    UiApplication.instance.filesDir.path
-                }
+            val systemFilePath =
+                    if ((Environment.MEDIA_MOUNTED == Environment.getExternalStorageState() || !Environment.isExternalStorageRemovable()) && UiApplication.instance.getExternalFilesDir(
+                                    null
+                            ) != null)
+                    {
+                        UiApplication.instance.getExternalFilesDir(null)!!.path
+                    }
+                    else
+                    {
+                        UiApplication.instance.filesDir.path
+                    }
 
             val systemFileDir = File(systemFilePath)
             if (!systemFileDir.exists())
@@ -91,37 +91,17 @@ class FileUtil
             return null
         }
 
-
         /**
-         * 图片保存到SD卡
-         * @param bitmap
-         * @return
+         * 删除文件
          */
-        fun saveToSdCard(bitmap: Bitmap): String
+        fun deleteFile(filePath: String): Boolean
         {
-            val imageSavePath = getSystemFilePath() + "/picture/"
-            val imageSaveDir = File(imageSavePath)
-            if (!imageSaveDir.exists())
+            val file = File(filePath)
+            if (!file.exists())
             {
-                imageSaveDir.mkdirs()
+                return true
             }
-            val imageUrl = imageSavePath + System.currentTimeMillis() + ".jpg"
-            val file = File(imageUrl)
-            try
-            {
-                val out = FileOutputStream(file)
-                if (bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out))
-                {
-                    out.flush()
-                    out.close()
-                }
-            }
-            catch (e: java.lang.Exception)
-            {
-                Log.e(TAG, "saveToSdCard error " + e.message)
-            }
-
-            return file.absolutePath
+            return file.delete()
         }
     }
 }

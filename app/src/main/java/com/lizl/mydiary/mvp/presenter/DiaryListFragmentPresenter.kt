@@ -8,6 +8,7 @@ import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.DiaryCategoryBean
 import com.lizl.mydiary.mvp.contract.DiaryListFragmentContract
 import com.lizl.mydiary.util.AppDatabase
+import com.lizl.mydiary.util.FileUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -35,6 +36,7 @@ class DiaryListFragmentPresenter(private val view: DiaryListFragmentContract.Vie
     override fun deleteDiary(diaryBean: DiaryBean)
     {
         GlobalScope.launch {
+            diaryBean.imageList?.forEach { FileUtil.deleteFile(it) }
             AppDatabase.instance.getDiaryDao().delete(diaryBean)
 
             GlobalScope.launch(Dispatchers.Main) {
