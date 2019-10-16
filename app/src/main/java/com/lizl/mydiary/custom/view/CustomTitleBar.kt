@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
-import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
@@ -28,10 +27,10 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
     private lateinit var btnListView: RecyclerView
     private lateinit var searchEditText: AppCompatEditText
 
-    private var hasBackBtn = false
+    private var isBackBtnVisible = false
 
     private var onBackBtnClickListener: (() -> Unit)? = null
-
+    private var onSearchTextChangeListener: ((searchText: String) -> Unit)? = null
     private var onSearchFinishListener: (() -> Unit)? = null
 
     constructor(context: Context) : this(context, null)
@@ -80,8 +79,8 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
             {
                 R.styleable.CustomTitleBar_backBtnVisible ->
                 {
-                    hasBackBtn = typeArray.getBoolean(attr, true)
-                    backBtn.isVisible = hasBackBtn
+                    isBackBtnVisible = typeArray.getBoolean(attr, true)
+                    backBtn.isVisible = isBackBtnVisible
                 }
                 R.styleable.CustomTitleBar_titleText      -> titleTextView.text = typeArray.getString(attr)
             }
@@ -121,6 +120,8 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
             }
             onBackBtnClickListener?.invoke()
         }
+
+        searchEditText.addTextChangedListener { onSearchTextChangeListener?.invoke(it.toString()) }
     }
 
     fun setOnBackBtnClickListener(onBackBtnClickListener: () -> Unit)
@@ -132,11 +133,6 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
     {
         btnListView.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, true)
         btnListView.adapter = TitleBarBtnListAdapter(btnList)
-    }
-
-    fun setBackBtnVisible(visible: Boolean)
-    {
-        if (visible) View.VISIBLE else View.GONE
     }
 
     fun setTitleText(text: String)
@@ -151,21 +147,25 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         btnListView.isVisible = false
         titleTextView.isVisible = false
 
+        this.onSearchFinishListener = onSearchFinishListener
+        this.onSearchTextChangeListener = onSearchTextChangeListener
+
         searchEditText.requestFocus()
         UiUtil.showInputKeyboard()
-
-        this.onSearchFinishListener = onSearchFinishListener
-        searchEditText.addTextChangedListener { onSearchTextChangeListener.invoke(it.toString()) }
     }
 
     private fun stopSearchMode()
     {
         searchEditText.isVisible = false
-        backBtn.isVisible = hasBackBtn
+        backBtn.isVisible = isBackBtnVisible
         btnListView.isVisible = true
         titleTextView.isVisible = true
 
         onSearchFinishListener?.invoke()
+        onSearchFinishListener = null
+        onSearchTextChangeListener = null
+
+        searchEditText.setText("")
         UiUtil.hideInputKeyboard(searchEditText)
     }
 }
