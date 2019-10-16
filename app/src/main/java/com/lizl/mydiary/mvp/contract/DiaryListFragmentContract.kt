@@ -9,7 +9,7 @@ class DiaryListFragmentContract
 {
     interface View : BaseView
     {
-        fun onMoreDiaries(diaryList: List<BaseDiaryBean>, noMoreData: Boolean)
+        fun onDiariesQueryFinish(diaryList: List<BaseDiaryBean>)
 
         fun onDiaryDeleted(diaryBean: DiaryBean)
 
@@ -18,7 +18,7 @@ class DiaryListFragmentContract
 
     interface Presenter : BasePresenter<View>
     {
-        fun loadMoreDiary()
+        fun queryAllDiary()
 
         fun deleteDiary(diaryBean: DiaryBean)
 

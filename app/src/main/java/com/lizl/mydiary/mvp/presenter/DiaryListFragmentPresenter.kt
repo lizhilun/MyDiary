@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 class DiaryListFragmentPresenter(private val view: DiaryListFragmentContract.View) : DiaryListFragmentContract.Presenter
 {
 
-    override fun loadMoreDiary()
+    override fun queryAllDiary()
     {
         GlobalScope.launch {
             val diaryList = mutableListOf<BaseDiaryBean>()
@@ -27,7 +27,7 @@ class DiaryListFragmentPresenter(private val view: DiaryListFragmentContract.Vie
             diaryList.addAll(AppDatabase.instance.getDiaryDao().getAllDiary())
 
             GlobalScope.launch(Dispatchers.Main) {
-                view.onMoreDiaries(diaryList, true)
+                view.onDiariesQueryFinish(diaryList)
             }
         }
     }
@@ -47,7 +47,7 @@ class DiaryListFragmentPresenter(private val view: DiaryListFragmentContract.Vie
     {
         if (TextUtils.isEmpty(keyword))
         {
-            loadMoreDiary()
+            queryAllDiary()
             return
         }
         GlobalScope.launch {

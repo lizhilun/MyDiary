@@ -28,7 +28,9 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
     {
         val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
         titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_setting) {})
-        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_search) { ctb_title.startSearchMode {presenter.searchDiary(it)} })
+        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_search) {
+            ctb_title.startSearchMode({ presenter.searchDiary(it) }, { presenter.queryAllDiary() })
+        })
         ctb_title.setTitleText(getString(R.string.app_name))
         ctb_title.setBtnList(titleBtnList)
     }
@@ -47,7 +49,7 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
 
         diaryListAdapter.setOnDiaryItemClickLongListener { showDiaryOperationListDialog(it) }
 
-        presenter.loadMoreDiary()
+        presenter.queryAllDiary()
     }
 
     private fun turnToDiaryContentFragment(diaryBean: DiaryBean?)
@@ -57,8 +59,7 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
             val bundle = Bundle()
             bundle.putSerializable(AppConstant.BUNDLE_DATA_OBJECT, diaryBean)
             turnToFragment(R.id.diaryContentFragment, bundle)
-        }
-        else
+        } else
         {
             turnToFragment(R.id.diaryContentFragment)
         }
@@ -71,8 +72,9 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
         DialogUtil.showOperationListDialog(context!!, operationList)
     }
 
-    override fun onMoreDiaries(diaryList: List<BaseDiaryBean>, noMoreData: Boolean)
+    override fun onDiariesQueryFinish(diaryList: List<BaseDiaryBean>)
     {
+        diaryListAdapter.clear()
         diaryListAdapter.addAll(diaryList)
     }
 

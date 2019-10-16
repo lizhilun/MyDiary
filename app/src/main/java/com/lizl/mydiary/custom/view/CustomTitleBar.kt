@@ -32,6 +32,8 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
 
     private var onBackBtnClickListener: (() -> Unit)? = null
 
+    private var onSearchFinishListener: (() -> Unit)? = null
+
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -141,7 +143,7 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         titleTextView.text = text
     }
 
-    fun startSearchMode(onSearchTextChangeListener: (searchText: String) -> Unit)
+    fun startSearchMode(onSearchTextChangeListener: (searchText: String) -> Unit, onSearchFinishListener: () -> Unit)
     {
         searchEditText.isVisible = true
         backBtn.isVisible = true
@@ -151,6 +153,7 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         searchEditText.requestFocus()
         UiUtil.showInputKeyboard()
 
+        this.onSearchFinishListener = onSearchFinishListener
         searchEditText.addTextChangedListener { onSearchTextChangeListener.invoke(it.toString()) }
     }
 
@@ -161,6 +164,7 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         btnListView.isVisible = true
         titleTextView.isVisible = true
 
+        onSearchFinishListener?.invoke()
         UiUtil.hideInputKeyboard(searchEditText)
     }
 }
