@@ -166,7 +166,7 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
 
     override fun onBackPressed(): Boolean
     {
-        if (inEditMode && (isEmptyDiary() || isDiaryModified(diaryBean)))
+        if (inEditMode && (!isEmptyDiary() || isDiaryModified(diaryBean)))
         {
             DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify), getString(R.string.notify_diary_has_not_save_sure_to_quit)) {
                 backToPreFragment()
