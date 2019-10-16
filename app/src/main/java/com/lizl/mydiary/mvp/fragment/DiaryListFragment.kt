@@ -1,8 +1,7 @@
 package com.lizl.mydiary.mvp.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.DiaryListAdapter
@@ -16,6 +15,7 @@ import com.lizl.mydiary.mvp.presenter.DiaryListFragmentPresenter
 import com.lizl.mydiary.util.AppConstant
 import com.lizl.mydiary.util.DialogUtil
 import kotlinx.android.synthetic.main.fragment_diray_list.*
+import kotlinx.android.synthetic.main.layout_diary_list_herder.*
 
 class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListFragmentContract.View
 {
@@ -24,8 +24,6 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
     override fun getLayoutResId() = R.layout.fragment_diray_list
 
     override fun initPresenter() = DiaryListFragmentPresenter(this)
-
-    private lateinit var diaryHeaderText: AppCompatTextView
 
     override fun initTitleBar()
     {
@@ -43,13 +41,6 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
         diaryListAdapter = DiaryListAdapter()
         rv_diary_list.layoutManager = LinearLayoutManager(context)
         rv_diary_list.adapter = diaryListAdapter
-
-        val footerView = LayoutInflater.from(context).inflate(R.layout.layout_end_footer, rv_diary_list, false)
-        diaryListAdapter.setFooter(footerView)
-
-        val headerView = LayoutInflater.from(context).inflate(R.layout.layout_diary_list_herder, rv_diary_list, false)
-        diaryHeaderText = headerView.findViewById(R.id.tv_header_content)
-        diaryListAdapter.setHeader(headerView)
 
         fab_add_diary.setOnClickListener { turnToDiaryContentFragment(null) }
 
@@ -103,6 +94,8 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
 
     private fun updateDiaryListHeader()
     {
-        diaryHeaderText.text = getString(R.string.diary_total_count, diaryListAdapter.getData().size)
+        tv_end_footer.isVisible = diaryListAdapter.getData().isNotEmpty()
+        layout_diary_header.isVisible = diaryListAdapter.getData().isNotEmpty()
+        tv_header_content.text = getString(R.string.diary_total_count, diaryListAdapter.getData().size)
     }
 }
