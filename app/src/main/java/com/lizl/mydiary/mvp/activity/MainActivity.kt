@@ -44,10 +44,6 @@ class MainActivity : BaseActivity<EmptyPresenter>()
         if (UiApplication.appConfig.isAppLockOn() && !TextUtils.isEmpty(
                         UiApplication.appConfig.getAppLockPassword()) && System.currentTimeMillis() - UiApplication.appConfig.getAppLastStopTime() >= ConfigConstant.APP_TIMEOUT_PERIOD)
         {
-            if (getTopFragment() is LockFragment)
-            {
-                return
-            }
             turnToFragment(R.id.lockFragment)
         }
     }
@@ -63,6 +59,15 @@ class MainActivity : BaseActivity<EmptyPresenter>()
         {
             super.onBackPressed()
         }
+    }
+
+    override fun onStop()
+    {
+        Log.d(TAG, "onStop")
+
+        super.onStop()
+
+        UiApplication.appConfig.setAppLastStopTime(System.currentTimeMillis())
     }
 
     private fun getTopFragment(): BaseFragment<*>?
