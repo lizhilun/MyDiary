@@ -43,7 +43,7 @@ class SettingFragment : BaseFragment<EmptyPresenter>()
         settingAdapter.add(SettingBean.SettingDivideBean())
 
         val fingerprintItem = SettingBean.SettingBooleanBean(getString(R.string.setting_fingerprint), ConfigConstant.IS_FINGERPRINT_LOCK_ON,
-                ConfigConstant.DEFAULT_IS_FINGERPRINT_LOCK_ON, false) { result, bean ->
+                ConfigConstant.DEFAULT_IS_FINGERPRINT_LOCK_ON, true) { result, bean ->
         }
 
         settingAdapter.add(SettingBean.SettingBooleanBean(getString(R.string.setting_app_lock), settingKey = ConfigConstant.IS_APP_LOCK_ON,

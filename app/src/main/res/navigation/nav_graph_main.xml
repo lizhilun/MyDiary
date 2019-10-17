@@ -15,4 +15,8 @@
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.lizl.mydiary.mvp.fragment.SettingFragment" />
+
+    <fragment
+        android:id="@+id/lockFragment"
+        android:name="com.lizl.mydiary.mvp.fragment.LockFragment"/>
 </navigation>

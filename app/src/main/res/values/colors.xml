@@ -9,7 +9,7 @@
     <color name="colorThirdTextColor">#9E9E9E</color>
 
     <color name="transparent">#00000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
     <color name="color_toolbar_text_button_bg">#0f000000</color>
@@ -31,4 +31,8 @@
 
     <color name="color_dialog_button_text_enable">@color/colorPrimary</color>
     <color name="color_dialog_button_text_disable">#cc999999</color>
+
+    <color name="color_number_key_text">@color/colorTextColor</color>
+    <color name="color_number_key_divide">@color/colorDivideLine</color>
+    <color name="color_number_key_bg">@color/white</color>
 </resources>

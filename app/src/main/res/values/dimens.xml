@@ -37,4 +37,6 @@
     <dimen name="dialog_loading_height">72dp</dimen>
 
     <dimen name="setting_item_padding_edge">20dp</dimen>
+
+    <dimen name="number_key_height">70dp</dimen>
 </resources>
