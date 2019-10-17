@@ -51,4 +51,5 @@ dependencies {
     def pd_version = '4.5.0'
     implementation "org.permissionsdispatcher:permissionsdispatcher:${pd_version}"
     kapt "org.permissionsdispatcher:permissionsdispatcher-processor:${pd_version}"
+    implementation 'com.jungly:gridPasswordView:0.3'
 }

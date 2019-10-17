@@ -1,17 +1,16 @@
 package com.lizl.mydiary.adapter
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.SettingBean
 import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.item_setting_boolean.view.*
 import kotlinx.android.synthetic.main.item_setting_normal.view.*
 
-class SettingListAdapter(private val settingList: List<SettingBean.SettingBaseBean>) : RecyclerView.Adapter<SettingListAdapter.ViewHolder>()
+class SettingListAdapter() : BaseAdapter<SettingBean.SettingBaseBean, SettingListAdapter.ViewHolder>()
 {
+
     companion object
     {
         const val ITEM_TYPE_DIVIDE = 1
@@ -19,48 +18,41 @@ class SettingListAdapter(private val settingList: List<SettingBean.SettingBaseBe
         const val ITEM_TYPE_NORMAL = 3
     }
 
-    override fun getItemCount(): Int = settingList.size
-
-    override fun getItemViewType(position: Int): Int
-    {
-        if (position >= itemCount)
-        {
-            return -1
-        }
-        return when
-        {
-            settingList[position] is SettingBean.SettingDivideBean  -> ITEM_TYPE_DIVIDE
-            settingList[position] is SettingBean.SettingBooleanBean -> ITEM_TYPE_BOOLEAN
-            settingList[position] is SettingBean.SettingNormalBean  -> ITEM_TYPE_NORMAL
-            else                                                    -> -1
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
+    override fun createCustomViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
     {
         when (viewType)
         {
-            ITEM_TYPE_BOOLEAN -> return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_setting_boolean, parent, false))
-            ITEM_TYPE_DIVIDE  -> return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_setting_divide, parent, false))
-            ITEM_TYPE_NORMAL  -> return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_setting_normal, parent, false))
+            ITEM_TYPE_BOOLEAN -> return ViewHolder(inflateView(R.layout.item_setting_boolean, parent))
+            ITEM_TYPE_DIVIDE  -> return ViewHolder(inflateView(R.layout.item_setting_divide, parent))
+            ITEM_TYPE_NORMAL  -> return ViewHolder(inflateView(R.layout.item_setting_normal, parent))
         }
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_setting_divide, parent, false))
+        return ViewHolder(inflateView(R.layout.item_setting_divide, parent))
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int)
+    override fun bindCustomViewHolder(holder: ViewHolder, bean: SettingBean.SettingBaseBean, position: Int)
     {
-        val settingItem = settingList[position]
-        if (settingItem is SettingBean.SettingBooleanBean)
+        if (bean is SettingBean.SettingBooleanBean)
         {
-            holder.bindBooleanViewHolder(settingItem, position)
+            holder.bindBooleanViewHolder(bean, position)
         }
-        else if (settingItem is SettingBean.SettingNormalBean)
+        else if (bean is SettingBean.SettingNormalBean)
         {
-            holder.bindNormalViewHolder(settingItem)
+            holder.bindNormalViewHolder(bean)
         }
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    override fun getCustomItemViewType(position: Int): Int
+    {
+        return when (getItem(position))
+        {
+            is SettingBean.SettingDivideBean  -> ITEM_TYPE_DIVIDE
+            is SettingBean.SettingBooleanBean -> ITEM_TYPE_BOOLEAN
+            is SettingBean.SettingNormalBean  -> ITEM_TYPE_NORMAL
+            else                              -> -1
+        }
+    }
+
+    inner class ViewHolder(itemView: View) : BaseViewHolder(itemView)
     {
         fun bindBooleanViewHolder(settingItem: SettingBean.SettingBooleanBean, position: Int)
         {
@@ -74,7 +66,7 @@ class SettingListAdapter(private val settingList: List<SettingBean.SettingBaseBe
                     Hawk.put(settingItem.settingKey, !isChecked)
                     notifyItemChanged(position)
                 }
-                settingItem.callback.invoke(!isChecked)
+                settingItem.callback.invoke(!isChecked, settingItem)
             }
         }
 

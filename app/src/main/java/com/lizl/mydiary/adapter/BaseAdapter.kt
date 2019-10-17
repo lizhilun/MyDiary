@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
@@ -75,8 +74,7 @@ abstract class BaseAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter<BaseVi
         }
     }
 
-    fun inflateView(@LayoutRes
-                    resId: Int, parent: ViewGroup): View
+    fun inflateView(resId: Int, parent: ViewGroup): View
     {
         return LayoutInflater.from(context).inflate(resId, parent, false)
     }
@@ -249,6 +247,11 @@ abstract class BaseAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter<BaseVi
         }
 
         this.notifyDataSetChanged()
+    }
+
+    fun update(`object`: T)
+    {
+        notifyItemChanged(mData.indexOf(`object`))
     }
 
     fun getItem(position: Int): T

@@ -2,10 +2,7 @@ package com.lizl.mydiary.util
 
 import android.content.Context
 import com.lizl.mydiary.bean.OperationItem
-import com.lizl.mydiary.custom.dialog.BaseDialog
-import com.lizl.mydiary.custom.dialog.DialogLoading
-import com.lizl.mydiary.custom.dialog.DialogOperationConfirm
-import com.lizl.mydiary.custom.dialog.DialogOperationList
+import com.lizl.mydiary.custom.dialog.*
 
 class DialogUtil
 {
@@ -32,6 +29,27 @@ class DialogUtil
         {
             dialog?.dismiss()
             dialog = DialogOperationList(context, operationList)
+            dialog?.show()
+        }
+
+        fun showPasswordConfirmDialog(context: Context, password: String, onInputFinishListener: (String) -> Unit)
+        {
+            dialog?.dismiss()
+            dialog = DialogPassword(context, password, true, onInputFinishListener)
+            dialog?.show()
+        }
+
+        fun showSetPasswordDialog(context: Context, onInputFinishListener: (String) -> Unit)
+        {
+            dialog?.dismiss()
+            dialog = DialogPassword(context, onInputFinishListener)
+            dialog?.show()
+        }
+
+        fun showModifyPasswordDialog(context: Context, oldPassword: String, onInputFinishListener: (String) -> Unit)
+        {
+            dialog?.dismiss()
+            dialog = DialogPassword(context, oldPassword, false, onInputFinishListener)
             dialog?.show()
         }
 

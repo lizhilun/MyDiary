@@ -9,5 +9,5 @@ class SettingBean
     class SettingNormalBean(val settingName: String, val callback: () -> Unit) : SettingBaseBean()
 
     class SettingBooleanBean(val settingName: String, val settingKey: String, var defaultValue: Boolean, val needSave: Boolean,
-                             val callback: (result: Boolean) -> Unit) : SettingBaseBean()
+                             val callback: (result: Boolean, bean: SettingBooleanBean) -> Unit) : SettingBaseBean()
 }

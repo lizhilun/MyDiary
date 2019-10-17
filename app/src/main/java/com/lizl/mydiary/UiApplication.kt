@@ -17,7 +17,7 @@ class UiApplication : Application()
     companion object
     {
         var instance: UiApplication by Delegates.notNull()
-        val appConfig: AppConfig by lazy { AppConfig() }
+        val appConfig: AppConfig by lazy { AppConfig.instance }
     }
 
     override fun onCreate()
@@ -35,7 +35,7 @@ class UiApplication : Application()
     private fun checkFingerprintStatus()
     {
         // 只有在未检测过情况下才检测
-        if (AppConfig.instance.getAppFingerprintStatus() != AppConstant.APP_FINGERPRINT_STATUS_NOT_DETECT)
+        if (appConfig.getAppFingerprintStatus() != AppConstant.APP_FINGERPRINT_STATUS_NOT_DETECT)
         {
             return
         }
@@ -45,16 +45,16 @@ class UiApplication : Application()
             val mFingerprintManager = FingerprintManagerCompat.from(instance)
             if (mFingerprintManager.isHardwareDetected)
             {
-                AppConfig.instance.setAppFingerprintStatus(AppConstant.APP_FINGERPRINT_STATUS_SUPPORT)
+                appConfig.setAppFingerprintStatus(AppConstant.APP_FINGERPRINT_STATUS_SUPPORT)
             }
             else
             {
-                AppConfig.instance.setAppFingerprintStatus(AppConstant.APP_FINGERPRINT_STATUS_NOT_SUPPORT)
+                appConfig.setAppFingerprintStatus(AppConstant.APP_FINGERPRINT_STATUS_NOT_SUPPORT)
             }
         }
         catch (e: ClassNotFoundException)
         {
-            AppConfig.instance.setAppFingerprintStatus(AppConstant.APP_FINGERPRINT_STATUS_NOT_SUPPORT)
+            appConfig.setAppFingerprintStatus(AppConstant.APP_FINGERPRINT_STATUS_NOT_SUPPORT)
         }
     }
 }
