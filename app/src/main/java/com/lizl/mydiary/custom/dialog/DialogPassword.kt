@@ -6,6 +6,7 @@ import android.widget.EditText
 import com.jungly.gridpasswordview.GridPasswordView
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
+import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.dialog_password_confirm.*
 
 class DialogPassword(context: Context, private val passwordOperation: Int, private val password: String?, private val onInputFinishListener: (String) -> Unit) :
@@ -128,7 +129,7 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
         gpv_password.postDelayed({ gpv_password.clearPassword() }, if (needDelay) 100L else 0)
     }
 
-    override fun getDialogWidth() = 0
+    override fun getDialogWidth() = (UiUtil.getScreenWidth() * 0.9).toInt()
 
     enum class OperationState
     {

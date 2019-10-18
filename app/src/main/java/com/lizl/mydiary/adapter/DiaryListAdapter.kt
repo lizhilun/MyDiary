@@ -106,7 +106,7 @@ class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>
         this.onDiaryItemClickListener = onDiaryItemClickListener
     }
 
-    fun setOnDiaryItemClickLongListener(onDiaryItemLongClickListener: (DiaryBean) -> Unit)
+    fun setOnDiaryItemLongClickListener(onDiaryItemLongClickListener: (DiaryBean) -> Unit)
     {
         this.onDiaryItemLongClickListener = onDiaryItemLongClickListener
     }

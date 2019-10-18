@@ -1,6 +1,6 @@
 package com.lizl.mydiary.mvp.activity
 
-import android.view.View
+import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.ImageViewPagerAdapter
@@ -56,14 +56,6 @@ class ImageBrowserActivity : BaseActivity<EmptyPresenter>()
     fun showImagePositionMark(imagePosition: Int, imageSize: Int)
     {
         tv_cur_image.text = "$imagePosition/$imageSize"
-
-        if (imageSize == 1)
-        {
-            tv_cur_image.visibility = View.GONE
-        }
-        else
-        {
-            tv_cur_image.visibility = View.VISIBLE
-        }
+        tv_cur_image.isVisible = imageSize == 1
     }
 }

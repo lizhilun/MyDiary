@@ -47,12 +47,6 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
         super.onStart()
     }
 
-    override fun setUserVisibleHint(isVisibleToUser: Boolean)
-    {
-        Log.d(TAG, "setUserVisibleHint:$isVisibleToUser")
-        super.setUserVisibleHint(isVisibleToUser)
-    }
-
     override fun onResume()
     {
         Log.d(TAG, "onResume")

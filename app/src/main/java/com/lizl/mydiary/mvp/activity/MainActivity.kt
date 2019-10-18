@@ -10,7 +10,6 @@ import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.base.BaseFragment
-import com.lizl.mydiary.mvp.fragment.LockFragment
 import com.lizl.mydiary.mvp.presenter.EmptyPresenter
 
 class MainActivity : BaseActivity<EmptyPresenter>()

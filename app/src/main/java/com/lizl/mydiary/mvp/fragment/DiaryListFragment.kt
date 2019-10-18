@@ -47,7 +47,7 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
 
         diaryListAdapter.setOnDiaryItemClickListener { turnToDiaryContentFragment(it) }
 
-        diaryListAdapter.setOnDiaryItemClickLongListener { showDiaryOperationListDialog(it) }
+        diaryListAdapter.setOnDiaryItemLongClickListener { showDiaryOperationListDialog(it) }
 
         presenter.queryAllDiary()
     }
