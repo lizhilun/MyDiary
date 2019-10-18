@@ -15,6 +15,7 @@ import com.lizl.mydiary.mvp.contract.DiaryContentFragmentContract
 import com.lizl.mydiary.mvp.presenter.DiaryContentFragmentPresenter
 import com.lizl.mydiary.util.AppConstant
 import com.lizl.mydiary.util.DialogUtil
+import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.fragment_diary_content.*
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
@@ -153,6 +154,10 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
         diaryImageListAdapter.setEditable(true)
         fab_edit_diary.isVisible = false
         ctb_title.setBackBtnRedId(R.mipmap.ic_confirm)
+
+        et_diary_content.requestFocus()
+        et_diary_content.setSelection(et_diary_content.text.toString().length)
+        UiUtil.showInputKeyboard()
     }
 
     private fun showReadView()
