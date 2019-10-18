@@ -98,12 +98,12 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
 
     private fun onPasswordInputFinish(inputPassword: String)
     {
+        if(curOperationState.needSaveInputPassword())
+        {
+            firstPassword = inputPassword
+        }
         if (checkInputPassword(inputPassword))
         {
-            if (curOperationState.needSaveInputPassword())
-            {
-                firstPassword = inputPassword
-            }
             turnToNextOperationState(inputPassword)
         }
         else

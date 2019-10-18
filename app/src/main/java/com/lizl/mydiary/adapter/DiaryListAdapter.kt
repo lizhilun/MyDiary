@@ -10,6 +10,7 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.mvp.base.BaseActivity
+import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.item_diary_list.view.*
 
 class DiaryListAdapter : BaseAdapter<DiaryBean, DiaryListAdapter.ViewHolder>()
@@ -39,6 +40,8 @@ class DiaryListAdapter : BaseAdapter<DiaryBean, DiaryListAdapter.ViewHolder>()
             itemView.tv_year_and_month.text = "${dateBean.year}.${dateBean.month}"
             itemView.tv_diary_content.text = diaryBean.content
             itemView.tv_hour_and_minute.text = dateBean.getHourAndMinute()
+
+            UiUtil.clearTextViewAutoWrap(itemView.tv_diary_content)
 
             itemView.tv_diary_content.isVisible = !TextUtils.isEmpty(diaryBean.content)
 

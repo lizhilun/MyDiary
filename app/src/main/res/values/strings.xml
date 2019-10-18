@@ -27,6 +27,7 @@
 
     <string name="setting_app_lock">密码保护</string>
     <string name="setting_fingerprint">指纹解锁</string>
+    <string name="setting_modify_password">修改密码</string>
 
     <string name="please_input_password_to_confirm">请输入密码进行验证</string>
     <string name="please_input_old_password">请输入旧密码</string>
