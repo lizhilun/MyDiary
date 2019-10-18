@@ -73,7 +73,7 @@
                 style="@style/GlobalTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="10"
+                android:maxLines="5"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.lizl.mydiary.custom.view.EmptyClickRecyclerView
