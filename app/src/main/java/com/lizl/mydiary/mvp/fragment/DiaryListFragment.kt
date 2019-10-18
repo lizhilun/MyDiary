@@ -5,7 +5,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.DiaryListAdapter
-import com.lizl.mydiary.bean.BaseDiaryBean
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.OperationItem
 import com.lizl.mydiary.bean.TitleBarBtnBean
@@ -73,7 +72,7 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
         DialogUtil.showOperationListDialog(context!!, operationList)
     }
 
-    override fun onDiariesQueryFinish(diaryList: List<BaseDiaryBean>)
+    override fun onDiariesQueryFinish(diaryList: List<DiaryBean>)
     {
         diaryListAdapter.clear()
         diaryListAdapter.addAll(diaryList)
@@ -86,7 +85,7 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
         updateDiaryListHeader()
     }
 
-    override fun showDiarySearchResult(diaryList: List<BaseDiaryBean>)
+    override fun showDiarySearchResult(diaryList: List<DiaryBean>)
     {
         diaryListAdapter.clear()
         diaryListAdapter.addAll(diaryList)

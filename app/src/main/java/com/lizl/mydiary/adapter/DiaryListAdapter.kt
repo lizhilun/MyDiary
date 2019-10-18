@@ -7,48 +7,26 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lizl.mydiary.R
-import com.lizl.mydiary.bean.BaseDiaryBean
 import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
-import com.lizl.mydiary.bean.DiaryCategoryBean
 import com.lizl.mydiary.mvp.base.BaseActivity
-import kotlinx.android.synthetic.main.item_diary_category.view.*
 import kotlinx.android.synthetic.main.item_diary_list.view.*
 
-class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>()
+class DiaryListAdapter : BaseAdapter<DiaryBean, DiaryListAdapter.ViewHolder>()
 {
-    private val DIARY_TYPE_DIARY = 1
-    private val DIARY_TYPE_CATEGORY = 2
+    override fun getCustomItemViewType(position: Int) = 0
 
     private var onDiaryItemClickListener: ((DiaryBean) -> Unit)? = null
     private var onDiaryItemLongClickListener: ((DiaryBean) -> Unit)? = null
 
     override fun createCustomViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
     {
-        return when (viewType)
-        {
-            DIARY_TYPE_DIARY -> ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_diary_list, parent, false))
-            else             -> ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_diary_category, parent, false))
-        }
+        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_diary_list, parent, false))
     }
 
-    override fun getCustomItemViewType(position: Int): Int
+    override fun bindCustomViewHolder(holder: ViewHolder, bean: DiaryBean, position: Int)
     {
-        return when (getItem(position))
-        {
-            is DiaryBean         -> DIARY_TYPE_DIARY
-            is DiaryCategoryBean -> DIARY_TYPE_CATEGORY
-            else                 -> VIEW_TYPE_UNKNOW
-        }
-    }
-
-    override fun bindCustomViewHolder(holder: ViewHolder, bean: BaseDiaryBean, position: Int)
-    {
-        when (getCustomItemViewType(position))
-        {
-            DIARY_TYPE_DIARY    -> holder.bindDiaryViewHolder(bean as DiaryBean)
-            DIARY_TYPE_CATEGORY -> holder.bindCategoryViewHolder(bean as DiaryCategoryBean, position)
-        }
+        holder.bindDiaryViewHolder(bean)
     }
 
     inner class ViewHolder(itemView: View) : BaseViewHolder(itemView)
@@ -93,11 +71,6 @@ class DiaryListAdapter : BaseAdapter<BaseDiaryBean, DiaryListAdapter.ViewHolder>
                 onDiaryItemLongClickListener?.invoke(diaryBean)
                 true
             }
-        }
-
-        fun bindCategoryViewHolder(diaryCategoryBean: DiaryCategoryBean, position: Int)
-        {
-            itemView.tv_category_content.text = diaryCategoryBean.content
         }
     }
 

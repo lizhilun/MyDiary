@@ -9,7 +9,7 @@ import java.io.Serializable
 
 @Entity(tableName = "diaries")
 @TypeConverters(StringToObjectConverter::class)
-class DiaryBean : BaseDiaryBean(), Serializable
+class DiaryBean : Serializable
 {
     @PrimaryKey(autoGenerate = true)
     var id = 0

@@ -1,7 +1,6 @@
 package com.lizl.mydiary.mvp.presenter
 
 import android.text.TextUtils
-import com.lizl.mydiary.bean.BaseDiaryBean
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.mvp.contract.DiaryListFragmentContract
 import com.lizl.mydiary.util.AppDatabase
@@ -16,7 +15,7 @@ class DiaryListFragmentPresenter(private val view: DiaryListFragmentContract.Vie
     override fun queryAllDiary()
     {
         GlobalScope.launch {
-            val diaryList = mutableListOf<BaseDiaryBean>()
+            val diaryList = mutableListOf<DiaryBean>()
             diaryList.addAll(AppDatabase.instance.getDiaryDao().getAllDiary())
 
             GlobalScope.launch(Dispatchers.Main) {
