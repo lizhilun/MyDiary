@@ -67,6 +67,8 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     {
         Log.d(TAG, "onDestroy")
         super.onDestroy()
+
+        presenter.onDestroy()
     }
 
     /**

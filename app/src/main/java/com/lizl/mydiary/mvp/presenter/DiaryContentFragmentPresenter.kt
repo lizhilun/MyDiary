@@ -16,7 +16,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class DiaryContentFragmentPresenter(private val view: DiaryContentFragmentContract.View) : DiaryContentFragmentContract.Presenter
+class DiaryContentFragmentPresenter(private var view: DiaryContentFragmentContract.View?) : DiaryContentFragmentContract.Presenter
 {
 
     private val REQUEST_CODE_SELECT_IMAGE = 23
@@ -26,7 +26,7 @@ class DiaryContentFragmentPresenter(private val view: DiaryContentFragmentContra
         GlobalScope.launch {
 
             GlobalScope.launch(Dispatchers.Main) {
-                view.onDiarySaving()
+                view?.onDiarySaving()
             }
 
             var saveDiaryBean = diaryBean
@@ -56,7 +56,7 @@ class DiaryContentFragmentPresenter(private val view: DiaryContentFragmentContra
             AppDatabase.instance.getDiaryDao().insert(saveDiaryBean)
 
             GlobalScope.launch(Dispatchers.Main) {
-                view.onDiarySaveSuccess()
+                view?.onDiarySaveSuccess()
             }
         }
     }
@@ -100,8 +100,13 @@ class DiaryContentFragmentPresenter(private val view: DiaryContentFragmentContra
             selectImageList.forEach { imageList.add(FileUtil.getFilePathFromUri(it)!!) }
 
             GlobalScope.launch(Dispatchers.Main) {
-                view.onImageSelectedFinish(imageList)
+                view?.onImageSelectedFinish(imageList)
             }
         }
+    }
+
+    override fun onDestroy()
+    {
+        view = null
     }
 }

@@ -16,8 +16,6 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
 
     protected lateinit var presenter: T
 
-    var isFragmentVisible = false
-
     override fun onCreate(savedInstanceState: Bundle?)
     {
         Log.d(TAG, "onCreate")
@@ -51,8 +49,6 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
     {
         Log.d(TAG, "onResume")
         super.onResume()
-
-        isFragmentVisible = true
     }
 
     override fun onPause()
@@ -65,8 +61,14 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
     {
         Log.d(TAG, "onStop")
         super.onStop()
+    }
 
-        isFragmentVisible = false
+    override fun onDestroyView()
+    {
+        Log.d(TAG, "onDestroyView")
+        super.onDestroyView()
+
+        presenter.onDestroy()
     }
 
     override fun onDestroy()

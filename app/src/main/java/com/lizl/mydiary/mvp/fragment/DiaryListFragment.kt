@@ -94,10 +94,6 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
 
     private fun updateDiaryListHeader()
     {
-        if(!isFragmentVisible)
-        {
-            return
-        }
         tv_end_footer.isVisible = diaryListAdapter.getData().isNotEmpty()
         layout_diary_header.isVisible = diaryListAdapter.getData().isNotEmpty()
         tv_header_content.text = getString(R.string.diary_total_count, diaryListAdapter.getData().size)

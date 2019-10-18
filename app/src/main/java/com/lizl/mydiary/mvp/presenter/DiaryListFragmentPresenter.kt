@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class DiaryListFragmentPresenter(private val view: DiaryListFragmentContract.View) : DiaryListFragmentContract.Presenter
+class DiaryListFragmentPresenter(private var view: DiaryListFragmentContract.View?) : DiaryListFragmentContract.Presenter
 {
 
     override fun queryAllDiary()
@@ -19,7 +19,7 @@ class DiaryListFragmentPresenter(private val view: DiaryListFragmentContract.Vie
             diaryList.addAll(AppDatabase.instance.getDiaryDao().getAllDiary())
 
             GlobalScope.launch(Dispatchers.Main) {
-                view.onDiariesQueryFinish(diaryList)
+                view?.onDiariesQueryFinish(diaryList)
             }
         }
     }
@@ -31,7 +31,7 @@ class DiaryListFragmentPresenter(private val view: DiaryListFragmentContract.Vie
             AppDatabase.instance.getDiaryDao().delete(diaryBean)
 
             GlobalScope.launch(Dispatchers.Main) {
-                view.onDiaryDeleted(diaryBean)
+                view?.onDiaryDeleted(diaryBean)
             }
         }
     }
@@ -47,8 +47,13 @@ class DiaryListFragmentPresenter(private val view: DiaryListFragmentContract.Vie
             val diaryList = mutableListOf<DiaryBean>()
             diaryList.addAll(AppDatabase.instance.getDiaryDao().searchDiary(keyword))
             GlobalScope.launch(Dispatchers.Main) {
-                view.showDiarySearchResult(diaryList)
+                view?.showDiarySearchResult(diaryList)
             }
         }
+    }
+
+    override fun onDestroy()
+    {
+        view = null
     }
 }
