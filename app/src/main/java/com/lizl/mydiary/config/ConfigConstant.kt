@@ -19,10 +19,6 @@ class ConfigConstant
         const val APP_LOCK_PASSWORD = "APP_LOCK_PASSWORD"
         const val DEFAULT_APP_LOCK_PASSWORD = ""
 
-        // 指纹识别状态
-        const val APP_FINGERPRINT_STATUS = "APP_FINGERPRINT_STATUS"
-        const val DEFAULT_APP_FINGERPRINT_STATUS = AppConstant.APP_FINGERPRINT_STATUS_NOT_DETECT
-
         // APP上次停止的时间（用于判断是否达到超时锁定时长）
         const val APP_LAST_STOP_TIME = "APP_LAST_STOP_TIME"
         const val DEFAULT_APP_LAST_STOP_TIME: Long = 0

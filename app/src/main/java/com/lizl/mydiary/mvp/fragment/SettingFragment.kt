@@ -9,6 +9,7 @@ import com.lizl.mydiary.bean.SettingBean
 import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.presenter.EmptyPresenter
+import com.lizl.mydiary.util.BiometricAuthenticationUtil
 import com.lizl.mydiary.util.DialogUtil
 import kotlinx.android.synthetic.main.fragment_setting.*
 
@@ -56,7 +57,7 @@ class SettingFragment : BaseFragment<EmptyPresenter>()
                         UiApplication.appConfig.setAppLockPassword(it)
                         UiApplication.appConfig.setAppLockOn(true)
                         settingAdapter.update(bean)
-                        if (!settingAdapter.getData().contains(fingerprintItem))
+                        if (!settingAdapter.getData().contains(fingerprintItem) && BiometricAuthenticationUtil.instance.isFingerprintSupport())
                         {
                             settingAdapter.insert(fingerprintItem, settingAdapter.getPosition(bean) + 1)
                         }
@@ -67,7 +68,7 @@ class SettingFragment : BaseFragment<EmptyPresenter>()
                     DialogUtil.showPasswordConfirmDialog(context!!, UiApplication.appConfig.getAppLockPassword()) {
                         UiApplication.appConfig.setAppLockOn(true)
                         settingAdapter.update(bean)
-                        if (!settingAdapter.getData().contains(fingerprintItem))
+                        if (!settingAdapter.getData().contains(fingerprintItem) && BiometricAuthenticationUtil.instance.isFingerprintSupport())
                         {
                             settingAdapter.insert(fingerprintItem, settingAdapter.getPosition(bean) + 1)
                         }
@@ -84,7 +85,7 @@ class SettingFragment : BaseFragment<EmptyPresenter>()
             }
         })
 
-        if (UiApplication.appConfig.isAppLockOn() && UiApplication.appConfig.isSupportFingerprint())
+        if (UiApplication.appConfig.isAppLockOn() && BiometricAuthenticationUtil.instance.isFingerprintSupport())
         {
             settingAdapter.add(fingerprintItem)
         }

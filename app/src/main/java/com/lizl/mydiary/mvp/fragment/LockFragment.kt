@@ -1,10 +1,7 @@
 package com.lizl.mydiary.mvp.fragment
 
-import android.content.DialogInterface
 import android.hardware.biometrics.BiometricPrompt
-import android.os.CancellationSignal
 import android.util.Log
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
@@ -13,6 +10,7 @@ import com.lizl.mydiary.custom.others.recylerviewitemdivider.GridDividerItemDeco
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.contract.EmptyContract
 import com.lizl.mydiary.mvp.presenter.EmptyPresenter
+import com.lizl.mydiary.util.BiometricAuthenticationUtil
 import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.fragment_lock.*
 
@@ -30,8 +28,6 @@ class LockFragment : BaseFragment<EmptyContract.Presenter>(), NumberKeyGridAdapt
 
     private var inputPassword = ""
 
-    private lateinit var mBiometricPrompt: BiometricPrompt
-
     override fun getLayoutResId(): Int
     {
         return R.layout.fragment_lock
@@ -44,18 +40,13 @@ class LockFragment : BaseFragment<EmptyContract.Presenter>(), NumberKeyGridAdapt
         rv_number_key.layoutManager = GridLayoutManager(activity, 3)
         rv_number_key.addItemDecoration(GridDividerItemDecoration())
         rv_number_key.adapter = numberKeyGridAdapter
-
-        mBiometricPrompt = BiometricPrompt.Builder(activity).setTitle(getString(R.string.fingerprint_authentication_dialog_title))
-            .setDescription(getString(R.string.fingerprint_authentication_dialog_description))
-            .setNegativeButton(getString(R.string.cancel), ContextCompat.getMainExecutor(context),
-                    DialogInterface.OnClickListener { _, _ -> Log.d(TAG, "cancel button click") }).build()
     }
 
     override fun onResume()
     {
         super.onResume()
 
-        if (UiApplication.appConfig.isSupportFingerprint() && UiApplication.appConfig.isFingerprintLockOn())
+        if (BiometricAuthenticationUtil.instance.isFingerprintSupport() && UiApplication.appConfig.isFingerprintLockOn())
         {
             tv_hint.text = getString(R.string.hint_verify_fingerprint_or_input_password)
 
@@ -67,7 +58,6 @@ class LockFragment : BaseFragment<EmptyContract.Presenter>(), NumberKeyGridAdapt
         else
         {
             tv_hint.text = getString(R.string.hint_input_password)
-
             iv_lock.setImageResource(R.mipmap.ic_lock)
         }
 
@@ -77,7 +67,7 @@ class LockFragment : BaseFragment<EmptyContract.Presenter>(), NumberKeyGridAdapt
 
     private fun showFingerprintDialog()
     {
-        mBiometricPrompt.authenticate(CancellationSignal(), context!!.mainExecutor, object : BiometricPrompt.AuthenticationCallback()
+        BiometricAuthenticationUtil.instance.authenticate(object : BiometricPrompt.AuthenticationCallback()
         {
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence?)
             {
