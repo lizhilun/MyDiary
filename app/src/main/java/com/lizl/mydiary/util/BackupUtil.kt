@@ -35,7 +35,7 @@ class BackupUtil
                         callback.invoke(false)
                         return@launch
                     }
-                    val imageFileCopyResult = FileUtil.copyDir(ImageUtil.getImageSavePath(), backupTempImageFilePath)
+                    val imageFileCopyResult = FileUtil.copyDir(FileUtil.getImageFileSavePath(), backupTempImageFilePath)
                     if (!imageFileCopyResult)
                     {
                         FileUtils.deleteDir(backupTempFilePath)
@@ -69,7 +69,7 @@ class BackupUtil
                         return@launch
                     }
                     val diaryTxt = FileUtil.readTxtFile(backupTempDiaryFilePath)
-                    FileUtil.copyDir(backupTempImageFilePath, ImageUtil.getImageSavePath())
+                    FileUtil.copyDir(backupTempImageFilePath, FileUtil.getImageFileSavePath())
                     val diaryList = GsonUtils.fromJson<Array<DiaryBean>>(diaryTxt, Array<DiaryBean>::class.java)
                     val saveDiaryList = mutableListOf<DiaryBean>()
                     for (diaryBean in diaryList)

@@ -1,14 +1,13 @@
 package com.lizl.mydiary.util
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.text.InputFilter
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewTreeObserver
-import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import com.blankj.utilcode.util.KeyboardUtils
+import com.blankj.utilcode.util.ScreenUtils
 import com.lizl.mydiary.UiApplication
 
 
@@ -19,32 +18,21 @@ class UiUtil
 {
     companion object
     {
-        private val screenSize = intArrayOf(0, 0)
-
-        private var noWrapOrSpaceFilter: InputFilter? = null
 
         /**
          * 隐藏输入法
          */
         fun hideInputKeyboard(view: View)
         {
-            val manager = UiApplication.instance.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            if (manager.isActive)
-            {
-                manager.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-            }
+            KeyboardUtils.hideSoftInput(view)
         }
 
         /**
          * 显示输入法
          */
-        fun showInputKeyboard()
+        fun showInputKeyboard(view: View)
         {
-            val manager = UiApplication.instance.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            if (manager.isActive)
-            {
-                manager.toggleSoftInput(InputMethodManager.RESULT_UNCHANGED_SHOWN, 0)
-            }
+            KeyboardUtils.showSoftInput(view)
         }
 
         /**
@@ -143,51 +131,11 @@ class UiUtil
         }
 
         /**
-         * 获取限制空格和换行的inputFilter
-         */
-        fun getNoWrapOrSpaceFilter(): InputFilter
-        {
-            if (noWrapOrSpaceFilter == null)
-            {
-                noWrapOrSpaceFilter = InputFilter { source, start, end, dest, dstart, dend ->
-                    if (source == " " || source.toString().contentEquals("\n"))
-                    {
-                        ""
-                    }
-                    else
-                    {
-                        null
-                    }
-                }
-            }
-            return noWrapOrSpaceFilter!!
-        }
-
-        /**
-         *  dp转px
-         */
-        fun dpToPx(dpValue: Int): Int
-        {
-            val scale = UiApplication.instance.resources.displayMetrics.density
-            return (dpValue * scale + 0.5f).toInt()
-        }
-
-        fun pxToDp(pxValue: Float): Int
-        {
-            val scale = UiApplication.instance.resources.displayMetrics.density
-            return (pxValue / scale + 0.5f).toInt()
-        }
-
-        /**
          * 获取屏幕宽度
          */
         fun getScreenWidth(): Int
         {
-            if (screenSize[0] == 0)
-            {
-                getScreenSize()
-            }
-            return screenSize[0]
+            return ScreenUtils.getScreenWidth()
         }
 
         /**
@@ -195,21 +143,7 @@ class UiUtil
          */
         fun getScreenHeight(): Int
         {
-            if (screenSize[1] == 0)
-            {
-                getScreenSize()
-            }
-            return screenSize[1]
-        }
-
-        /**
-         * 获取屏幕尺寸
-         */
-        private fun getScreenSize()
-        {
-            val dm = UiApplication.instance.resources.displayMetrics
-            screenSize[0] = dm.widthPixels
-            screenSize[1] = dm.heightPixels
+            return ScreenUtils.getScreenHeight()
         }
     }
 }

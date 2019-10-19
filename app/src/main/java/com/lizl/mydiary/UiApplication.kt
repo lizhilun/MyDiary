@@ -3,7 +3,6 @@ package com.lizl.mydiary
 import android.app.Application
 import com.blankj.utilcode.util.Utils
 import com.lizl.mydiary.config.AppConfig
-import com.orhanobut.hawk.Hawk
 import kotlin.properties.Delegates
 
 class UiApplication : Application()
@@ -23,7 +22,6 @@ class UiApplication : Application()
     {
         super.onCreate()
 
-        Hawk.init(this).build()
         Utils.init(this)
     }
 }

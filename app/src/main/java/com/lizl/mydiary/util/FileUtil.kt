@@ -1,11 +1,10 @@
 package com.lizl.mydiary.util
 
+import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
-import com.blankj.utilcode.util.FileUtils
-import com.blankj.utilcode.util.PathUtils
-import com.lizl.mydiary.UiApplication
-import java.io.*
+import com.blankj.utilcode.util.*
+import java.io.File
+import java.io.IOException
 
 class FileUtil
 {
@@ -30,55 +29,32 @@ class FileUtil
         }
 
         /**
+         * 获取图片保存路径
+         */
+        fun getImageFileSavePath() = "${getSystemFilePath()}/picture/"
+
+        /**
          * 根据Uri获取真实的文件路径
          *
          * @param context
          * @param uri
          * @return
          */
-        fun getFilePathFromUri(uri: Uri?): String?
+        fun getFilePathFromUri(uri: Uri): String?
         {
-            if (uri == null) return null
+            return UriUtils.uri2File(uri)?.absolutePath
+        }
 
-            val resolver = UiApplication.instance.contentResolver
-            var input: FileInputStream? = null
-            var output: FileOutputStream? = null
-            try
-            {
-                val pfd = resolver.openFileDescriptor(uri, "r")!!
-                input = FileInputStream(pfd.fileDescriptor)
-
-                val outputFile = File.createTempFile("image", "tmp", UiApplication.instance.cacheDir)
-                val tempFilename = outputFile.absolutePath
-                output = FileOutputStream(tempFilename)
-
-                var read = 0
-                val bytes = ByteArray(4096)
-                while ({ read = input.read(bytes);read }() != -1)
-                {
-                    output.write(bytes, 0, read)
-                }
-
-                return File(tempFilename).absolutePath
-            }
-            catch (ignored: Exception)
-            {
-
-                ignored.stackTrace
-            }
-            finally
-            {
-                try
-                {
-                    input?.close()
-                    output?.close()
-                }
-                catch (t: Throwable)
-                {
-                    // Do nothing
-                }
-            }
-            return null
+        /**
+         * 保存图片
+         */
+        fun saveImageToData(imagePath: String): String
+        {
+            val bitmap = ImageUtils.getBitmap(imagePath)
+            val comBitmap = ImageUtils.compressByQuality(bitmap, 90)
+            val savePath = "${getSystemFilePath()}/${System.currentTimeMillis()}.jpg"
+            ImageUtils.save(comBitmap, savePath, Bitmap.CompressFormat.JPEG)
+            return savePath
         }
 
         /**
@@ -99,24 +75,7 @@ class FileUtil
          */
         fun writeTxtFile(content: String, filePath: String): Boolean
         {
-            var flag = true
-            val thisFile = File(filePath)
-            try
-            {
-                if (!thisFile.parentFile.exists())
-                {
-                    thisFile.parentFile.mkdirs()
-                }
-                val fw = FileWriter(filePath, false)
-                fw.write(content)
-                fw.close()
-            }
-            catch (e: IOException)
-            {
-                flag = false
-                Log.e(TAG, e.toString())
-            }
-            return flag
+            return FileIOUtils.writeFileFromString(filePath, content)
         }
 
         /**
@@ -126,37 +85,7 @@ class FileUtil
         @Throws(Exception::class)
         fun readTxtFile(filePath: String): String
         {
-            var result = ""
-            val txtFile = File(filePath)
-            var fileReader: FileReader? = null
-            var bufferedReader: BufferedReader? = null
-            try
-            {
-                fileReader = FileReader(txtFile)
-                bufferedReader = BufferedReader(fileReader)
-                try
-                {
-                    var read: String? = null
-                    while ({ read = bufferedReader.readLine();read }() != null)
-                    {
-                        result = result + read + "\r\n"
-                    }
-                }
-                catch (e: Exception)
-                {
-                    e.printStackTrace()
-                }
-            }
-            catch (e: Exception)
-            {
-                e.printStackTrace()
-            }
-            finally
-            {
-                bufferedReader?.close()
-                fileReader?.close()
-            }
-            return result
+            return FileIOUtils.readFile2String(filePath)
         }
 
         fun copyDir(srcDir: String, dstDir: String): Boolean

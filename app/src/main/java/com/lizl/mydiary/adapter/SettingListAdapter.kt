@@ -2,9 +2,9 @@ package com.lizl.mydiary.adapter
 
 import android.view.View
 import android.view.ViewGroup
+import com.blankj.utilcode.util.SPUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.SettingBean
-import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.item_setting_boolean.view.*
 import kotlinx.android.synthetic.main.item_setting_normal.view.*
 
@@ -34,8 +34,7 @@ class SettingListAdapter() : BaseAdapter<SettingBean.SettingBaseBean, SettingLis
         if (bean is SettingBean.SettingBooleanBean)
         {
             holder.bindBooleanViewHolder(bean, position)
-        }
-        else if (bean is SettingBean.SettingNormalBean)
+        } else if (bean is SettingBean.SettingNormalBean)
         {
             holder.bindNormalViewHolder(bean)
         }
@@ -56,14 +55,14 @@ class SettingListAdapter() : BaseAdapter<SettingBean.SettingBaseBean, SettingLis
     {
         fun bindBooleanViewHolder(settingItem: SettingBean.SettingBooleanBean, position: Int)
         {
-            val isChecked = Hawk.get(settingItem.settingKey, settingItem.defaultValue)
+            val isChecked = SPUtils.getInstance().getBoolean(settingItem.settingKey, settingItem.defaultValue)
             itemView.tv_boolean_setting_name.text = settingItem.settingName
             itemView.iv_boolean_setting_checked.isSelected = isChecked
 
             itemView.iv_boolean_setting_checked.setOnClickListener {
                 if (settingItem.needSave)
                 {
-                    Hawk.put(settingItem.settingKey, !isChecked)
+                    SPUtils.getInstance().put(settingItem.settingKey, !isChecked)
                     notifyItemChanged(position)
                 }
                 settingItem.callback.invoke(!isChecked, settingItem)

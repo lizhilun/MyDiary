@@ -157,8 +157,7 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         this.onSearchFinishListener = onSearchFinishListener
         this.onSearchTextChangeListener = onSearchTextChangeListener
 
-        searchEditText.requestFocus()
-        UiUtil.showInputKeyboard()
+        UiUtil.showInputKeyboard(searchEditText)
     }
 
     fun stopSearchMode()

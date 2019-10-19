@@ -58,7 +58,7 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
             val view = gpv_password.getChildAt(i)
             if (view is EditText)
             {
-                view.postDelayed({ view.requestFocus() }, 500)
+                view.postDelayed({ UiUtil.showInputKeyboard(view) }, 500)
                 break
             }
         }
@@ -98,7 +98,7 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
 
     private fun onPasswordInputFinish(inputPassword: String)
     {
-        if(curOperationState.needSaveInputPassword())
+        if (curOperationState.needSaveInputPassword())
         {
             firstPassword = inputPassword
         }

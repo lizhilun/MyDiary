@@ -152,9 +152,8 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
         fab_edit_diary.isVisible = false
         ctb_title.setBackBtnRedId(R.mipmap.ic_confirm)
 
-        et_diary_content.requestFocus()
         et_diary_content.setSelection(et_diary_content.text.toString().length)
-        UiUtil.showInputKeyboard()
+        UiUtil.showInputKeyboard(et_diary_content)
     }
 
     private fun showReadView()

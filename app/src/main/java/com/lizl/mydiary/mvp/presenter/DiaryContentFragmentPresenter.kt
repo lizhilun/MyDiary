@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.mvp.contract.DiaryContentFragmentContract
-import com.lizl.mydiary.util.*
+import com.lizl.mydiary.util.AppDatabase
+import com.lizl.mydiary.util.FileUtil
+import com.lizl.mydiary.util.MyGlideEngine
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.internal.entity.CaptureStrategy
@@ -52,8 +54,7 @@ class DiaryContentFragmentPresenter(private var view: DiaryContentFragmentContra
                 }
                 else
                 {
-                    val bitmap = ImageUtil.getSmallBitmap(imagePath, UiUtil.getScreenWidth(), UiUtil.getScreenHeight())
-                    saveImageList.add(ImageUtil.saveImageToSdCard(bitmap!!))
+                    saveImageList.add(FileUtil.saveImageToData(imagePath))
                 }
             }
             saveDiaryBean.imageList = saveImageList
