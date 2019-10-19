@@ -40,14 +40,19 @@ class DiaryContentFragmentPresenter(private var view: DiaryContentFragmentContra
 
             val saveImageList = mutableListOf<String>()
             val systemFileDir = FileUtil.getSystemFilePath()
-            imageList.forEach {
-                if (it.contains(systemFileDir))
+            for (imagePath in imageList)
+            {
+                if (!FileUtil.isFileExists(imagePath))
                 {
-                    saveImageList.add(it)
+                    continue
+                }
+                if (imagePath.contains(systemFileDir))
+                {
+                    saveImageList.add(imagePath)
                 }
                 else
                 {
-                    val bitmap = ImageUtil.getSmallBitmap(it, UiUtil.getScreenWidth(), UiUtil.getScreenHeight())
+                    val bitmap = ImageUtil.getSmallBitmap(imagePath, UiUtil.getScreenWidth(), UiUtil.getScreenHeight())
                     saveImageList.add(ImageUtil.saveImageToSdCard(bitmap!!))
                 }
             }
@@ -64,16 +69,16 @@ class DiaryContentFragmentPresenter(private var view: DiaryContentFragmentContra
     override fun selectImage(context: Fragment, maxCount: Int)
     {
         Matisse.from(context).choose(MimeType.ofImage()) //照片视频全部显示MimeType.allOf()
-            .countable(true) //true:选中后显示数字;false:选中后显示对号
-            .maxSelectable(maxCount) //最大选择数量为9
-            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED) //图像选择和预览活动所需的方向
-            .thumbnailScale(0.85f) //缩放比例
-            .theme(R.style.Matisse_Zhihu) //主题  暗色主题 R.style.Matisse_Dracula
-            .imageEngine(MyGlideEngine()) //图片加载方式，Glide4需要自定义实现
-            .capture(true) //是否提供拍照功能，兼容7.0系统需要下面的配置
-            //参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
-            .captureStrategy(CaptureStrategy(true, "com.sendtion.matisse.fileprovider")) //存储到哪里
-            .forResult(REQUEST_CODE_SELECT_IMAGE) //请求码
+                .countable(true) //true:选中后显示数字;false:选中后显示对号
+                .maxSelectable(maxCount) //最大选择数量为9
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED) //图像选择和预览活动所需的方向
+                .thumbnailScale(0.85f) //缩放比例
+                .theme(R.style.Matisse_Zhihu) //主题  暗色主题 R.style.Matisse_Dracula
+                .imageEngine(MyGlideEngine()) //图片加载方式，Glide4需要自定义实现
+                .capture(true) //是否提供拍照功能，兼容7.0系统需要下面的配置
+                //参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
+                .captureStrategy(CaptureStrategy(true, "com.sendtion.matisse.fileprovider")) //存储到哪里
+                .forResult(REQUEST_CODE_SELECT_IMAGE) //请求码
     }
 
     override fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?)

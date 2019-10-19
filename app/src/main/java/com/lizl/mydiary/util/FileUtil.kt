@@ -163,5 +163,10 @@ class FileUtil
         {
             return FileUtils.copyDir(srcDir, dstDir)
         }
+
+        fun isFileExists(filePath: String): Boolean
+        {
+            return FileUtils.isFileExists(filePath)
+        }
     }
 }
