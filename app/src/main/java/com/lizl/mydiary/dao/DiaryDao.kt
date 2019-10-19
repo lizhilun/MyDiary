@@ -15,4 +15,10 @@ interface DiaryDao : BaseDao<DiaryBean>
 
     @Query("select * from diaries where content like '%' || :keyWord || '%'")
     fun searchDiary(keyWord: String): MutableList<DiaryBean>
+
+    @Query("select * from diaries where createTime == :createTime")
+    fun getDiaryByCreateTime(createTime: Long): DiaryBean?
+
+    @Query("DELETE FROM diaries")
+    fun deleteAll()
 }

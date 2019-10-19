@@ -11,6 +11,8 @@ class ImageUtil
 {
     companion object
     {
+        fun getImageSavePath() = "${FileUtil.getSystemFilePath()}/picture/"
+
         /**
          * 根据路径获得突破并压缩返回bitmap用于显示
          *
@@ -97,7 +99,7 @@ class ImageUtil
          */
         fun saveImageToSdCard(bitmap: Bitmap): String
         {
-            val imageSavePath = FileUtil.getSystemFilePath() + "/picture/"
+            val imageSavePath = getImageSavePath()
             val imageSaveDir = File(imageSavePath)
             if (!imageSaveDir.exists())
             {

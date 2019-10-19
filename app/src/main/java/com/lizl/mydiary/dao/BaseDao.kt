@@ -8,6 +8,9 @@ interface BaseDao<T>
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(element: T)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertList(elements: MutableList<T>)
+
     @Delete
     fun delete(element: T)
 

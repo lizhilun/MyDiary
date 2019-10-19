@@ -1,7 +1,9 @@
 package com.lizl.mydiary.mvp.fragment
 
+import android.Manifest
 import android.text.TextUtils
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.blankj.utilcode.util.ToastUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.adapter.SettingListAdapter
@@ -9,19 +11,30 @@ import com.lizl.mydiary.bean.SettingBean
 import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.presenter.EmptyPresenter
+import com.lizl.mydiary.util.BackupUtil
 import com.lizl.mydiary.util.BiometricAuthenticationUtil
 import com.lizl.mydiary.util.DialogUtil
+import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.fragment_setting.*
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnNeverAskAgain
+import permissions.dispatcher.OnPermissionDenied
+import permissions.dispatcher.RuntimePermissions
 
 /**
  * 设置界面
  */
+@RuntimePermissions
 class SettingFragment : BaseFragment<EmptyPresenter>()
 {
 
     override fun getLayoutResId() = R.layout.fragment_setting
 
     private lateinit var settingAdapter: SettingListAdapter
+
+    private var curWritePermissionsCode = 0
+    private val REQUEST_BACKUPDIARYDATA = 1
+    private val REQUEST_RESTOREDIARYDATA = 2
 
     override fun initTitleBar()
     {
@@ -110,8 +123,64 @@ class SettingFragment : BaseFragment<EmptyPresenter>()
             }
             settingAdapter.add(modifyPasswordItem)
         }
+
+        settingAdapter.add(SettingBean.SettingDivideBean())
+
+        settingAdapter.add(SettingBean.SettingNormalBean(getString(R.string.setting_backup)) {
+            backupDiaryDataWithPermissionCheck()
+        })
+
+        settingAdapter.add(SettingBean.SettingNormalBean(getString(R.string.setting_restore)) {
+            restoreDiaryDataWithPermissionCheck()
+        })
     }
 
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    fun backupDiaryData()
+    {
+        DialogUtil.showLoadingDialog(context!!, getString(R.string.in_backup_data))
+        BackupUtil.backupData {
+            ToastUtils.showShort(if (it) R.string.success_to_backup_data else R.string.failed_to_backup_data)
+            DialogUtil.dismissDialog()
+        }
+    }
+
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    fun restoreDiaryData()
+    {
+        turnToFragment(R.id.backupFileListFragment)
+    }
+
+    @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    fun onPermissionDenied()
+    {
+        DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify_failed_to_get_permission),
+                getString(R.string.notify_permission_be_refused)) {
+            if (curWritePermissionsCode == REQUEST_BACKUPDIARYDATA)
+            {
+                backupDiaryDataWithPermissionCheck()
+            }
+            else if (curWritePermissionsCode == REQUEST_RESTOREDIARYDATA)
+            {
+                restoreDiaryDataWithPermissionCheck()
+            }
+        }
+    }
+
+    @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    fun onPermissionNeverAskAgain()
+    {
+        DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify_failed_to_get_permission),
+                getString(R.string.notify_permission_be_refused_and_never_ask_again)) { UiUtil.goToAppDetailPage() }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // NOTE: delegate the permission handling to generated function
+        curWritePermissionsCode = requestCode
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
 
     override fun onBackPressed() = false
 }

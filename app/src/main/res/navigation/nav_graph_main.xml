@@ -19,4 +19,8 @@
     <fragment
         android:id="@+id/lockFragment"
         android:name="com.lizl.mydiary.mvp.fragment.LockFragment"/>
+
+    <fragment
+        android:id="@+id/backupFileListFragment"
+        android:name="com.lizl.mydiary.mvp.fragment.BackupFileListFragment"/>
 </navigation>

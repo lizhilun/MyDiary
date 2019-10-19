@@ -99,5 +99,13 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
         tv_header_content.text = getString(R.string.diary_total_count, diaryListAdapter.getData().size)
     }
 
-    override fun onBackPressed() = false
+    override fun onBackPressed() : Boolean
+    {
+        if(ctb_title.inSearchMode)
+        {
+            ctb_title.stopSearchMode()
+            return true
+        }
+        return false
+    }
 }

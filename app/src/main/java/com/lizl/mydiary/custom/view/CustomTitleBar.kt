@@ -28,6 +28,7 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
     private lateinit var searchEditText: AppCompatEditText
 
     private var isBackBtnVisible = false
+    var inSearchMode = false
 
     private var onBackBtnClickListener: (() -> Unit)? = null
     private var onSearchTextChangeListener: ((searchText: String) -> Unit)? = null
@@ -151,6 +152,7 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         backBtn.isVisible = true
         btnListView.isVisible = false
         titleTextView.isVisible = false
+        inSearchMode = true
 
         this.onSearchFinishListener = onSearchFinishListener
         this.onSearchTextChangeListener = onSearchTextChangeListener
@@ -159,12 +161,13 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         UiUtil.showInputKeyboard()
     }
 
-    private fun stopSearchMode()
+    fun stopSearchMode()
     {
         searchEditText.isVisible = false
         backBtn.isVisible = isBackBtnVisible
         btnListView.isVisible = true
         titleTextView.isVisible = true
+        inSearchMode = false
 
         onSearchFinishListener?.invoke()
         onSearchFinishListener = null
