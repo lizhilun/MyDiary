@@ -1,7 +1,5 @@
 package com.lizl.mydiary.config
 
-import com.lizl.mydiary.util.AppConstant
-
 
 class ConfigConstant
 {
@@ -25,5 +23,12 @@ class ConfigConstant
 
         // APP超时锁定时长（默认为5分钟）
         const val APP_TIMEOUT_PERIOD = 5 * 60 * 1000
+
+        // 图片保存质量
+        const val IMAGE_SAVE_QUALITY_LOW = 30
+        const val IMAGE_SAVE_QUALITY_MEDIUM = 60
+        const val IMAGE_SAVE_QUALITY_ORIGINAL = 100
+        const val IMAGE_SAVE_QUALITY = "IMAGE_SAVE_QUALITY"
+        const val DEFAULT_IMAGE_SAVE_QUALITY = IMAGE_SAVE_QUALITY_ORIGINAL
     }
 }

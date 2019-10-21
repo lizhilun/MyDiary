@@ -10,4 +10,7 @@ class SettingBean
 
     class SettingBooleanBean(val settingName: String, val settingKey: String, var defaultValue: Boolean, val needSave: Boolean,
                              val callback: (result: Boolean, bean: SettingBooleanBean) -> Unit) : SettingBaseBean()
+
+    class SettingIntRadioBean(val settingName: String, val settingKey: String, val defaultValue: Int, val radioMap: Map<Int, String>,
+                              val callback: (bean: SettingIntRadioBean) -> Unit) : SettingBaseBean()
 }

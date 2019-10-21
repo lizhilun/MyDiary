@@ -17,14 +17,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_notify"
-        style="@style/GlobalTextStyle"
+    <RadioGroup
+        android:id="@+id/rv_radio_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/global_content_padding_edge"
         android:layout_marginEnd="@dimen/global_content_padding_edge"
-        android:lineSpacingExtra="@dimen/global_text_line_spacing"
         app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -34,7 +32,7 @@
         android:enabled="true"
         android:text="@string/cancel"
         app:layout_constraintEnd_toStartOf="@+id/tv_confirm"
-        app:layout_constraintTop_toBottomOf="@+id/tv_notify" />
+        app:layout_constraintTop_toBottomOf="@+id/rv_radio_group" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_confirm"

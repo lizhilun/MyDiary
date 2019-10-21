@@ -58,7 +58,7 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
             val view = gpv_password.getChildAt(i)
             if (view is EditText)
             {
-                view.postDelayed({ UiUtil.showInputKeyboard(view) }, 500)
+                view.post { UiUtil.showInputKeyboard(view) }
                 break
             }
         }

@@ -18,7 +18,7 @@ class AppConfig
 
     fun setAppLockOn(isAppLockOn: Boolean) = SPUtils.getInstance().put(ConfigConstant.IS_APP_LOCK_ON, isAppLockOn)
 
-    fun getAppLockPassword() = SPUtils.getInstance().getString(ConfigConstant.APP_LOCK_PASSWORD, ConfigConstant.DEFAULT_APP_LOCK_PASSWORD)
+    fun getAppLockPassword(): String = SPUtils.getInstance().getString(ConfigConstant.APP_LOCK_PASSWORD, ConfigConstant.DEFAULT_APP_LOCK_PASSWORD)
 
     fun setAppLockPassword(password: String) = SPUtils.getInstance().put(ConfigConstant.APP_LOCK_PASSWORD, password)
 
@@ -27,4 +27,6 @@ class AppConfig
     fun setAppLastStopTime(stopTime: Long) = SPUtils.getInstance().put(ConfigConstant.APP_LAST_STOP_TIME, stopTime)
 
     fun getAppLastStopTime() = SPUtils.getInstance().getLong(ConfigConstant.APP_LAST_STOP_TIME, ConfigConstant.DEFAULT_APP_LAST_STOP_TIME)
+
+    fun getImageSaveQuality() = SPUtils.getInstance().getInt(ConfigConstant.IMAGE_SAVE_QUALITY, ConfigConstant.DEFAULT_IMAGE_SAVE_QUALITY)
 }

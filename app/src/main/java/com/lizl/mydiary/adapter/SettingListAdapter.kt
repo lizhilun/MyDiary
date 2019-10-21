@@ -5,10 +5,12 @@ import android.view.ViewGroup
 import com.blankj.utilcode.util.SPUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.SettingBean
+import com.lizl.mydiary.util.DialogUtil
 import kotlinx.android.synthetic.main.item_setting_boolean.view.*
 import kotlinx.android.synthetic.main.item_setting_normal.view.*
+import kotlinx.android.synthetic.main.item_setting_value.view.*
 
-class SettingListAdapter() : BaseAdapter<SettingBean.SettingBaseBean, SettingListAdapter.ViewHolder>()
+class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListAdapter.ViewHolder>()
 {
 
     companion object
@@ -16,27 +18,28 @@ class SettingListAdapter() : BaseAdapter<SettingBean.SettingBaseBean, SettingLis
         const val ITEM_TYPE_DIVIDE = 1
         const val ITEM_TYPE_BOOLEAN = 2
         const val ITEM_TYPE_NORMAL = 3
+        const val ITEM_TYPE_INT_RADIO = 4
     }
 
     override fun createCustomViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
     {
         when (viewType)
         {
-            ITEM_TYPE_BOOLEAN -> return ViewHolder(inflateView(R.layout.item_setting_boolean, parent))
-            ITEM_TYPE_DIVIDE  -> return ViewHolder(inflateView(R.layout.item_setting_divide, parent))
-            ITEM_TYPE_NORMAL  -> return ViewHolder(inflateView(R.layout.item_setting_normal, parent))
+            ITEM_TYPE_BOOLEAN   -> return ViewHolder(inflateView(R.layout.item_setting_boolean, parent))
+            ITEM_TYPE_DIVIDE    -> return ViewHolder(inflateView(R.layout.item_setting_divide, parent))
+            ITEM_TYPE_NORMAL    -> return ViewHolder(inflateView(R.layout.item_setting_normal, parent))
+            ITEM_TYPE_INT_RADIO -> return ViewHolder(inflateView(R.layout.item_setting_value, parent))
         }
         return ViewHolder(inflateView(R.layout.item_setting_divide, parent))
     }
 
     override fun bindCustomViewHolder(holder: ViewHolder, bean: SettingBean.SettingBaseBean, position: Int)
     {
-        if (bean is SettingBean.SettingBooleanBean)
+        when (bean)
         {
-            holder.bindBooleanViewHolder(bean, position)
-        } else if (bean is SettingBean.SettingNormalBean)
-        {
-            holder.bindNormalViewHolder(bean)
+            is SettingBean.SettingBooleanBean  -> holder.bindBooleanViewHolder(bean, position)
+            is SettingBean.SettingNormalBean   -> holder.bindNormalViewHolder(bean)
+            is SettingBean.SettingIntRadioBean -> holder.bindValueViewHolder(bean)
         }
     }
 
@@ -44,10 +47,11 @@ class SettingListAdapter() : BaseAdapter<SettingBean.SettingBaseBean, SettingLis
     {
         return when (getItem(position))
         {
-            is SettingBean.SettingDivideBean  -> ITEM_TYPE_DIVIDE
-            is SettingBean.SettingBooleanBean -> ITEM_TYPE_BOOLEAN
-            is SettingBean.SettingNormalBean  -> ITEM_TYPE_NORMAL
-            else                              -> -1
+            is SettingBean.SettingDivideBean   -> ITEM_TYPE_DIVIDE
+            is SettingBean.SettingBooleanBean  -> ITEM_TYPE_BOOLEAN
+            is SettingBean.SettingNormalBean   -> ITEM_TYPE_NORMAL
+            is SettingBean.SettingIntRadioBean -> ITEM_TYPE_INT_RADIO
+            else                               -> -1
         }
     }
 
@@ -74,6 +78,33 @@ class SettingListAdapter() : BaseAdapter<SettingBean.SettingBaseBean, SettingLis
             itemView.tv_normal_setting_name.text = settingItem.settingName
 
             itemView.setOnClickListener { settingItem.callback.invoke() }
+        }
+
+        fun bindValueViewHolder(settingItem: SettingBean.SettingIntRadioBean)
+        {
+            itemView.tv_value_setting_name.text = settingItem.settingName
+
+            val settingValue = SPUtils.getInstance().getInt(settingItem.settingKey, settingItem.defaultValue)
+            val showValue = settingItem.radioMap.getValue(settingValue)
+
+            itemView.tv_value_setting_value.text = showValue
+
+            val radioList = mutableListOf<String>()
+            settingItem.radioMap.forEach { radioList.add(it.value) }
+
+            itemView.setOnClickListener {
+                DialogUtil.showRadioGroupDialog(context, settingItem.settingName, radioList, showValue) { result ->
+                    settingItem.radioMap.forEach {
+                        if (it.value == result)
+                        {
+                            SPUtils.getInstance().put(settingItem.settingKey, it.key)
+                            update(settingItem)
+                            settingItem.callback.invoke(settingItem)
+                            return@forEach
+                        }
+                    }
+                }
+            }
         }
     }
 }

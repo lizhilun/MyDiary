@@ -53,6 +53,14 @@ class DialogUtil
             dialog?.show()
         }
 
+        fun showRadioGroupDialog(context: Context, title: String, radioList: List<String>, checkedRadio: String,
+                                 onSelectFinishListener: (result: String) -> Unit)
+        {
+            dialog?.dismiss()
+            dialog = DialogRadioGroup(context, title, radioList, checkedRadio, onSelectFinishListener)
+            dialog?.show()
+        }
+
         fun dismissDialog()
         {
             dialog?.dismiss()

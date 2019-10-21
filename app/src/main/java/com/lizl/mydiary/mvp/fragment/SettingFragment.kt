@@ -54,7 +54,9 @@ class SettingFragment : BaseFragment<EmptyPresenter>()
 
     private fun initSettingData()
     {
-        settingAdapter.add(SettingBean.SettingDivideBean())
+        val settingList = mutableListOf<SettingBean.SettingBaseBean>()
+
+        settingList.add(SettingBean.SettingDivideBean())
 
         val fingerprintItem = SettingBean.SettingBooleanBean(getString(R.string.setting_fingerprint), ConfigConstant.IS_FINGERPRINT_LOCK_ON,
                 ConfigConstant.DEFAULT_IS_FINGERPRINT_LOCK_ON, true) { result, bean ->
@@ -66,7 +68,7 @@ class SettingFragment : BaseFragment<EmptyPresenter>()
             }
         }
 
-        settingAdapter.add(SettingBean.SettingBooleanBean(getString(R.string.setting_app_lock), settingKey = ConfigConstant.IS_APP_LOCK_ON,
+        settingList.add(SettingBean.SettingBooleanBean(getString(R.string.setting_app_lock), settingKey = ConfigConstant.IS_APP_LOCK_ON,
                 defaultValue = ConfigConstant.DEFAULT_IS_APP_LOCK_ON, needSave = false) { result, bean ->
             if (result)
             {
@@ -119,20 +121,30 @@ class SettingFragment : BaseFragment<EmptyPresenter>()
         {
             if (BiometricAuthenticationUtil.instance.isFingerprintSupport())
             {
-                settingAdapter.add(fingerprintItem)
+                settingList.add(fingerprintItem)
             }
-            settingAdapter.add(modifyPasswordItem)
+            settingList.add(modifyPasswordItem)
         }
 
-        settingAdapter.add(SettingBean.SettingDivideBean())
+        settingList.add(SettingBean.SettingDivideBean())
 
-        settingAdapter.add(SettingBean.SettingNormalBean(getString(R.string.setting_backup)) {
+        settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_backup)) {
             backupDiaryDataWithPermissionCheck()
         })
 
-        settingAdapter.add(SettingBean.SettingNormalBean(getString(R.string.setting_restore)) {
+        settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_restore)) {
             restoreDiaryDataWithPermissionCheck()
         })
+
+        settingList.add(SettingBean.SettingDivideBean())
+
+        val qualityMap =
+                mapOf(ConfigConstant.IMAGE_SAVE_QUALITY_LOW to getString(R.string.low), ConfigConstant.IMAGE_SAVE_QUALITY_MEDIUM to getString(R.string.medium),
+                        (ConfigConstant.IMAGE_SAVE_QUALITY_ORIGINAL to getString(R.string.original)))
+        settingList.add(SettingBean.SettingIntRadioBean(getString(R.string.setting_image_save_quality), ConfigConstant.IMAGE_SAVE_QUALITY,
+                ConfigConstant.DEFAULT_IMAGE_SAVE_QUALITY, qualityMap) {})
+
+        settingAdapter.addAll(settingList)
     }
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)

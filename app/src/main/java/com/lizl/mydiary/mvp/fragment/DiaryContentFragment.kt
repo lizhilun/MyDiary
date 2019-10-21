@@ -167,7 +167,7 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
 
     override fun onBackPressed(): Boolean
     {
-         if (inEditMode && (!isEmptyDiary() || isDiaryModified(diaryBean)))
+        if (inEditMode && isDiaryModified(diaryBean))
         {
             DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify), getString(R.string.notify_diary_has_not_save_sure_to_quit)) {
                 backToPreFragment()
@@ -181,6 +181,13 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
 
     private fun isDiaryModified(diaryBean: DiaryBean?): Boolean
     {
-        return diaryBean?.content != et_diary_content.text.toString() || diaryBean.imageList != diaryImageListAdapter.getImageList()
+        return if (diaryBean == null)
+        {
+            !TextUtils.isEmpty(et_diary_content.text.toString()) || diaryImageListAdapter.getImageList().isNotEmpty()
+        }
+        else
+        {
+            diaryBean.content != et_diary_content.text.toString() || diaryBean.imageList != diaryImageListAdapter.getImageList()
+        }
     }
 }

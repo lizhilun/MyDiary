@@ -3,6 +3,7 @@ package com.lizl.mydiary.util
 import android.graphics.Bitmap
 import android.net.Uri
 import com.blankj.utilcode.util.*
+import com.lizl.mydiary.UiApplication
 import java.io.File
 import java.io.IOException
 
@@ -56,7 +57,7 @@ class FileUtil
         fun saveImageToData(imagePath: String): String
         {
             val bitmap = ImageUtils.getBitmap(imagePath)
-            val comBitmap = ImageUtils.compressByQuality(bitmap, 90)
+            val comBitmap = ImageUtils.compressByQuality(bitmap, UiApplication.appConfig.getImageSaveQuality())
             val savePath = "${getSystemFilePath()}/${System.currentTimeMillis()}.jpg"
             ImageUtils.save(comBitmap, savePath, Bitmap.CompressFormat.JPEG)
             return savePath
