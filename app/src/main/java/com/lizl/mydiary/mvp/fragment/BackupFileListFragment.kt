@@ -69,4 +69,6 @@ class BackupFileListFragment : BaseFragment<BackupFileListFragmentPresenter>(), 
     }
 
     override fun onBackPressed() = false
+
+    override fun needRegisterEvent() = false
 }

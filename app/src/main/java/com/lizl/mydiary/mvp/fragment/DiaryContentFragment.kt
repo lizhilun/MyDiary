@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.DiaryImageListAdapter
 import com.lizl.mydiary.bean.DiaryBean
+import com.lizl.mydiary.event.DeleteImageEvent
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.contract.DiaryContentFragmentContract
@@ -16,6 +17,8 @@ import com.lizl.mydiary.util.AppConstant
 import com.lizl.mydiary.util.DialogUtil
 import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.fragment_diary_content.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
@@ -190,4 +193,12 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
             diaryBean.content != et_diary_content.text.toString() || diaryBean.imageList != diaryImageListAdapter.getImageList()
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onImageDelete(deleteImageEvent: DeleteImageEvent)
+    {
+        diaryImageListAdapter.deleteImage(deleteImageEvent.imagePath)
+    }
+
+    override fun needRegisterEvent() = true
 }

@@ -195,4 +195,6 @@ class SettingFragment : BaseFragment<EmptyPresenter>()
     }
 
     override fun onBackPressed() = false
+
+    override fun needRegisterEvent() = false
 }

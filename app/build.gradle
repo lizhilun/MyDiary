@@ -52,4 +52,5 @@ dependencies {
     kapt "org.permissionsdispatcher:permissionsdispatcher-processor:${pd_version}"
     implementation 'com.jungly:gridPasswordView:0.3'
     implementation 'com.blankj:utilcodex:1.25.9'
+    implementation 'org.greenrobot:eventbus:3.1.1'
 }

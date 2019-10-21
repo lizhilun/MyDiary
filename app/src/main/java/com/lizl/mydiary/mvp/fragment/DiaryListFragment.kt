@@ -108,4 +108,6 @@ class DiaryListFragment : BaseFragment<DiaryListFragmentPresenter>(), DiaryListF
         }
         return false
     }
+
+    override fun needRegisterEvent() = false
 }

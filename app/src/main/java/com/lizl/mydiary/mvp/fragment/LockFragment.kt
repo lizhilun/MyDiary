@@ -135,4 +135,6 @@ class LockFragment : BaseFragment<EmptyContract.Presenter>(), NumberKeyGridAdapt
         UiUtil.backToLauncher()
         return true
     }
+
+    override fun needRegisterEvent() = false
 }

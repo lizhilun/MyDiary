@@ -95,6 +95,16 @@ class DiaryImageListAdapter(private var editable: Boolean, private val maxImageC
         notifyDataSetChanged()
     }
 
+    fun deleteImage(imageUrl: String)
+    {
+        val removeIndex = imageList.indexOf(imageUrl)
+        if (removeIndex >= 0)
+        {
+            imageList.remove(imageUrl)
+            notifyItemRemoved(removeIndex)
+        }
+    }
+
     fun setEditable(editable: Boolean)
     {
         this.editable = editable

@@ -29,4 +29,6 @@ class ImageViewPagerAdapter(private val imageList: List<String>) : PagerAdapter(
     {
         container.removeView(obj as View)
     }
+
+    override fun getItemPosition(`object`: Any) = POSITION_NONE
 }
