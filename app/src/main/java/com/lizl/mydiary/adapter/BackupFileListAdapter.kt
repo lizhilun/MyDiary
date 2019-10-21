@@ -3,7 +3,6 @@ package com.lizl.mydiary.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.lizl.mydiary.R
 import kotlinx.android.synthetic.main.item_backup_file.view.*
 import java.io.File
@@ -11,41 +10,49 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class BackupFileListAdapter(private val fileList: List<File>, private val onItemClickListener: OnBackFileItemClickListener?) : RecyclerView.Adapter<BackupFileListAdapter.ViewHolder>()
+class BackupFileListAdapter : BaseAdapter<File, BackupFileListAdapter.ViewHolder>()
 {
     private val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
 
-    init
-    {
-        Collections.sort(fileList, FileComparator())
-    }
+    private var onFileItemClickListener: ((File) -> Unit)? = null
 
-    override fun getItemCount(): Int = fileList.size
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
+    override fun createCustomViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
     {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_backup_file, parent, false))
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int)
+    override fun bindCustomViewHolder(holder: ViewHolder, bean: File, position: Int)
     {
-        holder.bindViewHolder(fileList[position])
+        holder.bindViewHolder(bean)
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    override fun getCustomItemViewType(position: Int) = 0
+
+    inner class ViewHolder(itemView: View) : BaseViewHolder(itemView)
     {
         fun bindViewHolder(file: File)
         {
             itemView.tv_file_name.text = file.name
 
             itemView.tv_file_time.text = formatter.format(file.lastModified())
-            itemView.setOnClickListener { onItemClickListener?.onBackupFileItemClick(file) }
+            itemView.setOnClickListener { onFileItemClickListener?.invoke(file) }
         }
     }
 
     interface OnBackFileItemClickListener
     {
         fun onBackupFileItemClick(file: File)
+    }
+
+    fun addAll(fileList: List<File>)
+    {
+        Collections.sort(fileList, FileComparator())
+        super.addAll(fileList)
+    }
+
+    fun setOnFileItemClickListener(onFileItemClickListener: (File) -> Unit)
+    {
+        this.onFileItemClickListener = onFileItemClickListener
     }
 
     inner class FileComparator : Comparator<File>

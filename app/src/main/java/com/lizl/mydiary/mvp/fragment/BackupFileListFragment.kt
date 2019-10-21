@@ -2,27 +2,24 @@ package com.lizl.mydiary.mvp.fragment
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.blankj.utilcode.util.ToastUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.BackupFileListAdapter
 import com.lizl.mydiary.bean.OperationItem
 import com.lizl.mydiary.mvp.base.BaseFragment
-import com.lizl.mydiary.mvp.presenter.EmptyPresenter
-import com.lizl.mydiary.util.BackupUtil
+import com.lizl.mydiary.mvp.contract.BackupFileListFragmentContract
+import com.lizl.mydiary.mvp.presenter.BackupFileListFragmentPresenter
 import com.lizl.mydiary.util.DialogUtil
 import kotlinx.android.synthetic.main.fragment_backup_file_list.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.io.File
 
-class BackupFileListFragment : BaseFragment<EmptyPresenter>(), BackupFileListAdapter.OnBackFileItemClickListener
+class BackupFileListFragment : BaseFragment<BackupFileListFragmentPresenter>(), BackupFileListFragmentContract.View
 {
 
     override fun getLayoutResId() = R.layout.fragment_backup_file_list
 
-    override fun initPresenter() = EmptyPresenter()
+    private lateinit var backupFileListAdapter: BackupFileListAdapter
+
+    override fun initPresenter() = BackupFileListFragmentPresenter(this)
 
     override fun initTitleBar()
     {
@@ -31,39 +28,42 @@ class BackupFileListFragment : BaseFragment<EmptyPresenter>(), BackupFileListAda
 
     override fun initView()
     {
-
-    }
-
-    override fun onResume()
-    {
-        super.onResume()
-
-        //TODO:延时300ms加载数据，防止界面切换卡顿
-        GlobalScope.launch(Dispatchers.Main) {
-            delay(300)
-            getData()
-        }
-    }
-
-    private fun getData()
-    {
-        val backupFileList = BackupUtil.getBackupFileList()
-        val backupFileListAdapter = BackupFileListAdapter(backupFileList, this)
+        backupFileListAdapter = BackupFileListAdapter()
         rv_file_list.layoutManager = LinearLayoutManager(activity)
         rv_file_list.adapter = backupFileListAdapter
+
+        presenter.getBackupFileList()
+
+        backupFileListAdapter.setOnFileItemClickListener { showFileOperationDialog(it) }
     }
 
-    override fun onBackupFileItemClick(file: File)
+    override fun showBackupFileList(fileList: List<File>)
+    {
+        backupFileListAdapter.addAll(fileList)
+    }
+
+    override fun onBackupFileDeleted(file: File)
+    {
+        backupFileListAdapter.remove(file)
+    }
+
+    override fun showRestoringDataView()
+    {
+        DialogUtil.showLoadingDialog(context!!, getString(R.string.in_restore_data))
+    }
+
+    override fun onRestoreDataFinish(result: Boolean)
+    {
+        DialogUtil.dismissDialog()
+    }
+
+    private fun showFileOperationDialog(file: File)
     {
         val operationList = mutableListOf<OperationItem>()
 
-        operationList.add(OperationItem(getString(R.string.import_backup_file)) {
-            DialogUtil.showLoadingDialog(context!!, getString(R.string.in_restore_data))
-            BackupUtil.restoreData(file.absolutePath) {
-                DialogUtil.dismissDialog()
-                ToastUtils.showShort(if (it) R.string.success_to_restore_data else R.string.failed_to_restore_data)
-            }
-        })
+        operationList.add(OperationItem(getString(R.string.import_backup_file)) { presenter.restoreData(file) })
+
+        operationList.add(OperationItem(getString(R.string.delete_backup_file)) { presenter.deleteBackupFile(file) })
 
         DialogUtil.showOperationListDialog(activity as Context, operationList)
     }
