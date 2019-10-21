@@ -25,7 +25,7 @@ class GlobalGlideConfiguration : AppGlideModule()
         builder.setMemoryCache(LruResourceCache(memoryCacheSize.toLong()))
 
         // 2.设置Glide磁盘缓存大小
-        val cacheDir = FileUtil.getSystemFilePath() + "/$DISK_CACHE_NAME" //指定的是数据的缓存地址
+        val cacheDir = FileUtil.getSystemCachePath() + "/$DISK_CACHE_NAME" //指定的是数据的缓存地址
 
         //3.设置磁盘缓存大小
         builder.setDiskCache(DiskLruCacheFactory(cacheDir, DISK_CACHE_NAME, DISK_CACHE_SIZE))

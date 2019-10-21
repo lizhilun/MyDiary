@@ -29,6 +29,11 @@ class FileUtil
         }
 
         /**
+         * 获取系统缓存路径
+         */
+        fun getSystemCachePath(): String = PathUtils.getInternalAppCachePath()
+
+        /**
          * 获取图片保存路径
          */
         fun getImageFileSavePath() = "${getSystemFilePath()}/picture/"
