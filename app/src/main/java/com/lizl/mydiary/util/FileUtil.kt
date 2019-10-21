@@ -58,7 +58,7 @@ class FileUtil
         {
             val bitmap = ImageUtils.getBitmap(imagePath)
             val comBitmap = ImageUtils.compressByQuality(bitmap, UiApplication.appConfig.getImageSaveQuality())
-            val savePath = "${getSystemFilePath()}/${System.currentTimeMillis()}.jpg"
+            val savePath = "${getImageFileSavePath()}/${System.currentTimeMillis()}.jpg"
             ImageUtils.save(comBitmap, savePath, Bitmap.CompressFormat.JPEG)
             return savePath
         }

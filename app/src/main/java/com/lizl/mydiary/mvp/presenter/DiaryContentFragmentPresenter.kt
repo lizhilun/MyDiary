@@ -41,7 +41,7 @@ class DiaryContentFragmentPresenter(private var view: DiaryContentFragmentContra
             saveDiaryBean.content = content
 
             val saveImageList = mutableListOf<String>()
-            val systemFileDir = FileUtil.getSystemFilePath()
+            val systemFileDir = FileUtil.getImageFileSavePath()
             for (imagePath in imageList)
             {
                 if (!FileUtil.isFileExists(imagePath))
