@@ -16,9 +16,11 @@ class DialogRadioGroup(context: Context, private val title: String, private val 
     {
         tv_title.text = title
 
+        val padding = context.resources.getDimensionPixelOffset(R.dimen.global_content_padding_content) / 2
+
         radioList.forEach {
             val radioButton = AppCompatRadioButton(context)
-            radioButton.setPadding(20, 20, 20, 20)
+            radioButton.setPadding(padding, padding, padding, padding)
             radioButton.id = View.generateViewId()
             radioButton.text = it
             rv_radio_group.addView(radioButton, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
@@ -31,7 +33,10 @@ class DialogRadioGroup(context: Context, private val title: String, private val 
         tv_cancel.setOnClickListener { dismiss() }
         tv_confirm.setOnClickListener {
             val checkedRadio = rv_radio_group.findViewById<AppCompatRadioButton>(rv_radio_group.checkedRadioButtonId)
-            onSelectFinishListener.invoke(checkedRadio.text.toString())
+            if (this.checkedRadio != checkedRadio.text.toString())
+            {
+                onSelectFinishListener.invoke(checkedRadio.text.toString())
+            }
             dismiss()
         }
     }
