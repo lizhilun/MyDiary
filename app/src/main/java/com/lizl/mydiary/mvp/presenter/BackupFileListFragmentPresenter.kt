@@ -14,9 +14,7 @@ class BackupFileListFragmentPresenter(private var view: BackupFileListFragmentCo
     {
         GlobalScope.launch {
             val backupFileList = BackupUtil.getBackupFileList()
-            GlobalScope.launch(Dispatchers.Main) {
-                view?.showBackupFileList(backupFileList)
-            }
+            GlobalScope.launch(Dispatchers.Main) { view?.showBackupFileList(backupFileList) }
         }
     }
 
@@ -24,19 +22,16 @@ class BackupFileListFragmentPresenter(private var view: BackupFileListFragmentCo
     {
         GlobalScope.launch {
             val result = FileUtil.deleteFile(file.absolutePath)
-            GlobalScope.launch(Dispatchers.Main) {
-                if (result) view?.onBackupFileDeleted(file)
-            }
+            GlobalScope.launch(Dispatchers.Main) { if (result) view?.onBackupFileDeleted(file) }
         }
     }
 
     override fun restoreData(file: File)
     {
         GlobalScope.launch {
+            GlobalScope.launch(Dispatchers.Main) { view?.showRestoringDataView() }
             BackupUtil.restoreData(file.absolutePath) {
-                GlobalScope.launch(Dispatchers.Main) {
-                    view?.onRestoreDataFinish(it)
-                }
+                GlobalScope.launch(Dispatchers.Main) { view?.onRestoreDataFinish(it) }
             }
         }
     }
