@@ -60,7 +60,7 @@ class DiaryListAdapter : BaseAdapter<DiaryBean, DiaryListAdapter.ViewHolder>()
                 diaryImageListAdapter.setOnImageClickListener {
                     val imageList = arrayListOf<String>()
                     imageList.addAll(diaryImageListAdapter.getImageList())
-                    (itemView.context as BaseActivity<*>).turnToImageBrowserActivity(imageList, it)
+                    (itemView.context as BaseActivity<*>).turnToImageBrowserActivity(imageList, it, false)
                 }
             }
 

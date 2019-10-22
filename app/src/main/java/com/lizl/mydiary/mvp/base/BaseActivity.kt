@@ -97,12 +97,13 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     /**
      * 跳转到图片浏览界面
      */
-    fun turnToImageBrowserActivity(imageUrlList: ArrayList<String>, selectImageUrl: String)
+    fun turnToImageBrowserActivity(imageUrlList: ArrayList<String>, selectImageUrl: String, editable: Boolean)
     {
         val intent = Intent(this, ImageBrowserActivity::class.java)
         val bundle = Bundle()
         bundle.putStringArrayList(AppConstant.BUNDLE_DATA_STRING_ARRAY, imageUrlList)
         bundle.putString(AppConstant.BUNDLE_DATA_STRING, selectImageUrl)
+        bundle.putBoolean(AppConstant.BUNDLE_DATA_BOOLEAN, editable)
         intent.putExtras(bundle)
         startActivity(intent)
     }

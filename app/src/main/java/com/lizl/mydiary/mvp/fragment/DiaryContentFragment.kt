@@ -73,7 +73,7 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
         diaryImageListAdapter.setOnImageClickListener {
             val imageList = arrayListOf<String>()
             imageList.addAll(diaryImageListAdapter.getImageList())
-            (activity as BaseActivity<*>).turnToImageBrowserActivity(imageList, it)
+            (activity as BaseActivity<*>).turnToImageBrowserActivity(imageList, it, inEditMode)
         }
 
         fab_edit_diary.setOnClickListener { showEditView() }

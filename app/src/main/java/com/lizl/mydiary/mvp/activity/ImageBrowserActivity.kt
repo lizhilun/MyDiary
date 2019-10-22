@@ -1,5 +1,6 @@
 package com.lizl.mydiary.mvp.activity
 
+import android.util.Log
 import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager
 import com.lizl.mydiary.R
@@ -26,28 +27,29 @@ class ImageBrowserActivity : BaseActivity<EmptyPresenter>()
         imageList = bundle.getStringArrayList(AppConstant.BUNDLE_DATA_STRING_ARRAY)!!
         val selectImageUrl = bundle.getString(AppConstant.BUNDLE_DATA_STRING)
         val imagePosition = imageList.indexOf(selectImageUrl!!)
+        val editable = bundle.getBoolean(AppConstant.BUNDLE_DATA_BOOLEAN)
 
         val imageViewPagerAdapter = ImageViewPagerAdapter(imageList)
         vp_image_list.adapter = imageViewPagerAdapter
         vp_image_list.currentItem = imagePosition
 
-        showImagePositionMark(imagePosition + 1, imageList.size)
+        tv_delete.isVisible = editable
+
+        showImagePositionMark(imagePosition + 1)
 
         vp_image_list.addOnPageChangeListener(object : ViewPager.OnPageChangeListener
         {
             override fun onPageScrollStateChanged(p0: Int)
             {
-                // do nothing
             }
 
             override fun onPageScrolled(p0: Int, p1: Float, p2: Int)
             {
-                // do nothing
             }
 
             override fun onPageSelected(position: Int)
             {
-                showImagePositionMark(position + 1, imageList.size)
+                showImagePositionMark(position + 1)
             }
         })
 
@@ -57,20 +59,24 @@ class ImageBrowserActivity : BaseActivity<EmptyPresenter>()
 
         iv_back.setOnClickListener { finish() }
         tv_delete.setOnClickListener {
-            val imagePath = imageList.removeAt(vp_image_list.currentItem)
+
+            val currentIndex = vp_image_list.currentItem
+            val imagePath = imageList.removeAt(currentIndex)
             imageViewPagerAdapter.notifyDataSetChanged()
             EventBus.getDefault().post(DeleteImageEvent(imagePath))
 
-            if (imageList.isEmpty())
+            when (imageList.size)
             {
-                finish()
+                0            -> finish()
+                currentIndex -> showImagePositionMark(currentIndex)
+                else         -> showImagePositionMark(currentIndex + 1)
             }
         }
     }
 
-    fun showImagePositionMark(imagePosition: Int, imageSize: Int)
+    fun showImagePositionMark(imagePosition: Int)
     {
-        tv_cur_image.text = "$imagePosition/$imageSize"
-        tv_cur_image.isVisible = imageSize > 1
+        tv_cur_image.text = "$imagePosition/${imageList.size}"
+        tv_cur_image.isVisible = imageList.size > 1
     }
 }

@@ -39,11 +39,6 @@ class BackupFileListAdapter : BaseAdapter<File, BackupFileListAdapter.ViewHolder
         }
     }
 
-    interface OnBackFileItemClickListener
-    {
-        fun onBackupFileItemClick(file: File)
-    }
-
     fun addAll(fileList: List<File>)
     {
         Collections.sort(fileList, FileComparator())
