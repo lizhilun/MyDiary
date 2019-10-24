@@ -10,8 +10,8 @@ import com.lizl.mydiary.adapter.SettingListAdapter
 import com.lizl.mydiary.bean.SettingBean
 import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.mvp.base.BaseFragment
-import com.lizl.mydiary.mvp.presenter.EmptyPresenter
-import com.lizl.mydiary.util.BackupUtil
+import com.lizl.mydiary.mvp.contract.SettingFragmentContract
+import com.lizl.mydiary.mvp.presenter.SettingFragmentPresenter
 import com.lizl.mydiary.util.BiometricAuthenticationUtil
 import com.lizl.mydiary.util.DialogUtil
 import com.lizl.mydiary.util.UiUtil
@@ -25,7 +25,7 @@ import permissions.dispatcher.RuntimePermissions
  * 设置界面
  */
 @RuntimePermissions
-class SettingFragment : BaseFragment<EmptyPresenter>()
+class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmentContract.View
 {
 
     override fun getLayoutResId() = R.layout.fragment_setting
@@ -41,7 +41,7 @@ class SettingFragment : BaseFragment<EmptyPresenter>()
         ctb_title.setOnBackBtnClickListener { backToPreFragment() }
     }
 
-    override fun initPresenter() = EmptyPresenter()
+    override fun initPresenter() = SettingFragmentPresenter(this)
 
     override fun initView()
     {
@@ -52,6 +52,17 @@ class SettingFragment : BaseFragment<EmptyPresenter>()
         initSettingData()
     }
 
+    override fun onStartBackup()
+    {
+        DialogUtil.showLoadingDialog(context!!, getString(R.string.in_backup_data))
+    }
+
+    override fun onBackupFinish(result: Boolean)
+    {
+        DialogUtil.dismissDialog()
+        ToastUtils.showShort(if (result) R.string.success_to_backup_data else R.string.failed_to_backup_data)
+    }
+
     private fun initSettingData()
     {
         val settingList = mutableListOf<SettingBean.SettingBaseBean>()
@@ -59,8 +70,7 @@ class SettingFragment : BaseFragment<EmptyPresenter>()
         settingList.add(SettingBean.SettingDivideBean())
 
         val fingerprintItem = SettingBean.SettingBooleanBean(getString(R.string.setting_fingerprint), ConfigConstant.IS_FINGERPRINT_LOCK_ON,
-                ConfigConstant.DEFAULT_IS_FINGERPRINT_LOCK_ON, true) { result, bean ->
-        }
+                ConfigConstant.DEFAULT_IS_FINGERPRINT_LOCK_ON, true) { result, bean -> }
 
         val modifyPasswordItem = SettingBean.SettingNormalBean(getString(R.string.setting_modify_password)) {
             DialogUtil.showModifyPasswordDialog(context!!, UiApplication.appConfig.getAppLockPassword()) {
@@ -72,38 +82,28 @@ class SettingFragment : BaseFragment<EmptyPresenter>()
                 defaultValue = ConfigConstant.DEFAULT_IS_APP_LOCK_ON, needSave = false) { result, bean ->
             if (result)
             {
+                val onInputFinishListener: (String) -> Unit = {
+                    UiApplication.appConfig.setAppLockPassword(it)
+                    UiApplication.appConfig.setAppLockOn(true)
+                    settingAdapter.update(bean)
+                    if (BiometricAuthenticationUtil.instance.isFingerprintSupport())
+                    {
+                        settingAdapter.insert(fingerprintItem, settingAdapter.getPosition(bean) + 1)
+                        settingAdapter.insert(modifyPasswordItem, settingAdapter.getPosition(bean) + 2)
+                    }
+                    else
+                    {
+                        settingAdapter.insert(modifyPasswordItem, settingAdapter.getPosition(bean) + 1)
+                    }
+                }
+
                 if (TextUtils.isEmpty(UiApplication.appConfig.getAppLockPassword()))
                 {
-                    DialogUtil.showSetPasswordDialog(context!!) {
-                        UiApplication.appConfig.setAppLockPassword(it)
-                        UiApplication.appConfig.setAppLockOn(true)
-                        settingAdapter.update(bean)
-                        if (BiometricAuthenticationUtil.instance.isFingerprintSupport())
-                        {
-                            settingAdapter.insert(fingerprintItem, settingAdapter.getPosition(bean) + 1)
-                            settingAdapter.insert(modifyPasswordItem, settingAdapter.getPosition(bean) + 2)
-                        }
-                        else
-                        {
-                            settingAdapter.insert(modifyPasswordItem, settingAdapter.getPosition(bean) + 1)
-                        }
-                    }
+                    DialogUtil.showSetPasswordDialog(context!!, onInputFinishListener)
                 }
                 else
                 {
-                    DialogUtil.showPasswordConfirmDialog(context!!, UiApplication.appConfig.getAppLockPassword()) {
-                        UiApplication.appConfig.setAppLockOn(true)
-                        settingAdapter.update(bean)
-                        if (BiometricAuthenticationUtil.instance.isFingerprintSupport())
-                        {
-                            settingAdapter.insert(fingerprintItem, settingAdapter.getPosition(bean) + 1)
-                            settingAdapter.insert(modifyPasswordItem, settingAdapter.getPosition(bean) + 2)
-                        }
-                        else
-                        {
-                            settingAdapter.insert(modifyPasswordItem, settingAdapter.getPosition(bean) + 1)
-                        }
-                    }
+                    DialogUtil.showPasswordConfirmDialog(context!!, UiApplication.appConfig.getAppLockPassword(), onInputFinishListener)
                 }
             }
             else
@@ -128,13 +128,9 @@ class SettingFragment : BaseFragment<EmptyPresenter>()
 
         settingList.add(SettingBean.SettingDivideBean())
 
-        settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_backup)) {
-            backupDiaryDataWithPermissionCheck()
-        })
+        settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_backup)) { backupDiaryDataWithPermissionCheck() })
 
-        settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_restore)) {
-            restoreDiaryDataWithPermissionCheck()
-        })
+        settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_restore)) { restoreDiaryDataWithPermissionCheck() })
 
         settingList.add(SettingBean.SettingDivideBean())
 
@@ -150,10 +146,8 @@ class SettingFragment : BaseFragment<EmptyPresenter>()
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun backupDiaryData()
     {
-        DialogUtil.showLoadingDialog(context!!, getString(R.string.in_backup_data))
-        BackupUtil.backupData {
-            ToastUtils.showShort(if (it) R.string.success_to_backup_data else R.string.failed_to_backup_data)
-            DialogUtil.dismissDialog()
+        DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.setting_backup), getString(R.string.notify_backup_data)) {
+            presenter.backupData()
         }
     }
 

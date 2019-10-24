@@ -24,6 +24,8 @@ class AppConfig
 
     fun isFingerprintLockOn() = SPUtils.getInstance().getBoolean(ConfigConstant.IS_FINGERPRINT_LOCK_ON, ConfigConstant.DEFAULT_IS_FINGERPRINT_LOCK_ON)
 
+    fun setFingerprintLockOn(isOn: Boolean) = SPUtils.getInstance().put(ConfigConstant.IS_FINGERPRINT_LOCK_ON, isOn)
+
     fun setAppLastStopTime(stopTime: Long) = SPUtils.getInstance().put(ConfigConstant.APP_LAST_STOP_TIME, stopTime)
 
     fun getAppLastStopTime() = SPUtils.getInstance().getLong(ConfigConstant.APP_LAST_STOP_TIME, ConfigConstant.DEFAULT_APP_LAST_STOP_TIME)
