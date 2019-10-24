@@ -63,7 +63,7 @@ class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListA
             itemView.tv_boolean_setting_name.text = settingItem.settingName
             itemView.iv_boolean_setting_checked.isSelected = isChecked
 
-            itemView.iv_boolean_setting_checked.setOnClickListener {
+            val clickListener: (View) -> Unit = {
                 if (settingItem.needSave)
                 {
                     SPUtils.getInstance().put(settingItem.settingKey, !isChecked)
@@ -71,6 +71,7 @@ class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListA
                 }
                 settingItem.callback.invoke(!isChecked, settingItem)
             }
+            itemView.setOnClickListener(clickListener)
         }
 
         fun bindNormalViewHolder(settingItem: SettingBean.SettingNormalBean)
