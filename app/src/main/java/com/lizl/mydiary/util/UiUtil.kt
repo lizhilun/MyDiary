@@ -1,14 +1,10 @@
 package com.lizl.mydiary.util
 
-import android.content.Intent
-import android.net.Uri
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.TextView
-import com.blankj.utilcode.util.KeyboardUtils
-import com.blankj.utilcode.util.ScreenUtils
-import com.lizl.mydiary.UiApplication
+import com.blankj.utilcode.util.*
 
 
 /**
@@ -40,10 +36,7 @@ class UiUtil
          */
         fun backToLauncher()
         {
-            val intent = Intent(Intent.ACTION_MAIN)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            intent.addCategory(Intent.CATEGORY_HOME)
-            UiApplication.instance.startActivity(intent)
+            ActivityUtils.startHomeActivity()
         }
 
         /**
@@ -51,11 +44,7 @@ class UiUtil
          */
         fun goToAppDetailPage()
         {
-            val intent = Intent()
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            intent.action = "android.settings.APPLICATION_DETAILS_SETTINGS"
-            intent.data = Uri.fromParts("package", UiApplication.instance.packageName, null)
-            UiApplication.instance.startActivity(intent)
+            AppUtils.launchAppDetailsSettings()
         }
 
         /**

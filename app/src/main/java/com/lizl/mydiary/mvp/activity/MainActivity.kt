@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.util.Log
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
+import com.blankj.utilcode.util.KeyboardUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.config.ConfigConstant

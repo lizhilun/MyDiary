@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:gravity="top"
-                android:lineSpacingMultiplier="1.2"
+                android:lineSpacingMultiplier="1.3"
                 android:minHeight="240dp" />
 
             <androidx.recyclerview.widget.RecyclerView
