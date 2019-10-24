@@ -1,6 +1,5 @@
 package com.lizl.mydiary.mvp.presenter
 
-import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.mvp.contract.SettingFragmentContract
 import com.lizl.mydiary.util.BackupUtil
 import kotlinx.coroutines.Dispatchers
@@ -11,8 +10,10 @@ class SettingFragmentPresenter(private var view: SettingFragmentContract.View?) 
 {
     override fun backupData()
     {
-        view?.onStartBackup()
         GlobalScope.launch {
+            GlobalScope.launch(Dispatchers.Main) {
+                view?.onStartBackup()
+            }
             BackupUtil.backupData {
                 GlobalScope.launch(Dispatchers.Main) {
                     view?.onBackupFinish(it)

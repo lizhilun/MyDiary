@@ -18,7 +18,7 @@
     <dimen name="global_toolbar_height">56dp</dimen>
 
     <dimen name="diary_item_time_width">80dp</dimen>
-    <dimen name="diary_item_space">5dp</dimen>
+    <dimen name="diary_item_space">6dp</dimen>
     <dimen name="diary_item_max_height">400dp</dimen>
     <dimen name="footer_view_height">80dp</dimen>
 

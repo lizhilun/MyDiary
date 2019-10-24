@@ -31,6 +31,7 @@
         <item name="android:layout_height">@dimen/global_toolbar_height</item>
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:paddingStart">@dimen/toolbar_content_padding_edge</item>
+        <item name="android:translationZ">6dp</item>
     </style>
 
     <style name="ToolbarLayoutStyleStyleWithoutStartPadding">
