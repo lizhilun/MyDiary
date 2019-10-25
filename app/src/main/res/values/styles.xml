@@ -86,4 +86,9 @@
         <item name="android:layout_width">@dimen/dialog_button_width</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <style name="MatisseStyle" parent="Matisse.Zhihu">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+    </style>
 </resources>
