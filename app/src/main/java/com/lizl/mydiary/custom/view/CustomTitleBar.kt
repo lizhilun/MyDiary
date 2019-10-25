@@ -5,10 +5,6 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
 import android.widget.ImageView
-import androidx.appcompat.widget.AppCompatEditText
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -19,13 +15,17 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.TitleBarBtnListAdapter
 import com.lizl.mydiary.bean.TitleBarBtnBean
 import com.lizl.mydiary.util.UiUtil
+import skin.support.constraint.SkinCompatConstraintLayout
+import skin.support.widget.SkinCompatEditText
+import skin.support.widget.SkinCompatImageView
+import skin.support.widget.SkinCompatTextView
 
-class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : ConstraintLayout(context, attrs, defStyleAttr)
+class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : SkinCompatConstraintLayout(context, attrs, defStyleAttr)
 {
-    private lateinit var backBtn: AppCompatImageView
-    private lateinit var titleTextView: AppCompatTextView
+    private lateinit var backBtn: SkinCompatImageView
+    private lateinit var titleTextView: SkinCompatTextView
     private lateinit var btnListView: RecyclerView
-    private lateinit var searchEditText: AppCompatEditText
+    private lateinit var searchEditText: SkinCompatEditText
 
     private var isBackBtnVisible = false
     var inSearchMode = false
@@ -46,7 +46,7 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
 
     private fun initView(context: Context, attrs: AttributeSet?)
     {
-        backBtn = AppCompatImageView(context)
+        backBtn = SkinCompatImageView(context)
         val padding = context.resources.getDimensionPixelOffset(R.dimen.toolbar_back_icon_padding)
         backBtn.scaleType = ImageView.ScaleType.FIT_START
         backBtn.setImageResource(R.mipmap.ic_back)
@@ -54,7 +54,7 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         backBtn.id = generateViewId()
         addView(backBtn)
 
-        titleTextView = AppCompatTextView(context)
+        titleTextView = SkinCompatTextView(context)
         titleTextView.id = generateViewId()
         titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.resources.getDimension(R.dimen.toolbar_title_text_size))
         titleTextView.setTextColor(ContextCompat.getColor(context, R.color.white))
@@ -65,7 +65,7 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         btnListView.id = generateViewId()
         addView(btnListView)
 
-        searchEditText = AppCompatEditText(context)
+        searchEditText = SkinCompatEditText(context)
         searchEditText.id = generateViewId()
         searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.resources.getDimension(R.dimen.toolbar_title_text_size))
         searchEditText.setTextColor(ContextCompat.getColor(context, R.color.white))

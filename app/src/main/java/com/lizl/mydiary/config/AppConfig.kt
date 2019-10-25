@@ -31,4 +31,6 @@ class AppConfig
     fun getAppLastStopTime() = SPUtils.getInstance().getLong(ConfigConstant.APP_LAST_STOP_TIME, ConfigConstant.DEFAULT_APP_LAST_STOP_TIME)
 
     fun getImageSaveQuality() = SPUtils.getInstance().getInt(ConfigConstant.IMAGE_SAVE_QUALITY, ConfigConstant.DEFAULT_IMAGE_SAVE_QUALITY)
+
+    fun isNightModeOn() = SPUtils.getInstance().getBoolean(ConfigConstant.IS_NIGHT_MODE_ON, ConfigConstant.DEFAULT_NIGHT_MODE_ON)
 }

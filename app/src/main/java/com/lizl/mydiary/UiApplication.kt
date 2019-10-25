@@ -3,7 +3,9 @@ package com.lizl.mydiary
 import android.app.Application
 import com.blankj.utilcode.util.Utils
 import com.lizl.mydiary.config.AppConfig
+import com.lizl.mydiary.util.SkinUtil
 import kotlin.properties.Delegates
+
 
 class UiApplication : Application()
 {
@@ -23,5 +25,6 @@ class UiApplication : Application()
         super.onCreate()
 
         Utils.init(this)
+        SkinUtil.instance.init(this)
     }
 }

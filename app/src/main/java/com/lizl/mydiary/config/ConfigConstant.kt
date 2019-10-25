@@ -30,5 +30,9 @@ class ConfigConstant
         const val IMAGE_SAVE_QUALITY_ORIGINAL = 100
         const val IMAGE_SAVE_QUALITY = "IMAGE_SAVE_QUALITY"
         const val DEFAULT_IMAGE_SAVE_QUALITY = IMAGE_SAVE_QUALITY_ORIGINAL
+
+        //夜间模式
+        const val IS_NIGHT_MODE_ON = "IS_NIGHT_MODE_ON"
+        const val DEFAULT_NIGHT_MODE_ON = false
     }
 }

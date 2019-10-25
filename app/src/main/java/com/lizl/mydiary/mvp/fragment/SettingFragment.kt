@@ -1,8 +1,11 @@
 package com.lizl.mydiary.mvp.fragment
 
 import android.Manifest
+import android.app.Activity
 import android.text.TextUtils
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
@@ -14,12 +17,14 @@ import com.lizl.mydiary.mvp.contract.SettingFragmentContract
 import com.lizl.mydiary.mvp.presenter.SettingFragmentPresenter
 import com.lizl.mydiary.util.BiometricAuthenticationUtil
 import com.lizl.mydiary.util.DialogUtil
+import com.lizl.mydiary.util.SkinUtil
 import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.fragment_setting.*
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.RuntimePermissions
+import skin.support.SkinCompatManager
 
 /**
  * 设置界面
@@ -139,6 +144,13 @@ class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmen
                         (ConfigConstant.IMAGE_SAVE_QUALITY_ORIGINAL to getString(R.string.original)))
         settingList.add(SettingBean.SettingIntRadioBean(getString(R.string.setting_image_save_quality), ConfigConstant.IMAGE_SAVE_QUALITY,
                 ConfigConstant.DEFAULT_IMAGE_SAVE_QUALITY, qualityMap) {})
+
+        settingList.add(SettingBean.SettingDivideBean())
+
+        settingList.add(SettingBean.SettingBooleanBean(settingName = getString(R.string.setting_night_mode), settingKey = ConfigConstant.IS_NIGHT_MODE_ON,
+                defaultValue = ConfigConstant.DEFAULT_NIGHT_MODE_ON, needSave = true) { result, bean ->
+            if(result) SkinUtil.instance.loadNightSkin(activity!!) else SkinUtil.instance.loadDefaultSkin(activity!!)
+        })
 
         settingAdapter.addAll(settingList)
     }

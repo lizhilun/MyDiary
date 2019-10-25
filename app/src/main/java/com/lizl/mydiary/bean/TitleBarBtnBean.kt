@@ -7,9 +7,4 @@ open class TitleBarBtnBean
     class ImageBtnBean(val imageRedId: Int, val onBtnClickListener: () -> Unit) : BaseBtnBean()
 
     class TextBtnBean(val text: String, val onBtnClickListener: () -> Unit) : BaseBtnBean()
-
-    interface OnBtnClickListener
-    {
-        fun onBtnClick()
-    }
 }

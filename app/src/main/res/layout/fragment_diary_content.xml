@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<skin.support.constraint.SkinCompatConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -17,14 +17,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ctb_title">
 
-        <LinearLayout
+        <skin.support.widget.SkinCompatLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="60dp"
             android:orientation="vertical"
             android:padding="20dp">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <skin.support.widget.SkinCompatEditText
                 android:id="@+id/et_diary_content"
                 style="@style/GlobalTextStyle"
                 android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp" />
 
-        </LinearLayout>
+        </skin.support.widget.SkinCompatLinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -56,4 +56,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@mipmap/ic_edit" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</skin.support.constraint.SkinCompatConstraintLayout>

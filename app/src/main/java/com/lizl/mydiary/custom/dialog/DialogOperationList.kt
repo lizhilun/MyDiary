@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.OperationListAdapter
 import com.lizl.mydiary.bean.OperationItem
-import com.lizl.mydiary.custom.others.recylerviewitemdivider.ListDividerItemDecoration
 import kotlinx.android.synthetic.main.dialog_operation_list.*
 
 /**
@@ -21,7 +20,6 @@ class DialogOperationList(context: Context, private var operationList: List<Oper
     {
         val operationListAdapter = OperationListAdapter(operationList)
         rv_operation_list.layoutManager = LinearLayoutManager(context)
-        rv_operation_list.addItemDecoration(ListDividerItemDecoration(context))
         rv_operation_list.adapter = operationListAdapter
 
         operationListAdapter.setOnOperationItemClickListener { dismiss() }
