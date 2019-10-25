@@ -5,8 +5,9 @@ import android.content.Intent
 import android.text.TextUtils
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
-import com.lizl.mydiary.R
+import com.blankj.utilcode.util.TimeUtils
 import com.lizl.mydiary.adapter.DiaryImageListAdapter
+import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.event.DeleteImageEvent
 import com.lizl.mydiary.mvp.base.BaseActivity
@@ -23,6 +24,9 @@ import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.RuntimePermissions
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 @RuntimePermissions
 class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), DiaryContentFragmentContract.View
@@ -30,10 +34,11 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
 
     private lateinit var diaryImageListAdapter: DiaryImageListAdapter
     private var diaryBean: DiaryBean? = null
+    private lateinit var dateBean: DateBean
 
     private var inEditMode = false
 
-    override fun getLayoutResId() = R.layout.fragment_diary_content
+    override fun getLayoutResId() = com.lizl.mydiary.R.layout.fragment_diary_content
 
     override fun initPresenter() = DiaryContentFragmentPresenter(this)
 
@@ -44,16 +49,39 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
             {
                 if (isEmptyDiary())
                 {
-                    DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify), getString(R.string.notify_empty_diary_cannot_save)) {
+                    DialogUtil.showOperationConfirmDialog(context!!, getString(com.lizl.mydiary.R.string.notify),
+                            getString(com.lizl.mydiary.R.string.notify_empty_diary_cannot_save)) {
                         backToPreFragment()
                     }
                     return@setOnBackBtnClickListener
                 }
-                presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList())
+                presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList(), dateBean.time)
             }
             else
             {
                 backToPreFragment()
+            }
+        }
+
+        dateBean = DateBean(if (diaryBean != null) diaryBean!!.createTime else System.currentTimeMillis())
+        ctb_title.setTitleText("${dateBean.year}/${dateBean.month}/${dateBean.day} ${dateBean.getHourAndMinute()}")
+
+        ctb_title.setOnTitleClickListener {
+            if (!inEditMode)
+            {
+                return@setOnTitleClickListener
+            }
+            DialogUtil.showDatePickerDialog(context!!, dateBean.year, dateBean.month - 1, dateBean.day) { _, year, month, dayOfMonth ->
+                run {
+                    DialogUtil.showTimePickerDialog(context!!, dateBean.hour, dateBean.minute) { _, hourOfDay, minute ->
+                        run {
+                            val simpleDateFormat = SimpleDateFormat("yyyy MM dd HH mm", Locale.getDefault())
+                            val date = simpleDateFormat.parse("$year ${month + 1} $dayOfMonth $hourOfDay $minute")
+                            dateBean = DateBean(TimeUtils.date2Millis(date))
+                            ctb_title.setTitleText("${dateBean.year}/${dateBean.month}/${dateBean.day} ${dateBean.getHourAndMinute()}")
+                        }
+                    }
+                }
             }
         }
     }
@@ -106,15 +134,15 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
     @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
     fun onPermissionDenied()
     {
-        DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify_failed_to_get_permission),
-                getString(R.string.notify_permission_be_refused)) { selectImageWithPermissionCheck() }
+        DialogUtil.showOperationConfirmDialog(context!!, getString(com.lizl.mydiary.R.string.notify_failed_to_get_permission),
+                getString(com.lizl.mydiary.R.string.notify_permission_be_refused)) { selectImageWithPermissionCheck() }
     }
 
     @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
     fun onPermissionNeverAskAgain()
     {
-        DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify_failed_to_get_permission),
-                getString(R.string.notify_permission_be_refused_and_never_ask_again)) { UiUtil.goToAppDetailPage() }
+        DialogUtil.showOperationConfirmDialog(context!!, getString(com.lizl.mydiary.R.string.notify_failed_to_get_permission),
+                getString(com.lizl.mydiary.R.string.notify_permission_be_refused_and_never_ask_again)) { UiUtil.goToAppDetailPage() }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray)
@@ -126,7 +154,7 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
 
     override fun onDiarySaving()
     {
-        DialogUtil.showLoadingDialog(context!!, getString(R.string.in_save))
+        DialogUtil.showLoadingDialog(context!!, getString(com.lizl.mydiary.R.string.in_save))
     }
 
     override fun onDiarySaveSuccess()
@@ -153,7 +181,7 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
         et_diary_content.isEnabled = true
         diaryImageListAdapter.setEditable(true)
         fab_edit_diary.isVisible = false
-        ctb_title.setBackBtnRedId(R.mipmap.ic_confirm)
+        ctb_title.setBackBtnRedId(com.lizl.mydiary.R.mipmap.ic_confirm)
 
         et_diary_content.setSelection(et_diary_content.text.toString().length)
         UiUtil.showInputKeyboard(et_diary_content)
@@ -165,14 +193,15 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
         et_diary_content.isEnabled = false
         diaryImageListAdapter.setEditable(false)
         fab_edit_diary.isVisible = true
-        ctb_title.setBackBtnRedId(R.mipmap.ic_back)
+        ctb_title.setBackBtnRedId(com.lizl.mydiary.R.mipmap.ic_back)
     }
 
     override fun onBackPressed(): Boolean
     {
         if (inEditMode && isDiaryModified(diaryBean))
         {
-            DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify), getString(R.string.notify_diary_has_not_save_sure_to_quit)) {
+            DialogUtil.showOperationConfirmDialog(context!!, getString(com.lizl.mydiary.R.string.notify),
+                    getString(com.lizl.mydiary.R.string.notify_diary_has_not_save_sure_to_quit)) {
                 backToPreFragment()
             }
             return true

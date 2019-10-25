@@ -1,6 +1,12 @@
 package com.lizl.mydiary.util
 
+import android.app.DatePickerDialog
+import android.app.Dialog
+import android.app.TimePickerDialog
 import android.content.Context
+import android.widget.DatePicker
+import android.widget.TimePicker
+import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.OperationItem
 import com.lizl.mydiary.custom.dialog.*
 
@@ -8,7 +14,7 @@ class DialogUtil
 {
     companion object
     {
-        private var dialog: BaseDialog? = null
+        private var dialog: Dialog? = null
 
         fun showLoadingDialog(context: Context, loadingText: String)
         {
@@ -58,6 +64,20 @@ class DialogUtil
         {
             dialog?.dismiss()
             dialog = DialogRadioGroup(context, title, radioList, checkedRadio, onSelectFinishListener)
+            dialog?.show()
+        }
+
+        fun showDatePickerDialog(context: Context, year: Int, month: Int, day: Int, dateSetListener: (View: DatePicker, Int, Int, Int) -> Unit)
+        {
+            dialog?.dismiss()
+            dialog = DatePickerDialog(context, dateSetListener, year, month, day)
+            dialog?.show()
+        }
+
+        fun showTimePickerDialog(context: Context, hour: Int, minute: Int, timeSetListener: (View: TimePicker, Int, Int) -> Unit)
+        {
+            dialog?.dismiss()
+            dialog = TimePickerDialog(context, timeSetListener, hour, minute, true)
             dialog?.show()
         }
 

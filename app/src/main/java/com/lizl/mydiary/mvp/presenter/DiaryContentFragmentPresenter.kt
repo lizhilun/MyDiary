@@ -23,7 +23,7 @@ class DiaryContentFragmentPresenter(private var view: DiaryContentFragmentContra
 
     private val REQUEST_CODE_SELECT_IMAGE = 23
 
-    override fun saveDiary(diaryBean: DiaryBean?, content: String, imageList: List<String>)
+    override fun saveDiary(diaryBean: DiaryBean?, content: String, imageList: List<String>, createTime: Long)
     {
         GlobalScope.launch {
 
@@ -35,8 +35,8 @@ class DiaryContentFragmentPresenter(private var view: DiaryContentFragmentContra
             if (saveDiaryBean == null)
             {
                 saveDiaryBean = DiaryBean()
-                saveDiaryBean.createTime = System.currentTimeMillis()
             }
+            saveDiaryBean.createTime = createTime
             saveDiaryBean.content = content
 
             val deleteImageList = saveDiaryBean.imageList?.filter { !imageList.contains(it) }

@@ -23,6 +23,6 @@ class DiaryContentFragmentContract
 
         fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
 
-        fun saveDiary(diaryBean: DiaryBean?, content: String, imageList: List<String>)
+        fun saveDiary(diaryBean: DiaryBean?, content: String, imageList: List<String>, createTime : Long)
     }
 }

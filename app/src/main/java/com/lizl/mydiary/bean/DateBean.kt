@@ -4,7 +4,7 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import java.util.*
 
-class DateBean(time: Long)
+class DateBean(val time: Long)
 {
     companion object
     {
