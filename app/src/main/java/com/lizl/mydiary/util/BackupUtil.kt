@@ -1,9 +1,11 @@
 package com.lizl.mydiary.util
 
+import android.provider.MediaStore
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.PathUtils
 import com.blankj.utilcode.util.ZipUtils
+import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.bean.DiaryBean
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -19,6 +21,7 @@ class BackupUtil
         private val backupTempFilePath = "$backupFilePath/temp"
         private val backupTempImageFilePath = "$backupFilePath/temp/picture"
         private val backupTempDiaryFilePath = "$backupFilePath/temp/diary.txt"
+        private const val backupFileSuffix = ".iui"
 
         fun backupData(callback: (result: Boolean) -> Unit)
         {
@@ -43,10 +46,12 @@ class BackupUtil
                         return@launch
                     }
                     val formatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
-                    val backupFileName = formatter.format(System.currentTimeMillis()) + ".zip"
+                    val backupFileName = formatter.format(System.currentTimeMillis()) + backupFileSuffix
                     val zipResult = ZipUtils.zipFile(backupTempFilePath, "$backupFilePath/$backupFileName")
                     FileUtils.deleteDir(backupTempFilePath)
                     callback.invoke(zipResult)
+
+                    FileUtils.notifySystemToScan(backupFilePath)
                 }
                 catch (e: Exception)
                 {
@@ -99,14 +104,19 @@ class BackupUtil
         {
             val fileList = mutableListOf<File>()
 
-            val files = File(backupFilePath).listFiles() ?: return fileList
-            for (file in files)
+            val resolver = UiApplication.instance.contentResolver
+            val uri = MediaStore.Files.getContentUri("external")
+            val cursor = resolver.query(uri, arrayOf(MediaStore.Files.FileColumns.DATA, MediaStore.Files.FileColumns.SIZE),
+                    MediaStore.Files.FileColumns.DATA + " LIKE '%" + backupFileSuffix + "%'", null, null)
+            if (cursor != null)
             {
-                if (file.exists() && file.isFile && file.name.endsWith("zip"))
+                while (cursor.moveToNext())
                 {
-                    fileList.add(file)
+                    val file = File(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA)))
+                    if (file.exists()) fileList.add(file)
                 }
             }
+            cursor?.close()
 
             return fileList
         }
