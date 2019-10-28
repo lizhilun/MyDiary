@@ -6,7 +6,6 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.widget.DatePicker
 import android.widget.TimePicker
-import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.OperationItem
 import com.lizl.mydiary.custom.dialog.*
 

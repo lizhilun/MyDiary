@@ -1,4 +1,4 @@
-package com.lizl.mydiary.mvp.fragment
+package com.lizl.mydiary.mvp.activity
 
 import android.hardware.biometrics.BiometricPrompt
 import android.util.Log
@@ -7,37 +7,27 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.adapter.NumberKeyGridAdapter
 import com.lizl.mydiary.custom.others.recylerviewitemdivider.GridDividerItemDecoration
-import com.lizl.mydiary.mvp.base.BaseFragment
+import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.EmptyContract
 import com.lizl.mydiary.mvp.presenter.EmptyPresenter
 import com.lizl.mydiary.util.BiometricAuthenticationUtil
 import com.lizl.mydiary.util.UiUtil
-import kotlinx.android.synthetic.main.fragment_lock.*
+import kotlinx.android.synthetic.main.activity_lock.*
 
-/**
- * 锁定界面
- */
-class LockFragment : BaseFragment<EmptyContract.Presenter>(), NumberKeyGridAdapter.OnNumberKeyClickListener
+class LockActivity : BaseActivity<EmptyContract.Presenter>(), NumberKeyGridAdapter.OnNumberKeyClickListener
 {
-
-    override fun initTitleBar()
-    {
-    }
-
-    override fun initPresenter() = EmptyPresenter()
 
     private var inputPassword = ""
 
-    override fun getLayoutResId(): Int
-    {
-        return R.layout.fragment_lock
-    }
+    override fun getLayoutResId() = R.layout.activity_lock
+
+    override fun initPresenter() = EmptyPresenter()
 
     override fun initView()
     {
         val numberKeyList: List<String> = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "#")
         val numberKeyGridAdapter = NumberKeyGridAdapter(numberKeyList, this)
-        rv_number_key.layoutManager = GridLayoutManager(activity, 3)
+        rv_number_key.layoutManager = GridLayoutManager(this, 3)
         rv_number_key.addItemDecoration(GridDividerItemDecoration())
         rv_number_key.adapter = numberKeyGridAdapter
     }
@@ -127,14 +117,12 @@ class LockFragment : BaseFragment<EmptyContract.Presenter>(), NumberKeyGridAdapt
 
     private fun onUnlockSuccess()
     {
-        backToPreFragment()
+        UiApplication.appConfig.setAppLastStopTime(Long.MAX_VALUE)
+        finish()
     }
 
-    override fun onBackPressed(): Boolean
+    override fun onBackPressed()
     {
         UiUtil.backToLauncher()
-        return true
     }
-
-    override fun needRegisterEvent() = false
 }

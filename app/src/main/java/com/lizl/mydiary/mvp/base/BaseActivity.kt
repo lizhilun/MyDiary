@@ -2,12 +2,19 @@ package com.lizl.mydiary.mvp.base
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.MotionEvent
+import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.blankj.utilcode.util.BarUtils
+import com.lizl.mydiary.UiApplication
+import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.mvp.activity.ImageBrowserActivity
+import com.lizl.mydiary.mvp.activity.LockActivity
 import com.lizl.mydiary.util.AppConstant
+import com.lizl.mydiary.util.SkinUtil
 import com.lizl.mydiary.util.UiUtil
 
 abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
@@ -28,6 +35,9 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         super.onCreate(savedInstanceState)
         setContentView(getLayoutResId())
 
+        BarUtils.addMarginTopEqualStatusBarHeight(findViewById<ViewGroup>(android.R.id.content).getChildAt(0))
+        SkinUtil.instance.loadSkin(this)
+
         presenter = initPresenter()
 
         initView()
@@ -43,6 +53,17 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     {
         Log.d(TAG, "onStart")
         super.onStart()
+
+        // 密码保护打开并且应用超时的情况
+        if (this !is LockActivity && UiApplication.appConfig.isAppLockOn() && !TextUtils.isEmpty(
+                        UiApplication.appConfig.getAppLockPassword()) && System.currentTimeMillis() - UiApplication.appConfig.getAppLastStopTime() >= ConfigConstant.APP_TIMEOUT_PERIOD)
+        {
+            turnToLockActivity()
+        }
+        else
+        {
+            UiApplication.appConfig.setAppLastStopTime(Long.MAX_VALUE)
+        }
     }
 
     override fun onRestart()
@@ -61,6 +82,8 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     {
         Log.d(TAG, "onStop")
         super.onStop()
+
+        UiApplication.appConfig.setAppLastStopTime(System.currentTimeMillis())
     }
 
     override fun onDestroy()
@@ -105,6 +128,15 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         bundle.putString(AppConstant.BUNDLE_DATA_STRING, selectImageUrl)
         bundle.putBoolean(AppConstant.BUNDLE_DATA_BOOLEAN, editable)
         intent.putExtras(bundle)
+        startActivity(intent)
+    }
+
+    /**
+     * 跳转到锁屏界面
+     */
+    private fun turnToLockActivity()
+    {
+        val intent = Intent(this, LockActivity::class.java)
         startActivity(intent)
     }
 }

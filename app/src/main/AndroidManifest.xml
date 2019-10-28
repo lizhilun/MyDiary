@@ -30,6 +30,8 @@
 
         <activity android:name=".mvp.activity.ImageBrowserActivity" />
 
+        <activity android:name=".mvp.activity.LockActivity" />
+
         <!--知乎图片选择器，适配7.0系统-->
         <provider
             android:name="androidx.core.content.FileProvider"
