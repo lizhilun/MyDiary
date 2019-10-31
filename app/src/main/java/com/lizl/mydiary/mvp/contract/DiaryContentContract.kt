@@ -1,12 +1,13 @@
 package com.lizl.mydiary.mvp.contract
 
+import android.app.Activity
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.mvp.base.BasePresenter
 import com.lizl.mydiary.mvp.base.BaseView
 
-class DiaryContentFragmentContract
+class DiaryContentContract
 {
     interface View : BaseView
     {
@@ -19,7 +20,7 @@ class DiaryContentFragmentContract
 
     interface Presenter : BasePresenter<View>
     {
-        fun selectImage(context: Fragment, maxCount: Int)
+        fun selectImage(context: Activity, maxCount: Int)
 
         fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
 

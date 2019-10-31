@@ -8,14 +8,18 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.SkinAppCompatDelegateImpl
 import com.blankj.utilcode.util.BarUtils
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.mvp.activity.ImageBrowserActivity
 import com.lizl.mydiary.mvp.activity.LockActivity
+import com.lizl.mydiary.mvp.activity.SettingActivity
 import com.lizl.mydiary.util.AppConstant
 import com.lizl.mydiary.util.SkinUtil
 import com.lizl.mydiary.util.UiUtil
+import org.greenrobot.eventbus.EventBus
 
 abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
 {
@@ -28,6 +32,8 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     abstract fun initPresenter(): T
 
     abstract fun initView()
+
+    abstract fun needRegisterEvent(): Boolean
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -53,6 +59,8 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     {
         Log.d(TAG, "onStart")
         super.onStart()
+
+        if (needRegisterEvent() && !EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this)
 
         // 密码保护打开并且应用超时的情况
         if (this !is LockActivity && UiApplication.appConfig.isAppLockOn() && !TextUtils.isEmpty(
@@ -91,6 +99,8 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         Log.d(TAG, "onDestroy")
         super.onDestroy()
 
+        if (needRegisterEvent()) EventBus.getDefault().unregister(this)
+
         presenter.onDestroy()
     }
 
@@ -117,9 +127,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         return super.dispatchTouchEvent(ev)
     }
 
-    /**
-     * 跳转到图片浏览界面
-     */
     fun turnToImageBrowserActivity(imageUrlList: ArrayList<String>, selectImageUrl: String, editable: Boolean)
     {
         val intent = Intent(this, ImageBrowserActivity::class.java)
@@ -131,12 +138,35 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         startActivity(intent)
     }
 
-    /**
-     * 跳转到锁屏界面
-     */
     private fun turnToLockActivity()
     {
         val intent = Intent(this, LockActivity::class.java)
         startActivity(intent)
+    }
+
+    fun turnToSettingActivity()
+    {
+        val intent = Intent(this, SettingActivity::class.java)
+        startActivity(intent)
+    }
+
+    protected fun getTopFragment(): BaseFragment<*>?
+    {
+        if (supportFragmentManager.primaryNavigationFragment == null)
+        {
+            return null
+        }
+
+        if (supportFragmentManager.primaryNavigationFragment!!.childFragmentManager.fragments.isEmpty())
+        {
+            return null
+        }
+
+        return supportFragmentManager.primaryNavigationFragment!!.childFragmentManager.fragments[0] as BaseFragment<*>
+    }
+
+    override fun getDelegate(): AppCompatDelegate
+    {
+        return SkinAppCompatDelegateImpl.get(this, this)
     }
 }

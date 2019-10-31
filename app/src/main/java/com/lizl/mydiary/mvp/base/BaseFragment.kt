@@ -44,8 +44,6 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
     {
         Log.d(TAG, "onStart")
         super.onStart()
-
-        if (needRegisterEvent() && !EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this)
     }
 
     override fun onResume()
@@ -71,7 +69,6 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
         Log.d(TAG, "onDestroyView")
         super.onDestroyView()
 
-        if (needRegisterEvent()) EventBus.getDefault().unregister(this)
         presenter.onDestroy()
     }
 
@@ -88,10 +85,6 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
     abstract fun initView()
 
     abstract fun initTitleBar()
-
-    abstract fun onBackPressed(): Boolean
-
-    abstract fun needRegisterEvent(): Boolean
 
     protected fun backToPreFragment()
     {
@@ -110,7 +103,7 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
         turnToFragment(fragmentId, null)
     }
 
-    protected fun turnToFragment(fragmentId: Int, bundle: Bundle?)
+    private fun turnToFragment(fragmentId: Int, bundle: Bundle?)
     {
         try
         {

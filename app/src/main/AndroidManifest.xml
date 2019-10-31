@@ -32,6 +32,10 @@
 
         <activity android:name=".mvp.activity.LockActivity" />
 
+        <activity android:name=".mvp.activity.SettingActivity" />
+
+        <activity android:name=".mvp.activity.DiaryContentActivity" />
+
         <!--知乎图片选择器，适配7.0系统-->
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -1,12 +1,12 @@
 package com.lizl.mydiary.mvp.presenter
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.DiaryBean
-import com.lizl.mydiary.mvp.contract.DiaryContentFragmentContract
+import com.lizl.mydiary.mvp.contract.DiaryContentContract
 import com.lizl.mydiary.util.AppDatabase
 import com.lizl.mydiary.util.FileUtil
 import com.lizl.mydiary.util.MyGlideEngine
@@ -18,7 +18,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class DiaryContentFragmentPresenter(private var view: DiaryContentFragmentContract.View?) : DiaryContentFragmentContract.Presenter
+class DiaryContentPresenter(private var view: DiaryContentContract.View?) : DiaryContentContract.Presenter
 {
 
     private val REQUEST_CODE_SELECT_IMAGE = 23
@@ -69,7 +69,7 @@ class DiaryContentFragmentPresenter(private var view: DiaryContentFragmentContra
         }
     }
 
-    override fun selectImage(context: Fragment, maxCount: Int)
+    override fun selectImage(context: Activity, maxCount: Int)
     {
         Matisse.from(context).choose(MimeType.ofImage()) //照片视频全部显示MimeType.allOf()
             .countable(true) //true:选中后显示数字;false:选中后显示对号

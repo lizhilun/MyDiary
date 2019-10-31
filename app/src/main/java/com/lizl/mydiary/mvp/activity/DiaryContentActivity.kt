@@ -1,4 +1,4 @@
-package com.lizl.mydiary.mvp.fragment
+package com.lizl.mydiary.mvp.activity
 
 import android.Manifest
 import android.content.Intent
@@ -6,18 +6,19 @@ import android.text.TextUtils
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.blankj.utilcode.util.TimeUtils
+import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.DiaryImageListAdapter
 import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.event.DeleteImageEvent
 import com.lizl.mydiary.mvp.base.BaseActivity
-import com.lizl.mydiary.mvp.base.BaseFragment
-import com.lizl.mydiary.mvp.contract.DiaryContentFragmentContract
-import com.lizl.mydiary.mvp.presenter.DiaryContentFragmentPresenter
+import com.lizl.mydiary.mvp.contract.DiaryContentContract
+import com.lizl.mydiary.mvp.presenter.DiaryContentPresenter
 import com.lizl.mydiary.util.AppConstant
 import com.lizl.mydiary.util.DialogUtil
 import com.lizl.mydiary.util.UiUtil
-import kotlinx.android.synthetic.main.fragment_diary_content.*
+import kotlinx.android.synthetic.main.activity_diary_content.*
+import kotlinx.android.synthetic.main.activity_main.ctb_title
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import permissions.dispatcher.NeedsPermission
@@ -27,9 +28,8 @@ import permissions.dispatcher.RuntimePermissions
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 @RuntimePermissions
-class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), DiaryContentFragmentContract.View
+class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContentContract.View
 {
 
     private lateinit var diaryImageListAdapter: DiaryImageListAdapter
@@ -38,20 +38,36 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
 
     private var inEditMode = false
 
-    override fun getLayoutResId() = com.lizl.mydiary.R.layout.fragment_diary_content
+    override fun getLayoutResId() = R.layout.activity_diary_content
 
-    override fun initPresenter() = DiaryContentFragmentPresenter(this)
+    override fun initPresenter() = DiaryContentPresenter(this)
 
-    override fun initTitleBar()
+    override fun needRegisterEvent() = true
+
+    override fun initView()
     {
+        diaryBean = intent?.getSerializableExtra(AppConstant.BUNDLE_DATA_OBJECT) as DiaryBean?
+        inEditMode = diaryBean == null
+
+        diaryImageListAdapter = DiaryImageListAdapter(inEditMode, 9)
+        rv_image_list.layoutManager = GridLayoutManager(this, 3)
+        rv_image_list.adapter = diaryImageListAdapter
+
+        diaryImageListAdapter.setOnAddImageBtnClickListener { selectImageWithPermissionCheck() }
+
+        diaryImageListAdapter.setOnImageClickListener {
+            val imageList = arrayListOf<String>()
+            imageList.addAll(diaryImageListAdapter.getImageList())
+            turnToImageBrowserActivity(imageList, it, inEditMode)
+        }
+
         ctb_title.setOnBackBtnClickListener {
             if (inEditMode)
             {
                 if (isEmptyDiary())
                 {
-                    DialogUtil.showOperationConfirmDialog(context!!, getString(com.lizl.mydiary.R.string.notify),
-                            getString(com.lizl.mydiary.R.string.notify_empty_diary_cannot_save)) {
-                        backToPreFragment()
+                    DialogUtil.showOperationConfirmDialog(this, getString(R.string.notify), getString(R.string.notify_empty_diary_cannot_save)) {
+                        super.onBackPressed()
                     }
                     return@setOnBackBtnClickListener
                 }
@@ -59,7 +75,7 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
             }
             else
             {
-                backToPreFragment()
+                super.onBackPressed()
             }
         }
 
@@ -71,9 +87,9 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
             {
                 return@setOnTitleClickListener
             }
-            DialogUtil.showDatePickerDialog(context!!, dateBean.year, dateBean.month - 1, dateBean.day) { _, year, month, dayOfMonth ->
+            DialogUtil.showDatePickerDialog(this, dateBean.year, dateBean.month - 1, dateBean.day) { _, year, month, dayOfMonth ->
                 run {
-                    DialogUtil.showTimePickerDialog(context!!, dateBean.hour, dateBean.minute) { _, hourOfDay, minute ->
+                    DialogUtil.showTimePickerDialog(this, dateBean.hour, dateBean.minute) { _, hourOfDay, minute ->
                         run {
                             val simpleDateFormat = SimpleDateFormat("yyyy MM dd HH mm", Locale.getDefault())
                             val date = simpleDateFormat.parse("$year ${month + 1} $dayOfMonth $hourOfDay $minute")
@@ -83,25 +99,6 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
                     }
                 }
             }
-        }
-    }
-
-    override fun initView()
-    {
-        val bundle = arguments
-        diaryBean = bundle?.getSerializable(AppConstant.BUNDLE_DATA_OBJECT) as DiaryBean?
-        inEditMode = diaryBean == null
-
-        diaryImageListAdapter = DiaryImageListAdapter(inEditMode, 9)
-        rv_image_list.layoutManager = GridLayoutManager(context, 3)
-        rv_image_list.adapter = diaryImageListAdapter
-
-        diaryImageListAdapter.setOnAddImageBtnClickListener { selectImageWithPermissionCheck() }
-
-        diaryImageListAdapter.setOnImageClickListener {
-            val imageList = arrayListOf<String>()
-            imageList.addAll(diaryImageListAdapter.getImageList())
-            (activity as BaseActivity<*>).turnToImageBrowserActivity(imageList, it, inEditMode)
         }
 
         fab_edit_diary.setOnClickListener { showEditView() }
@@ -128,21 +125,21 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
     fun selectImage()
     {
-        presenter.selectImage(this@DiaryContentFragment, 9 - diaryImageListAdapter.getImageList().size)
+        presenter.selectImage(this, 9 - diaryImageListAdapter.getImageList().size)
     }
 
     @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
     fun onPermissionDenied()
     {
-        DialogUtil.showOperationConfirmDialog(context!!, getString(com.lizl.mydiary.R.string.notify_failed_to_get_permission),
-                getString(com.lizl.mydiary.R.string.notify_permission_be_refused)) { selectImageWithPermissionCheck() }
+        DialogUtil.showOperationConfirmDialog(this, getString(R.string.notify_failed_to_get_permission),
+                getString(R.string.notify_permission_be_refused)) { selectImageWithPermissionCheck() }
     }
 
     @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
     fun onPermissionNeverAskAgain()
     {
-        DialogUtil.showOperationConfirmDialog(context!!, getString(com.lizl.mydiary.R.string.notify_failed_to_get_permission),
-                getString(com.lizl.mydiary.R.string.notify_permission_be_refused_and_never_ask_again)) { UiUtil.goToAppDetailPage() }
+        DialogUtil.showOperationConfirmDialog(this, getString(R.string.notify_failed_to_get_permission),
+                getString(R.string.notify_permission_be_refused_and_never_ask_again)) { UiUtil.goToAppDetailPage() }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray)
@@ -154,7 +151,7 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
 
     override fun onDiarySaving()
     {
-        DialogUtil.showLoadingDialog(context!!, getString(com.lizl.mydiary.R.string.in_save))
+        DialogUtil.showLoadingDialog(this, getString(R.string.in_save))
     }
 
     override fun onDiarySaveSuccess()
@@ -162,7 +159,7 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
         DialogUtil.dismissDialog()
         if (diaryBean == null)
         {
-            backToPreFragment()
+            super.onBackPressed()
         }
         else
         {
@@ -181,7 +178,7 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
         et_diary_content.isEnabled = true
         diaryImageListAdapter.setEditable(true)
         fab_edit_diary.isVisible = false
-        ctb_title.setBackBtnRedId(com.lizl.mydiary.R.mipmap.ic_confirm)
+        ctb_title.setBackBtnRedId(R.mipmap.ic_confirm)
 
         et_diary_content.setSelection(et_diary_content.text.toString().length)
         UiUtil.showInputKeyboard(et_diary_content)
@@ -193,20 +190,19 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
         et_diary_content.isEnabled = false
         diaryImageListAdapter.setEditable(false)
         fab_edit_diary.isVisible = true
-        ctb_title.setBackBtnRedId(com.lizl.mydiary.R.mipmap.ic_back)
+        ctb_title.setBackBtnRedId(R.mipmap.ic_back)
     }
 
-    override fun onBackPressed(): Boolean
+    override fun onBackPressed()
     {
         if (inEditMode && isDiaryModified(diaryBean))
         {
-            DialogUtil.showOperationConfirmDialog(context!!, getString(com.lizl.mydiary.R.string.notify),
-                    getString(com.lizl.mydiary.R.string.notify_diary_has_not_save_sure_to_quit)) {
-                backToPreFragment()
+            DialogUtil.showOperationConfirmDialog(this, getString(R.string.notify), getString(R.string.notify_diary_has_not_save_sure_to_quit)) {
+                super.onBackPressed()
             }
-            return true
+            return
         }
-        return false
+        super.onBackPressed()
     }
 
     private fun isEmptyDiary() = TextUtils.isEmpty(et_diary_content.text.toString()) && diaryImageListAdapter.getImageList().isNullOrEmpty()
@@ -228,6 +224,4 @@ class DiaryContentFragment : BaseFragment<DiaryContentFragmentPresenter>(), Diar
     {
         diaryImageListAdapter.deleteImage(deleteImageEvent.imagePath)
     }
-
-    override fun needRegisterEvent() = true
 }

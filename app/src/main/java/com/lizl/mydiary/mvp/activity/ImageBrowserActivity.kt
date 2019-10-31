@@ -20,6 +20,8 @@ class ImageBrowserActivity : BaseActivity<EmptyPresenter>()
 
     override fun initPresenter() = EmptyPresenter()
 
+    override fun needRegisterEvent() = false
+
     override fun initView()
     {
         val bundle = intent.extras!!

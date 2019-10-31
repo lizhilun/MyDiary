@@ -67,8 +67,4 @@ class BackupFileListFragment : BaseFragment<BackupFileListFragmentPresenter>(), 
 
         DialogUtil.showOperationListDialog(activity as Context, operationList)
     }
-
-    override fun onBackPressed() = false
-
-    override fun needRegisterEvent() = false
 }
