@@ -1,9 +1,11 @@
 package com.lizl.mydiary.mvp.activity
 
 import android.content.Intent
+import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lizl.mydiary.R
+import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.adapter.DiaryListAdapter
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.OperationItem
@@ -29,6 +31,14 @@ class MainActivity : BaseActivity<DiaryListFragmentPresenter>(), DiaryListFragme
     override fun initPresenter() = DiaryListFragmentPresenter(this)
 
     override fun needRegisterEvent() = true
+
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
+        super.onCreate(savedInstanceState)
+
+        // Activity走onCreate()将上次应用停止时间置为0，保证onResume()会走是否显示锁定界面流程
+        UiApplication.appConfig.setAppLastStopTime(0)
+    }
 
     override fun initView()
     {

@@ -27,7 +27,7 @@
 
     <color name="color_number_key_text">@color/colorTextColor</color>
     <color name="color_number_key_divide">@color/colorDivideLine</color>
-    <color name="color_number_key_bg">@color/white</color>
+    <color name="color_number_key_bg">#FFFFFF</color>
 
     <color name="color_setting_item_bg">#FFFFFF</color>
     <color name="color_diary_card_bg">#FFFFFF</color>
