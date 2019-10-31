@@ -57,7 +57,7 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         titleTextView = SkinCompatTextView(context)
         titleTextView.id = generateViewId()
         titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.resources.getDimension(R.dimen.toolbar_title_text_size))
-        titleTextView.setTextColor(ContextCompat.getColor(context, R.color.white))
+        titleTextView.setTextColor(ContextCompat.getColor(context, R.color.color_toolbar_text))
         titleTextView.gravity = Gravity.CENTER_VERTICAL
         addView(titleTextView)
 
@@ -68,7 +68,7 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         searchEditText = SkinCompatEditText(context)
         searchEditText.id = generateViewId()
         searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.resources.getDimension(R.dimen.toolbar_title_text_size))
-        searchEditText.setTextColor(ContextCompat.getColor(context, R.color.white))
+        searchEditText.setTextColor(ContextCompat.getColor(context, R.color.color_toolbar_text))
         searchEditText.gravity = Gravity.CENTER_VERTICAL
         searchEditText.setLines(1)
         searchEditText.background = null
