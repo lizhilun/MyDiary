@@ -109,6 +109,14 @@ abstract class BaseAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter<BaseVi
         }
     }
 
+    fun add(`object`: T, index: Int)
+    {
+        synchronized(this.mLock) {
+            mData.add(index, `object`)
+            this.notifyItemInserted(index)
+        }
+    }
+
     fun addAll(collection: Collection<T>)
     {
         synchronized(this.mLock) {

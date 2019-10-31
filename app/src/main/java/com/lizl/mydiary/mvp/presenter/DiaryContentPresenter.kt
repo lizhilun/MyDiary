@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.DiaryBean
+import com.lizl.mydiary.event.DiarySaveEvent
 import com.lizl.mydiary.mvp.contract.DiaryContentContract
 import com.lizl.mydiary.util.AppDatabase
 import com.lizl.mydiary.util.FileUtil
@@ -16,6 +17,7 @@ import com.zhihu.matisse.internal.entity.CaptureStrategy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 
 
 class DiaryContentPresenter(private var view: DiaryContentContract.View?) : DiaryContentContract.Presenter
@@ -66,6 +68,8 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
             GlobalScope.launch(Dispatchers.Main) {
                 view?.onDiarySaveSuccess()
             }
+
+            EventBus.getDefault().post(DiarySaveEvent(saveDiaryBean))
         }
     }
 

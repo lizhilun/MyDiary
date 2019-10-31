@@ -8,6 +8,7 @@ import com.lizl.mydiary.adapter.DiaryListAdapter
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.OperationItem
 import com.lizl.mydiary.bean.TitleBarBtnBean
+import com.lizl.mydiary.event.DiarySaveEvent
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.DiaryListFragmentContract
 import com.lizl.mydiary.mvp.presenter.DiaryListFragmentPresenter
@@ -15,6 +16,8 @@ import com.lizl.mydiary.util.AppConstant
 import com.lizl.mydiary.util.DialogUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_diary_list_herder.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class MainActivity : BaseActivity<DiaryListFragmentPresenter>(), DiaryListFragmentContract.View
 {
@@ -25,7 +28,7 @@ class MainActivity : BaseActivity<DiaryListFragmentPresenter>(), DiaryListFragme
 
     override fun initPresenter() = DiaryListFragmentPresenter(this)
 
-    override fun needRegisterEvent() = false
+    override fun needRegisterEvent() = true
 
     override fun initView()
     {
@@ -102,5 +105,16 @@ class MainActivity : BaseActivity<DiaryListFragmentPresenter>(), DiaryListFragme
             return
         }
         super.onBackPressed()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onDiarySave(diarySaveEvent: DiarySaveEvent)
+    {
+        val findDiaryBean = diaryListAdapter.getData().find { it.id == diarySaveEvent.diaryBean.id }
+        if (findDiaryBean != null)
+        {
+            diaryListAdapter.remove(findDiaryBean)
+        }
+        diaryListAdapter.insertDiary(diarySaveEvent.diaryBean)
     }
 }
