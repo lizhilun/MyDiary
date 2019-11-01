@@ -10,8 +10,6 @@ class SettingActivity : BaseActivity<EmptyPresenter>()
 
     override fun initPresenter() = EmptyPresenter()
 
-    override fun needRegisterEvent() = false
-
     override fun initView()
     {
 

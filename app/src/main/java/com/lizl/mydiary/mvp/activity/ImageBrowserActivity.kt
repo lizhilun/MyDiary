@@ -1,11 +1,11 @@
 package com.lizl.mydiary.mvp.activity
 
-import android.util.Log
 import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.ImageViewPagerAdapter
-import com.lizl.mydiary.event.DeleteImageEvent
+import com.lizl.mydiary.event.EventConstant
+import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.presenter.EmptyPresenter
 import com.lizl.mydiary.util.AppConstant
@@ -19,8 +19,6 @@ class ImageBrowserActivity : BaseActivity<EmptyPresenter>()
     override fun getLayoutResId() = R.layout.activity_image_browser
 
     override fun initPresenter() = EmptyPresenter()
-
-    override fun needRegisterEvent() = false
 
     override fun initView()
     {
@@ -65,7 +63,7 @@ class ImageBrowserActivity : BaseActivity<EmptyPresenter>()
             val currentIndex = vp_image_list.currentItem
             val imagePath = imageList.removeAt(currentIndex)
             imageViewPagerAdapter.notifyDataSetChanged()
-            EventBus.getDefault().post(DeleteImageEvent(imagePath))
+            EventBus.getDefault().post(UIEvent(EventConstant.UI_EVENT_DELETE_DIARY_IMAGE, imagePath))
 
             when (imageList.size)
             {

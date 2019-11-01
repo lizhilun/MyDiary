@@ -1,5 +1,6 @@
 package com.lizl.mydiary.mvp.presenter
 
+import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.contract.SettingFragmentContract
 import com.lizl.mydiary.util.BackupUtil
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +21,11 @@ class SettingFragmentPresenter(private var view: SettingFragmentContract.View?) 
                 }
             }
         }
+    }
+
+    override fun handleUIEvent(uiEvent: UIEvent)
+    {
+
     }
 
     override fun onDestroy()

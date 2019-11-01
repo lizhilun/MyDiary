@@ -13,6 +13,8 @@ import androidx.appcompat.app.SkinAppCompatDelegateImpl
 import com.blankj.utilcode.util.BarUtils
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.config.ConfigConstant
+import com.lizl.mydiary.event.EventConstant
+import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.activity.ImageBrowserActivity
 import com.lizl.mydiary.mvp.activity.LockActivity
 import com.lizl.mydiary.mvp.activity.SettingActivity
@@ -20,6 +22,8 @@ import com.lizl.mydiary.util.AppConstant
 import com.lizl.mydiary.util.SkinUtil
 import com.lizl.mydiary.util.UiUtil
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
 {
@@ -33,8 +37,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
 
     abstract fun initView()
 
-    abstract fun needRegisterEvent(): Boolean
-
     override fun onCreate(savedInstanceState: Bundle?)
     {
         Log.d(TAG, "onCreate")
@@ -42,6 +44,8 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         setContentView(getLayoutResId())
 
         BarUtils.addMarginTopEqualStatusBarHeight(findViewById<ViewGroup>(android.R.id.content).getChildAt(0))
+
+        SkinUtil.instance.loadSkin(this)
 
         presenter = initPresenter()
 
@@ -59,9 +63,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         Log.d(TAG, "onStart")
         super.onStart()
 
-        SkinUtil.instance.loadSkin(this)
-
-        if (needRegisterEvent() && !EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this)
+        if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this)
 
         // 密码保护打开并且应用超时的情况
         if (this !is LockActivity && UiApplication.appConfig.isAppLockOn() && !TextUtils.isEmpty(
@@ -100,7 +102,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         Log.d(TAG, "onDestroy")
         super.onDestroy()
 
-        if (needRegisterEvent()) EventBus.getDefault().unregister(this)
+        EventBus.getDefault().unregister(this)
 
         presenter.onDestroy()
     }
@@ -169,5 +171,15 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     override fun getDelegate(): AppCompatDelegate
     {
         return SkinAppCompatDelegateImpl.get(this, this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUiEvent(uiEvent: UIEvent)
+    {
+        when (uiEvent.event)
+        {
+            EventConstant.UI_EVENT_NIGHT_MODE_CHANGE -> SkinUtil.instance.loadSkin(this)
+            else                                     -> presenter.handleUIEvent(uiEvent)
+        }
     }
 }

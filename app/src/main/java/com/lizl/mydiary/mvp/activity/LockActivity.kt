@@ -23,8 +23,6 @@ class LockActivity : BaseActivity<EmptyContract.Presenter>(), NumberKeyGridAdapt
 
     override fun initPresenter() = EmptyPresenter()
 
-    override fun needRegisterEvent() = false
-
     override fun initView()
     {
         val numberKeyList: List<String> = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "#")

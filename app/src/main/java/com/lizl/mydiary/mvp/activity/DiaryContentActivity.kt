@@ -10,7 +10,6 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.DiaryImageListAdapter
 import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
-import com.lizl.mydiary.event.DeleteImageEvent
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.DiaryContentContract
 import com.lizl.mydiary.mvp.presenter.DiaryContentPresenter
@@ -19,8 +18,6 @@ import com.lizl.mydiary.util.DialogUtil
 import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.activity_diary_content.*
 import kotlinx.android.synthetic.main.activity_main.ctb_title
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
@@ -41,8 +38,6 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
     override fun getLayoutResId() = R.layout.activity_diary_content
 
     override fun initPresenter() = DiaryContentPresenter(this)
-
-    override fun needRegisterEvent() = true
 
     override fun initView()
     {
@@ -149,6 +144,11 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         onRequestPermissionsResult(requestCode, grantResults)
     }
 
+    override fun onImageDelete(imagePath: String)
+    {
+        diaryImageListAdapter.deleteImage(imagePath)
+    }
+
     override fun onDiarySaving()
     {
         DialogUtil.showLoadingDialog(this, getString(R.string.in_save))
@@ -217,11 +217,5 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         {
             diaryBean.content != et_diary_content.text.toString() || diaryBean.imageList != diaryImageListAdapter.getImageList()
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onImageDelete(deleteImageEvent: DeleteImageEvent)
-    {
-        diaryImageListAdapter.deleteImage(deleteImageEvent.imagePath)
     }
 }

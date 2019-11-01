@@ -2,24 +2,28 @@ package com.lizl.mydiary.mvp.fragment
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.blankj.utilcode.util.ToastUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.BackupFileListAdapter
 import com.lizl.mydiary.bean.OperationItem
+import com.lizl.mydiary.event.EventConstant
+import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.base.BaseFragment
-import com.lizl.mydiary.mvp.contract.BackupFileListFragmentContract
-import com.lizl.mydiary.mvp.presenter.BackupFileListFragmentPresenter
+import com.lizl.mydiary.mvp.contract.BackupFileListContract
+import com.lizl.mydiary.mvp.presenter.BackupFileListPresenter
 import com.lizl.mydiary.util.DialogUtil
 import kotlinx.android.synthetic.main.fragment_backup_file_list.*
+import org.greenrobot.eventbus.EventBus
 import java.io.File
 
-class BackupFileListFragment : BaseFragment<BackupFileListFragmentPresenter>(), BackupFileListFragmentContract.View
+class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFileListContract.View
 {
 
     override fun getLayoutResId() = R.layout.fragment_backup_file_list
 
     private lateinit var backupFileListAdapter: BackupFileListAdapter
 
-    override fun initPresenter() = BackupFileListFragmentPresenter(this)
+    override fun initPresenter() = BackupFileListPresenter(this)
 
     override fun initTitleBar()
     {
@@ -54,6 +58,11 @@ class BackupFileListFragment : BaseFragment<BackupFileListFragmentPresenter>(), 
 
     override fun onRestoreDataFinish(result: Boolean)
     {
+        if (result)
+        {
+            EventBus.getDefault().post(UIEvent(EventConstant.UI_EVENT_IMPORT_DIARY_DATA))
+        }
+        ToastUtils.showShort(if (result) R.string.success_to_restore_data else R.string.failed_to_restore_data)
         DialogUtil.dismissDialog()
     }
 

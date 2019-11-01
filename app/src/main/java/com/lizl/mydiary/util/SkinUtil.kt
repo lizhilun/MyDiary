@@ -26,10 +26,10 @@ class SkinUtil
     fun init(application: Application)
     {
         SkinCompatManager.withoutActivity(application)                         // 基础控件换肤初始化
-            .addInflater(SkinMaterialViewInflater())            // material design 控件换肤初始化[可选]
-            .addInflater(SkinConstraintViewInflater())          // ConstraintLayout 控件换肤初始化[可选]
-            .addInflater(SkinCardViewInflater())                // CardView v7 控件换肤初始化[可选]
-            .setSkinWindowBackgroundEnable(true)                   // 关闭windowBackground换肤，默认打开[可选]
+                .addInflater(SkinMaterialViewInflater())            // material design 控件换肤初始化[可选]
+                .addInflater(SkinConstraintViewInflater())          // ConstraintLayout 控件换肤初始化[可选]
+                .addInflater(SkinCardViewInflater())                // CardView v7 控件换肤初始化[可选]
+                .setSkinWindowBackgroundEnable(true)                   // 关闭windowBackground换肤，默认打开[可选]
     }
 
     fun loadSkin(activity: Activity)
@@ -44,13 +44,13 @@ class SkinUtil
         }
     }
 
-    fun loadDefaultSkin(activity: Activity)
+    private fun loadDefaultSkin(activity: Activity)
     {
         SkinCompatManager.getInstance().restoreDefaultTheme()
         BarUtils.setStatusBarColor(activity, ContextCompat.getColor(activity, R.color.colorPrimary))
     }
 
-    fun loadNightSkin(activity: Activity)
+    private fun loadNightSkin(activity: Activity)
     {
         SkinCompatManager.getInstance().loadSkin("night", SkinCompatManager.SKIN_LOADER_STRATEGY_BUILD_IN)
         BarUtils.setStatusBarColor(activity, ContextCompat.getColor(activity, R.color.colorPrimary_night))

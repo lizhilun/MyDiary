@@ -63,6 +63,11 @@ class FileUtil
             return savePath
         }
 
+        fun deleleFiles(fileList: List<File>)
+        {
+            fileList.forEach { FileUtils.delete(it) }
+        }
+
         /**
          * 删除文件
          */

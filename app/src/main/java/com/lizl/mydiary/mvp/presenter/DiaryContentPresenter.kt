@@ -6,7 +6,8 @@ import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.DiaryBean
-import com.lizl.mydiary.event.DiarySaveEvent
+import com.lizl.mydiary.event.EventConstant
+import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.contract.DiaryContentContract
 import com.lizl.mydiary.util.AppDatabase
 import com.lizl.mydiary.util.FileUtil
@@ -71,7 +72,7 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
                 view?.onDiarySaveSuccess()
             }
 
-            EventBus.getDefault().post(DiarySaveEvent(saveDiaryBean))
+            EventBus.getDefault().post(UIEvent(EventConstant.UI_EVENT_DIARY_SAVE_SUCCESS, saveDiaryBean))
         }
     }
 
@@ -114,6 +115,20 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
 
             GlobalScope.launch(Dispatchers.Main) {
                 view?.onImageSelectedFinish(imageList)
+            }
+        }
+    }
+
+    override fun handleUIEvent(uiEvent: UIEvent)
+    {
+        when (uiEvent.event)
+        {
+            EventConstant.UI_EVENT_DELETE_DIARY_IMAGE ->
+            {
+                if (uiEvent.value is String)
+                {
+                    view?.onImageDelete(uiEvent.value)
+                }
             }
         }
     }

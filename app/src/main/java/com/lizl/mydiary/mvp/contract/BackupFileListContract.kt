@@ -4,7 +4,7 @@ import com.lizl.mydiary.mvp.base.BasePresenter
 import com.lizl.mydiary.mvp.base.BaseView
 import java.io.File
 
-class BackupFileListFragmentContract
+class BackupFileListContract
 {
     interface View : BaseView
     {

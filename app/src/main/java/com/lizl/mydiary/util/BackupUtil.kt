@@ -70,6 +70,7 @@ class BackupUtil
                     val diaryTxtFile = File(backupTempDiaryFilePath)
                     if (!diaryTxtFile.exists())
                     {
+                        FileUtil.deleteFile(backupTempFilePath)
                         callback.invoke(false)
                         return@launch
                     }
@@ -86,10 +87,12 @@ class BackupUtil
                         }
                     }
                     AppDatabase.instance.getDiaryDao().insertList(saveDiaryList)
+                    FileUtil.deleteFile(backupTempFilePath)
                     callback.invoke(true)
                 }
                 catch (e: Exception)
                 {
+                    FileUtil.deleteFile(backupTempFilePath)
                     callback.invoke(false)
                 }
             }

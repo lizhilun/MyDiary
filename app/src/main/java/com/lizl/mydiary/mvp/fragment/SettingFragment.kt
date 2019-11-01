@@ -9,14 +9,16 @@ import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.adapter.SettingListAdapter
 import com.lizl.mydiary.bean.SettingBean
 import com.lizl.mydiary.config.ConfigConstant
+import com.lizl.mydiary.event.EventConstant
+import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.contract.SettingFragmentContract
 import com.lizl.mydiary.mvp.presenter.SettingFragmentPresenter
 import com.lizl.mydiary.util.BiometricAuthenticationUtil
 import com.lizl.mydiary.util.DialogUtil
-import com.lizl.mydiary.util.SkinUtil
 import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.fragment_setting.*
+import org.greenrobot.eventbus.EventBus
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
@@ -70,9 +72,8 @@ class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmen
 
         settingList.add(SettingBean.SettingDivideBean())
 
-        val fingerprintItem = SettingBean.SettingBooleanBean(
-            getString(R.string.setting_fingerprint), ConfigConstant.IS_FINGERPRINT_LOCK_ON, ConfigConstant.DEFAULT_IS_FINGERPRINT_LOCK_ON, true
-        ) { result, bean -> }
+        val fingerprintItem = SettingBean.SettingBooleanBean(getString(R.string.setting_fingerprint), ConfigConstant.IS_FINGERPRINT_LOCK_ON,
+                ConfigConstant.DEFAULT_IS_FINGERPRINT_LOCK_ON, true) { result, bean -> }
 
         val modifyPasswordItem = SettingBean.SettingNormalBean(getString(R.string.setting_modify_password)) {
             DialogUtil.showModifyPasswordDialog(context!!, UiApplication.appConfig.getAppLockPassword()) {
@@ -80,12 +81,8 @@ class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmen
             }
         }
 
-        settingList.add(SettingBean.SettingBooleanBean(
-            getString(R.string.setting_app_lock),
-            settingKey = ConfigConstant.IS_APP_LOCK_ON,
-            defaultValue = ConfigConstant.DEFAULT_IS_APP_LOCK_ON,
-            needSave = false
-        ) { result, bean ->
+        settingList.add(SettingBean.SettingBooleanBean(getString(R.string.setting_app_lock), settingKey = ConfigConstant.IS_APP_LOCK_ON,
+                defaultValue = ConfigConstant.DEFAULT_IS_APP_LOCK_ON, needSave = false) { result, bean ->
             if (result)
             {
                 val onInputFinishListener: (String) -> Unit = {
@@ -96,7 +93,8 @@ class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmen
                     {
                         settingAdapter.insert(fingerprintItem, settingAdapter.getPosition(bean) + 1)
                         settingAdapter.insert(modifyPasswordItem, settingAdapter.getPosition(bean) + 2)
-                    } else
+                    }
+                    else
                     {
                         settingAdapter.insert(modifyPasswordItem, settingAdapter.getPosition(bean) + 1)
                     }
@@ -105,11 +103,13 @@ class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmen
                 if (TextUtils.isEmpty(UiApplication.appConfig.getAppLockPassword()))
                 {
                     DialogUtil.showSetPasswordDialog(context!!, onInputFinishListener)
-                } else
+                }
+                else
                 {
                     DialogUtil.showPasswordConfirmDialog(context!!, UiApplication.appConfig.getAppLockPassword(), onInputFinishListener)
                 }
-            } else
+            }
+            else
             {
                 DialogUtil.showPasswordConfirmDialog(context!!, UiApplication.appConfig.getAppLockPassword()) {
                     UiApplication.appConfig.setAppLockOn(false)
@@ -137,24 +137,17 @@ class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmen
 
         settingList.add(SettingBean.SettingDivideBean())
 
-        val qualityMap = mapOf(
-            ConfigConstant.IMAGE_SAVE_QUALITY_LOW to getString(R.string.low),
-            ConfigConstant.IMAGE_SAVE_QUALITY_MEDIUM to getString(R.string.medium),
-            (ConfigConstant.IMAGE_SAVE_QUALITY_ORIGINAL to getString(R.string.original))
-        )
-        settingList.add(SettingBean.SettingIntRadioBean(
-            getString(R.string.setting_image_save_quality), ConfigConstant.IMAGE_SAVE_QUALITY, ConfigConstant.DEFAULT_IMAGE_SAVE_QUALITY, qualityMap
-        ) {})
+        val qualityMap =
+            mapOf(ConfigConstant.IMAGE_SAVE_QUALITY_LOW to getString(R.string.low), ConfigConstant.IMAGE_SAVE_QUALITY_MEDIUM to getString(R.string.medium),
+                    (ConfigConstant.IMAGE_SAVE_QUALITY_ORIGINAL to getString(R.string.original)))
+        settingList.add(SettingBean.SettingIntRadioBean(getString(R.string.setting_image_save_quality), ConfigConstant.IMAGE_SAVE_QUALITY,
+                ConfigConstant.DEFAULT_IMAGE_SAVE_QUALITY, qualityMap) {})
 
         settingList.add(SettingBean.SettingDivideBean())
 
-        settingList.add(SettingBean.SettingBooleanBean(
-            settingName = getString(R.string.setting_night_mode),
-            settingKey = ConfigConstant.IS_NIGHT_MODE_ON,
-            defaultValue = ConfigConstant.DEFAULT_NIGHT_MODE_ON,
-            needSave = true
-        ) { result, bean ->
-            if (result) SkinUtil.instance.loadNightSkin(activity!!) else SkinUtil.instance.loadDefaultSkin(activity!!)
+        settingList.add(SettingBean.SettingBooleanBean(settingName = getString(R.string.setting_night_mode), settingKey = ConfigConstant.IS_NIGHT_MODE_ON,
+                defaultValue = ConfigConstant.DEFAULT_NIGHT_MODE_ON, needSave = true) { result, bean ->
+            EventBus.getDefault().post(UIEvent(EventConstant.UI_EVENT_NIGHT_MODE_CHANGE))
         })
 
         settingAdapter.addAll(settingList)
@@ -177,13 +170,13 @@ class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmen
     @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun onPermissionDenied()
     {
-        DialogUtil.showOperationConfirmDialog(
-            context!!, getString(R.string.notify_failed_to_get_permission), getString(R.string.notify_permission_be_refused)
-        ) {
+        DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify_failed_to_get_permission),
+                getString(R.string.notify_permission_be_refused)) {
             if (curWritePermissionsCode == REQUEST_BACKUPDIARYDATA)
             {
                 backupDiaryDataWithPermissionCheck()
-            } else if (curWritePermissionsCode == REQUEST_RESTOREDIARYDATA)
+            }
+            else if (curWritePermissionsCode == REQUEST_RESTOREDIARYDATA)
             {
                 restoreDiaryDataWithPermissionCheck()
             }
@@ -193,9 +186,8 @@ class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmen
     @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun onPermissionNeverAskAgain()
     {
-        DialogUtil.showOperationConfirmDialog(
-            context!!, getString(R.string.notify_failed_to_get_permission), getString(R.string.notify_permission_be_refused_and_never_ask_again)
-        ) { UiUtil.goToAppDetailPage() }
+        DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify_failed_to_get_permission),
+                getString(R.string.notify_permission_be_refused_and_never_ask_again)) { UiUtil.goToAppDetailPage() }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray)

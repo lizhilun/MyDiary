@@ -4,13 +4,15 @@ import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.mvp.base.BasePresenter
 import com.lizl.mydiary.mvp.base.BaseView
 
-class DiaryListFragmentContract
+class DiaryListContract
 {
     interface View : BaseView
     {
         fun onDiariesQueryFinish(diaryList: List<DiaryBean>)
 
         fun onDiaryDeleted(diaryBean: DiaryBean)
+
+        fun onDiaryInsert(diaryBean: DiaryBean)
 
         fun showDiarySearchResult(diaryList: List<DiaryBean>)
     }
