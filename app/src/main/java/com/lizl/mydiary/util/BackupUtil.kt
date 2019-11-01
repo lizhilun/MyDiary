@@ -79,7 +79,7 @@ class BackupUtil
                     val saveDiaryList = mutableListOf<DiaryBean>()
                     for (diaryBean in diaryList)
                     {
-                        val existBean = AppDatabase.instance.getDiaryDao().getDiaryByCreateTime(diaryBean.createTime)
+                        val existBean = AppDatabase.instance.getDiaryDao().getDiaryByUid(diaryBean.uid)
                         if (existBean == null)
                         {
                             saveDiaryList.add(diaryBean)

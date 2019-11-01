@@ -120,7 +120,7 @@ class MainActivity : BaseActivity<DiaryListFragmentPresenter>(), DiaryListFragme
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onDiarySave(diarySaveEvent: DiarySaveEvent)
     {
-        val findDiaryBean = diaryListAdapter.getData().find { it.id == diarySaveEvent.diaryBean.id }
+        val findDiaryBean = diaryListAdapter.getData().find { it.uid == diarySaveEvent.diaryBean.uid }
         if (findDiaryBean != null)
         {
             diaryListAdapter.remove(findDiaryBean)

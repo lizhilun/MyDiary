@@ -11,8 +11,8 @@ import java.io.Serializable
 @TypeConverters(StringToObjectConverter::class)
 class DiaryBean : Serializable
 {
-    @PrimaryKey(autoGenerate = true)
-    var id = 0
+    @PrimaryKey
+    var uid = ""
 
     @ColumnInfo
     var createTime = 0L
