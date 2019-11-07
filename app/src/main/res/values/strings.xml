@@ -33,6 +33,7 @@
     <string name="setting_restore">还原数据</string>
     <string name="setting_image_save_quality">图片保存质量</string>
     <string name="setting_night_mode">夜间模式</string>
+    <string name="setting_usage_statistics">使用统计</string>
 
     <string name="low">低</string>
     <string name="medium">中等</string>
@@ -64,4 +65,8 @@
     <string name="in_restore_data">还原数据中</string>
     <string name="success_to_restore_data">还原数据成功</string>
     <string name="failed_to_restore_data">还原数据失败</string>
+
+    <string name="diary_count">已记录</string>
+    <string name="word_count">总字数</string>
+    <string name="image_count">图片</string>
 </resources>

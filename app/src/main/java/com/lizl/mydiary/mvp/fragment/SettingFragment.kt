@@ -138,8 +138,8 @@ class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmen
         settingList.add(SettingBean.SettingDivideBean())
 
         val qualityMap =
-            mapOf(ConfigConstant.IMAGE_SAVE_QUALITY_LOW to getString(R.string.low), ConfigConstant.IMAGE_SAVE_QUALITY_MEDIUM to getString(R.string.medium),
-                    (ConfigConstant.IMAGE_SAVE_QUALITY_ORIGINAL to getString(R.string.original)))
+                mapOf(ConfigConstant.IMAGE_SAVE_QUALITY_LOW to getString(R.string.low), ConfigConstant.IMAGE_SAVE_QUALITY_MEDIUM to getString(R.string.medium),
+                        (ConfigConstant.IMAGE_SAVE_QUALITY_ORIGINAL to getString(R.string.original)))
         settingList.add(SettingBean.SettingIntRadioBean(getString(R.string.setting_image_save_quality), ConfigConstant.IMAGE_SAVE_QUALITY,
                 ConfigConstant.DEFAULT_IMAGE_SAVE_QUALITY, qualityMap) {})
 
@@ -149,6 +149,10 @@ class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmen
                 defaultValue = ConfigConstant.DEFAULT_NIGHT_MODE_ON, needSave = true) { result, bean ->
             EventBus.getDefault().post(UIEvent(EventConstant.UI_EVENT_NIGHT_MODE_CHANGE))
         })
+
+        settingList.add(SettingBean.SettingDivideBean())
+
+        settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_usage_statistics)) { turnToFragment(R.id.usageStatisticsFragment) })
 
         settingAdapter.addAll(settingList)
     }

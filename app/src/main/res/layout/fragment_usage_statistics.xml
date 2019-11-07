@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<skin.support.constraint.SkinCompatConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.lizl.mydiary.custom.view.CustomTitleBar
+        android:id="@+id/ctb_title"
+        style="@style/ToolbarLayoutStyle"
+        android:layout_alignParentTop="true"
+        app:backBtnVisible="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleText="@string/setting_usage_statistics" />
+
+    <skin.support.widget.SkinCompatTextView
+        android:id="@+id/tv_diary_count_str"
+        style="@style/UsageStatisticsStrTextStyle"
+        android:layout_marginTop="40dp"
+        android:text="@string/diary_count"
+        app:layout_constraintEnd_toStartOf="@+id/tv_word_count_str"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ctb_title" />
+
+    <skin.support.widget.SkinCompatTextView
+        android:id="@+id/tv_diary_count"
+        style="@style/UsageStatisticsTextStyle"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_diary_count_str"
+        app:layout_constraintStart_toStartOf="@+id/tv_diary_count_str"
+        app:layout_constraintTop_toBottomOf="@+id/tv_diary_count_str" />
+
+    <skin.support.widget.SkinCompatTextView
+        android:id="@+id/tv_word_count_str"
+        style="@style/UsageStatisticsStrTextStyle"
+        android:text="@string/word_count"
+        app:layout_constraintEnd_toStartOf="@+id/tv_image_count_str"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@+id/tv_diary_count_str"
+        app:layout_constraintTop_toTopOf="@+id/tv_diary_count_str" />
+
+    <skin.support.widget.SkinCompatTextView
+        android:id="@+id/tv_word_count"
+        style="@style/UsageStatisticsTextStyle"
+        app:layout_constraintEnd_toEndOf="@+id/tv_word_count_str"
+        app:layout_constraintStart_toStartOf="@+id/tv_word_count_str"
+        app:layout_constraintTop_toBottomOf="@+id/tv_word_count_str"
+        app:layout_constraintTop_toTopOf="@+id/tv_diary_count" />
+
+    <skin.support.widget.SkinCompatTextView
+        android:id="@+id/tv_image_count_str"
+        style="@style/UsageStatisticsStrTextStyle"
+        android:text="@string/image_count"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@+id/tv_word_count_str"
+        app:layout_constraintTop_toTopOf="@+id/tv_diary_count_str" />
+
+    <skin.support.widget.SkinCompatTextView
+        android:id="@+id/tv_image_count"
+        style="@style/UsageStatisticsTextStyle"
+        app:layout_constraintEnd_toEndOf="@+id/tv_image_count_str"
+        app:layout_constraintStart_toStartOf="@+id/tv_image_count_str"
+        app:layout_constraintTop_toBottomOf="@+id/tv_image_count_str"
+        app:layout_constraintTop_toTopOf="@+id/tv_diary_count" />
+
+</skin.support.constraint.SkinCompatConstraintLayout>
