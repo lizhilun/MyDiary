@@ -40,6 +40,7 @@ class DiaryListAdapter : BaseAdapter<DiaryBean, DiaryListAdapter.ViewHolder>()
             itemView.tv_year_and_month.text = "${dateBean.year}.${dateBean.month}"
             itemView.tv_diary_content.text = diaryBean.content
             itemView.tv_hour_and_minute.text = dateBean.getHourAndMinute()
+            itemView.tv_word_count.text = "${UiUtil.sumStringWord(diaryBean.content)}${context.getString(R.string.word)}"
 
             UiUtil.clearTextViewAutoWrap(itemView.tv_diary_content)
 

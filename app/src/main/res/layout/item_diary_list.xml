@@ -91,6 +91,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_image_list" />
 
+            <skin.support.widget.SkinCompatTextView
+                android:id="@+id/tv_word_count"
+                style="@style/GlobalSecondaryTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/global_content_padding_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_hour_and_minute" />
+
         </skin.support.constraint.SkinCompatConstraintLayout>
     </skin.support.widget.SkinCompatCardView>
 

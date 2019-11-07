@@ -4,7 +4,10 @@ import android.text.TextUtils
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.TextView
-import com.blankj.utilcode.util.*
+import com.blankj.utilcode.util.ActivityUtils
+import com.blankj.utilcode.util.AppUtils
+import com.blankj.utilcode.util.KeyboardUtils
+import com.blankj.utilcode.util.ScreenUtils
 
 
 /**
@@ -133,6 +136,15 @@ class UiUtil
         fun getScreenHeight(): Int
         {
             return ScreenUtils.getScreenHeight()
+        }
+
+        /**
+         * 统计字数
+         */
+        fun sumStringWord(str: String): Int
+        {
+            return if (str.isEmpty()) 0
+            else str.replace("\n", "").replace(" ", "").length
         }
     }
 }
