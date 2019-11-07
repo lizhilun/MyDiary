@@ -10,6 +10,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.SkinAppCompatDelegateImpl
+import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.BarUtils
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.config.ConfigConstant
@@ -94,7 +95,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         Log.d(TAG, "onStop")
         super.onStop()
 
-        UiApplication.appConfig.setAppLastStopTime(System.currentTimeMillis())
+        if (!AppUtils.isAppForeground()) UiApplication.appConfig.setAppLastStopTime(System.currentTimeMillis())
     }
 
     override fun onDestroy()
@@ -151,21 +152,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     {
         val intent = Intent(this, SettingActivity::class.java)
         startActivity(intent)
-    }
-
-    protected fun getTopFragment(): BaseFragment<*>?
-    {
-        if (supportFragmentManager.primaryNavigationFragment == null)
-        {
-            return null
-        }
-
-        if (supportFragmentManager.primaryNavigationFragment!!.childFragmentManager.fragments.isEmpty())
-        {
-            return null
-        }
-
-        return supportFragmentManager.primaryNavigationFragment!!.childFragmentManager.fragments[0] as BaseFragment<*>
     }
 
     override fun getDelegate(): AppCompatDelegate

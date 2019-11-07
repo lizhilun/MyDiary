@@ -9,9 +9,7 @@ open class StringToObjectConverter
     @TypeConverter
     fun stringToObject(value: String): List<String>?
     {
-        val listType = object : TypeToken<List<String>>()
-        {}.type
-        return Gson().fromJson(value, listType)
+        return Gson().fromJson(value, object : TypeToken<List<String>>() {}.type)
     }
 
     @TypeConverter
