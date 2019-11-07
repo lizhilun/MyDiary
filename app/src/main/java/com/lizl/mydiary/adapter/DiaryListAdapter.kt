@@ -87,25 +87,22 @@ class DiaryListAdapter : BaseAdapter<DiaryBean, DiaryListAdapter.ViewHolder>()
         this.onDiaryItemLongClickListener = onDiaryItemLongClickListener
     }
 
-    fun updateDiary(diaryBean: DiaryBean)
-    {
-        remove(diaryBean)
-        insertDiary(diaryBean)
-    }
-
     fun insertDiary(diaryBean: DiaryBean)
     {
         var index = 0
-        if (diaryBean.createTime <= getItem(itemCount - 1).createTime)
+        if (itemCount > 0)
         {
-            index = itemCount
-        }
-        else for (i in 0 until itemCount - 1)
-        {
-            if (getItem(i).createTime >= diaryBean.createTime && getItem(i + 1).createTime <= diaryBean.createTime)
+            if (diaryBean.createTime <= getItem(itemCount - 1).createTime)
             {
-                index = i + 1
-                break
+                index = itemCount
+            }
+            else for (i in 0 until itemCount - 1)
+            {
+                if (getItem(i).createTime >= diaryBean.createTime && getItem(i + 1).createTime <= diaryBean.createTime)
+                {
+                    index = i + 1
+                    break
+                }
             }
         }
         add(diaryBean, index)
