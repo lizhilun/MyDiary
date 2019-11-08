@@ -71,8 +71,10 @@ class DiaryListPresenter(private var view: DiaryListContract.View?) : DiaryListC
                     val findDiaryBean = diaryList.find { it.uid == uiEvent.value.uid }
                     if (findDiaryBean != null)
                     {
+                        diaryList.remove(findDiaryBean)
                         view?.onDiaryDeleted(findDiaryBean)
                     }
+                    diaryList.add(uiEvent.value)
                     view?.onDiaryInsert(uiEvent.value)
                 }
             }
