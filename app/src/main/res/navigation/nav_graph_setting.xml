@@ -15,4 +15,8 @@
     <fragment
         android:id="@+id/usageStatisticsFragment"
         android:name="com.lizl.mydiary.mvp.fragment.UsageStatisticsFragment" />
+
+    <fragment
+        android:id="@+id/imageGalleryFragment"
+        android:name="com.lizl.mydiary.mvp.fragment.ImageGalleryFragment" />
 </navigation>

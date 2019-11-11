@@ -69,4 +69,6 @@
     <string name="diary_count">已记录</string>
     <string name="word_count">总字数</string>
     <string name="image_count">图片</string>
+
+    <string name="image_gallery">图片</string>
 </resources>

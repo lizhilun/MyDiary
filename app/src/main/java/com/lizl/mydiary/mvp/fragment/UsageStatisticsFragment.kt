@@ -20,6 +20,8 @@ class UsageStatisticsFragment : BaseFragment<UsageStatisticsPresenter>(), UsageS
     override fun initView()
     {
         presenter.getUsageStatistics()
+
+        tv_image_count.setOnClickListener { turnToFragment(R.id.imageGalleryFragment) }
     }
 
     override fun showDiaryCount(count: Int)
