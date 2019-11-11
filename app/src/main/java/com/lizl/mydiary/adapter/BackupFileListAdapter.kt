@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.lizl.mydiary.R
+import com.lizl.mydiary.util.FileUtil
 import kotlinx.android.synthetic.main.item_backup_file.view.*
 import java.io.File
 import java.text.SimpleDateFormat
@@ -33,8 +34,9 @@ class BackupFileListAdapter : BaseAdapter<File, BackupFileListAdapter.ViewHolder
         fun bindViewHolder(file: File)
         {
             itemView.tv_file_name.text = file.name
-
+            itemView.tv_file_size.text = FileUtil.getFileSize(file)
             itemView.tv_file_time.text = formatter.format(file.lastModified())
+
             itemView.setOnClickListener { onFileItemClickListener?.invoke(file) }
         }
     }

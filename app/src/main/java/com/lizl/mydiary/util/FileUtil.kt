@@ -6,6 +6,7 @@ import com.blankj.utilcode.util.*
 import com.lizl.mydiary.UiApplication
 import java.io.File
 import java.io.IOException
+import java.util.*
 
 class FileUtil
 {
@@ -107,6 +108,19 @@ class FileUtil
         fun isFileExists(filePath: String): Boolean
         {
             return FileUtils.isFileExists(filePath)
+        }
+
+        fun getFileSize(file: File): String
+        {
+            val len = FileUtils.getFileLength(file)
+            return when
+            {
+                len < 0          -> "0B"
+                len < 1024       -> String.format(Locale.getDefault(), "%.1fB", len.toDouble())
+                len < 1048576    -> String.format(Locale.getDefault(), "%.1fKB", len.toDouble() / 1024)
+                len < 1073741824 -> String.format(Locale.getDefault(), "%.1fMB", len.toDouble() / (1024 * 1024))
+                else             -> String.format(Locale.getDefault(), "%.1fGB", len.toDouble() / (1024 * 1024 * 1024))
+            }
         }
     }
 }
