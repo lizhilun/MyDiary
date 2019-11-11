@@ -36,8 +36,11 @@ class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmen
     private lateinit var settingAdapter: SettingListAdapter
 
     private var curWritePermissionsCode = 0
-    private val REQUEST_BACKUPDIARYDATA = 1
-    private val REQUEST_RESTOREDIARYDATA = 2
+    private val REQUEST_AUTOBACKUP = 1
+    private val REQUEST_BACKUPDIARYDATA = 2
+    private val REQUEST_RESTOREDIARYDATA = 3
+
+    private lateinit var autoBackupItem: SettingBean.SettingBooleanBean
 
     override fun initTitleBar()
     {
@@ -57,13 +60,13 @@ class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmen
 
     override fun onStartBackup()
     {
-        DialogUtil.showLoadingDialog(context!!, getString(R.string.in_backup_data))
+        DialogUtil.showLoadingDialog(context!!, getString(R.string.in_doing, getString(R.string.backup_data)))
     }
 
     override fun onBackupFinish(result: Boolean)
     {
         DialogUtil.dismissDialog()
-        ToastUtils.showShort(if (result) R.string.success_to_backup_data else R.string.failed_to_backup_data)
+        ToastUtils.showShort(getString(R.string.backup_data) + getString(if (result) R.string.success else R.string.failed))
     }
 
     private fun initSettingData()
@@ -135,6 +138,20 @@ class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmen
 
         settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_restore)) { restoreDiaryDataWithPermissionCheck() })
 
+        autoBackupItem = SettingBean.SettingBooleanBean(settingName = getString(R.string.setting_auto_backup), settingKey = ConfigConstant.IS_AUTO_BACKUP_ON,
+                defaultValue = ConfigConstant.DEFAULT_IS_AUTO_BACKUP_ON, needSave = false) { result, bean ->
+            if (result)
+            {
+                autoBackupWithPermissionCheck()
+            }
+            else
+            {
+                UiApplication.appConfig.setAutoBackup(false)
+                settingAdapter.update(bean)
+            }
+        }
+        settingList.add(autoBackupItem)
+
         settingList.add(SettingBean.SettingDivideBean())
 
         val qualityMap =
@@ -158,6 +175,13 @@ class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmen
     }
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    fun autoBackup()
+    {
+        UiApplication.appConfig.setAutoBackup(true)
+        settingAdapter.update(autoBackupItem)
+    }
+
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun backupDiaryData()
     {
         DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.setting_backup), getString(R.string.notify_backup_data)) {
@@ -176,13 +200,11 @@ class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmen
     {
         DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify_failed_to_get_permission),
                 getString(R.string.notify_permission_be_refused)) {
-            if (curWritePermissionsCode == REQUEST_BACKUPDIARYDATA)
+            when (curWritePermissionsCode)
             {
-                backupDiaryDataWithPermissionCheck()
-            }
-            else if (curWritePermissionsCode == REQUEST_RESTOREDIARYDATA)
-            {
-                restoreDiaryDataWithPermissionCheck()
+                REQUEST_AUTOBACKUP       -> autoBackupWithPermissionCheck()
+                REQUEST_BACKUPDIARYDATA  -> backupDiaryDataWithPermissionCheck()
+                REQUEST_RESTOREDIARYDATA -> restoreDiaryDataWithPermissionCheck()
             }
         }
     }

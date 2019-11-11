@@ -1,10 +1,8 @@
 package com.lizl.mydiary.util
 
 import android.provider.MediaStore
-import com.blankj.utilcode.util.FileUtils
-import com.blankj.utilcode.util.GsonUtils
-import com.blankj.utilcode.util.PathUtils
-import com.blankj.utilcode.util.ZipUtils
+import com.blankj.utilcode.util.*
+import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.bean.DiaryBean
 import kotlinx.coroutines.GlobalScope
@@ -22,8 +20,28 @@ class BackupUtil
         private val backupTempImageFilePath = "$backupFilePath/temp/picture"
         private val backupTempDiaryFilePath = "$backupFilePath/temp/diary.txt"
         private const val backupFileSuffix = ".iui"
+        private const val autoBackupFileName = "autoBackup"
 
-        fun backupData(callback: (result: Boolean) -> Unit)
+        fun manualBackupData(callback: (result: Boolean) -> Unit)
+        {
+            val formatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+            val backupFileName = formatter.format(System.currentTimeMillis())
+            backupData(backupFileName, callback)
+        }
+
+        fun autoBackup()
+        {
+            backupData(autoBackupFileName) {
+                if (it)
+                {
+                    UiApplication.appConfig.setLastAutoBackupTime(System.currentTimeMillis())
+                }
+                ToastUtils.showShort(UiApplication.instance.getString(R.string.auto_backup_data) + UiApplication.instance.getString(
+                        if (it) R.string.success else R.string.failed))
+            }
+        }
+
+        private fun backupData(backupFileName: String, callback: (result: Boolean) -> Unit)
         {
             GlobalScope.launch {
 
@@ -45,9 +63,13 @@ class BackupUtil
                         callback.invoke(false)
                         return@launch
                     }
-                    val formatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
-                    val backupFileName = formatter.format(System.currentTimeMillis()) + backupFileSuffix
-                    val zipResult = ZipUtils.zipFile(backupTempFilePath, "$backupFilePath/$backupFileName")
+                    val zipFilePath = "$backupFilePath/$backupFileName$backupFileSuffix"
+                    val zipFile = File(zipFilePath)
+                    if (zipFile.exists())
+                    {
+                        FileUtil.deleteFile(zipFilePath)
+                    }
+                    val zipResult = ZipUtils.zipFile(backupTempFilePath, zipFilePath)
                     FileUtils.deleteDir(backupTempFilePath)
                     callback.invoke(zipResult)
 

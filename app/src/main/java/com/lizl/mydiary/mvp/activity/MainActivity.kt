@@ -10,10 +10,12 @@ import com.lizl.mydiary.adapter.DiaryListAdapter
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.OperationItem
 import com.lizl.mydiary.bean.TitleBarBtnBean
+import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.DiaryListContract
 import com.lizl.mydiary.mvp.presenter.DiaryListPresenter
 import com.lizl.mydiary.util.AppConstant
+import com.lizl.mydiary.util.BackupUtil
 import com.lizl.mydiary.util.DialogUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_diary_list_herder.*
@@ -33,6 +35,11 @@ class MainActivity : BaseActivity<DiaryListPresenter>(), DiaryListContract.View
 
         // Activity走onCreate()将上次应用停止时间置为0，保证onResume()会走是否显示锁定界面流程
         UiApplication.appConfig.setAppLastStopTime(0)
+
+        if (UiApplication.appConfig.isAutoBackup() && System.currentTimeMillis() - UiApplication.appConfig.getLastAutoBackupTime() > ConfigConstant.APP_AUTO_BACKUP_PERIOD)
+        {
+            BackupUtil.autoBackup()
+        }
     }
 
     override fun initView()

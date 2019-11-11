@@ -24,8 +24,6 @@ class AppConfig
 
     fun isFingerprintLockOn() = SPUtils.getInstance().getBoolean(ConfigConstant.IS_FINGERPRINT_LOCK_ON, ConfigConstant.DEFAULT_IS_FINGERPRINT_LOCK_ON)
 
-    fun setFingerprintLockOn(isOn: Boolean) = SPUtils.getInstance().put(ConfigConstant.IS_FINGERPRINT_LOCK_ON, isOn)
-
     fun setAppLastStopTime(stopTime: Long) = SPUtils.getInstance().put(ConfigConstant.APP_LAST_STOP_TIME, stopTime)
 
     fun getAppLastStopTime() = SPUtils.getInstance().getLong(ConfigConstant.APP_LAST_STOP_TIME, ConfigConstant.DEFAULT_APP_LAST_STOP_TIME)
@@ -33,4 +31,12 @@ class AppConfig
     fun getImageSaveQuality() = SPUtils.getInstance().getInt(ConfigConstant.IMAGE_SAVE_QUALITY, ConfigConstant.DEFAULT_IMAGE_SAVE_QUALITY)
 
     fun isNightModeOn() = SPUtils.getInstance().getBoolean(ConfigConstant.IS_NIGHT_MODE_ON, ConfigConstant.DEFAULT_NIGHT_MODE_ON)
+
+    fun isAutoBackup() = SPUtils.getInstance().getBoolean(ConfigConstant.IS_AUTO_BACKUP_ON, ConfigConstant.DEFAULT_IS_AUTO_BACKUP_ON)
+
+    fun setAutoBackup(isOn: Boolean) = SPUtils.getInstance().put(ConfigConstant.IS_AUTO_BACKUP_ON, isOn)
+
+    fun setLastAutoBackupTime(time: Long) = SPUtils.getInstance().put(ConfigConstant.APP_LAST_AUTO_BACKUP_TIME, time)
+
+    fun getLastAutoBackupTime() = SPUtils.getInstance().getLong(ConfigConstant.APP_LAST_AUTO_BACKUP_TIME, ConfigConstant.DEFAULT_APP_LAST_AUTO_BACKUP_TIME)
 }

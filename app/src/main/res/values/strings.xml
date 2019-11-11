@@ -8,6 +8,8 @@
     <string name="setting">设置</string>
     <string name="exit">退出</string>
     <string name="word">字</string>
+    <string name="success">成功</string>
+    <string name="failed">失败</string>
 
     <string name="monday">周一</string>
     <string name="tuesday">周二</string>
@@ -31,6 +33,7 @@
     <string name="setting_modify_password">修改密码</string>
     <string name="setting_backup">备份数据</string>
     <string name="setting_restore">还原数据</string>
+    <string name="setting_auto_backup">自动备份</string>
     <string name="setting_image_save_quality">图片保存质量</string>
     <string name="setting_night_mode">夜间模式</string>
     <string name="setting_usage_statistics">使用统计</string>
@@ -56,19 +59,15 @@
     <string name="rename_backup_file">重命名备份文件</string>
     <string name="notify_backup_data">确认备份数据到文件？</string>
     <string name="hint_rename_backup_file">请输入新的文件名</string>
-    <string name="notify_delete_backup_file">是否删除该备份文件？</string>
-    <string name="input_encrypt_password">密码错误，输入备份数据时使用的密码</string>
-    <string name="hint_input_encrypt_password">请输入备份数据时使用的密码</string>
-    <string name="in_backup_data">备份数据中</string>
-    <string name="success_to_backup_data">备份数据成功</string>
-    <string name="failed_to_backup_data">备份数据失败</string>
-    <string name="in_restore_data">还原数据中</string>
-    <string name="success_to_restore_data">还原数据成功</string>
-    <string name="failed_to_restore_data">还原数据失败</string>
+    <string name="in_doing">%s中</string>
+    <string name="backup_data">备份数据</string>
+    <string name="restore_data">还原数据</string>
+    <string name="auto_backup_data">自动备份数据</string>
 
     <string name="diary_count">已记录</string>
     <string name="word_count">总字数</string>
     <string name="image_count">图片</string>
 
     <string name="image_gallery">图片</string>
+
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.lizl.mydiary.R
+import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.adapter.BackupFileListAdapter
 import com.lizl.mydiary.bean.OperationItem
 import com.lizl.mydiary.event.EventConstant
@@ -53,7 +54,7 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
 
     override fun showRestoringDataView()
     {
-        DialogUtil.showLoadingDialog(context!!, getString(R.string.in_restore_data))
+        DialogUtil.showLoadingDialog(context!!, getString(R.string.in_doing, getString(R.string.restore_data)))
     }
 
     override fun onRestoreDataFinish(result: Boolean)
@@ -62,7 +63,8 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
         {
             EventBus.getDefault().post(UIEvent(EventConstant.UI_EVENT_IMPORT_DIARY_DATA))
         }
-        ToastUtils.showShort(if (result) R.string.success_to_restore_data else R.string.failed_to_restore_data)
+        ToastUtils.showShort(UiApplication.instance.getString(R.string.restore_data) + UiApplication.instance.getString(
+                if (result) R.string.success else R.string.failed))
         DialogUtil.dismissDialog()
     }
 

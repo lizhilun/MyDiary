@@ -31,8 +31,18 @@ class ConfigConstant
         const val IMAGE_SAVE_QUALITY = "IMAGE_SAVE_QUALITY"
         const val DEFAULT_IMAGE_SAVE_QUALITY = IMAGE_SAVE_QUALITY_ORIGINAL
 
-        //夜间模式
+        // 夜间模式
         const val IS_NIGHT_MODE_ON = "IS_NIGHT_MODE_ON"
         const val DEFAULT_NIGHT_MODE_ON = false
+
+        // 自动备份
+        const val IS_AUTO_BACKUP_ON = "IS_AUTO_BACKUP_ON"
+        const val DEFAULT_IS_AUTO_BACKUP_ON = false
+
+        // 上次自动备份时间
+        const val APP_LAST_AUTO_BACKUP_TIME = "APP_LAST_AUTO_BACKUP_TIME"
+        const val DEFAULT_APP_LAST_AUTO_BACKUP_TIME: Long = 0
+        // 自动备份间隔（一天）
+        const val APP_AUTO_BACKUP_PERIOD = 24 * 60 * 60 * 1000
     }
 }
