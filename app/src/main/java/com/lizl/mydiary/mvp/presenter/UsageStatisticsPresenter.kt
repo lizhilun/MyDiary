@@ -24,12 +24,8 @@ class UsageStatisticsPresenter(private var view: UsageStatisticsContract.View?) 
                 view?.showWordCount(diaryList.sumBy { UiUtil.sumStringWord(it.content) })
             }
 
-            var imageCount = 0
             val imageDir = File(FileUtil.getImageFileSavePath())
-            if (imageDir.exists())
-            {
-                imageCount = imageDir.listFiles().count { ImageUtils.isImage(it) }
-            }
+            val imageCount = imageDir.listFiles().count { ImageUtils.isImage(it) }
 
             GlobalScope.launch(Dispatchers.Main) { view?.showImageCount(imageCount) }
         }

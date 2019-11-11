@@ -5,6 +5,8 @@ import android.content.Intent
 import android.text.TextUtils
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
+import com.blankj.utilcode.util.BarUtils
+import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.TimeUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.DiaryImageListAdapter
@@ -34,6 +36,8 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
     private lateinit var dateBean: DateBean
 
     private var inEditMode = false
+
+    private var maxContentTextHeight = 0
 
     override fun getLayoutResId() = R.layout.activity_diary_content
 
@@ -97,6 +101,26 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         }
 
         fab_edit_diary.setOnClickListener { showEditView() }
+
+        KeyboardUtils.registerSoftInputChangedListener(this) {
+            if (it > 0)
+            {
+                if (maxContentTextHeight == 0)
+                {
+                    val navBarHeight = if (BarUtils.isNavBarVisible(this)) BarUtils.getNavBarHeight() else 0
+                    val statusBarHeight = BarUtils.getStatusBarHeight()
+                    val titleBarHeight = resources.getDimensionPixelOffset(R.dimen.global_toolbar_height)
+                    val padding = resources.getDimensionPixelOffset(R.dimen.global_content_padding_content)
+                    maxContentTextHeight = UiUtil.getScreenHeight() - it - statusBarHeight - navBarHeight - titleBarHeight - padding * 2
+                }
+                et_diary_content.maxHeight = maxContentTextHeight
+            }
+            else
+            {
+                et_diary_content.maxHeight = Int.MAX_VALUE
+            }
+            et_diary_content.setScrollEnable(it > 0)
+        }
 
         showDiaryContent(diaryBean)
         if (inEditMode) showEditView() else showReadView()
