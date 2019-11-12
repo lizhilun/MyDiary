@@ -7,7 +7,6 @@
     <com.lizl.mydiary.custom.view.CustomTitleBar
         android:id="@+id/ctb_title"
         style="@style/ToolbarLayoutStyle"
-        android:layout_alignParentTop="true"
         app:backBtnVisible="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -64,5 +63,16 @@
         app:layout_constraintStart_toStartOf="@+id/tv_image_count_str"
         app:layout_constraintTop_toBottomOf="@+id/tv_image_count_str"
         app:layout_constraintTop_toTopOf="@+id/tv_diary_count" />
+
+    <com.lizl.mydiary.custom.skin.SkinRecyclerView
+        android:id="@+id/rv_mood_statistics"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="40dp"
+        android:paddingStart="@dimen/global_content_padding_edge"
+        android:paddingEnd="@dimen/global_content_padding_edge"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_diary_count" />
 
 </skin.support.constraint.SkinCompatConstraintLayout>

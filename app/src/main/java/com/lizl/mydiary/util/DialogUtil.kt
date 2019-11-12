@@ -58,8 +58,9 @@ class DialogUtil
             dialog?.show()
         }
 
-        fun showRadioGroupDialog(context: Context, title: String, radioList: List<String>, checkedRadio: String,
-                                 onSelectFinishListener: (result: String) -> Unit)
+        fun showRadioGroupDialog(
+            context: Context, title: String, radioList: List<String>, checkedRadio: String, onSelectFinishListener: (result: String) -> Unit
+        )
         {
             dialog?.dismiss()
             dialog = DialogRadioGroup(context, title, radioList, checkedRadio, onSelectFinishListener)
@@ -77,6 +78,13 @@ class DialogUtil
         {
             dialog?.dismiss()
             dialog = TimePickerDialog(context, timeSetListener, hour, minute, true)
+            dialog?.show()
+        }
+
+        fun showMoodSelectDialog(context: Context, onMoodSelectListener: (mood: Int) -> Unit)
+        {
+            dialog?.dismiss()
+            dialog = DialogMoodSelect(context, onMoodSelectListener)
             dialog?.show()
         }
 

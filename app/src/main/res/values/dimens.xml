@@ -39,4 +39,8 @@
     <dimen name="setting_item_padding_edge">20dp</dimen>
 
     <dimen name="number_key_height">70dp</dimen>
+
+    <dimen name="mood_statistics_item_height">56dp</dimen>
+    <dimen name="mood_statistics_progress_bar_height">20dp</dimen>
+    <dimen name="dialog_mood_select_width">300dp</dimen>
 </resources>

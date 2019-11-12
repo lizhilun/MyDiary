@@ -27,7 +27,7 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
 
     private val REQUEST_CODE_SELECT_IMAGE = 23
 
-    override fun saveDiary(diaryBean: DiaryBean?, content: String, imageList: List<String>, createTime: Long)
+    override fun saveDiary(diaryBean: DiaryBean?, content: String, imageList: List<String>, createTime: Long, diaryMood : Int)
     {
         GlobalScope.launch {
 
@@ -43,6 +43,7 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
             }
             saveDiaryBean.createTime = createTime
             saveDiaryBean.content = content
+            saveDiaryBean.mood = diaryMood
 
             val deleteImageList = saveDiaryBean.imageList?.filter { !imageList.contains(it) }
             deleteImageList?.forEach { FileUtil.deleteFile(it) }

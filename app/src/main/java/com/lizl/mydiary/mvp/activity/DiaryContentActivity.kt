@@ -12,6 +12,7 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.DiaryImageListAdapter
 import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
+import com.lizl.mydiary.bean.TitleBarBtnBean
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.DiaryContentContract
 import com.lizl.mydiary.mvp.presenter.DiaryContentPresenter
@@ -34,6 +35,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
     private lateinit var diaryImageListAdapter: DiaryImageListAdapter
     private var diaryBean: DiaryBean? = null
     private lateinit var dateBean: DateBean
+    private var curDiaryMood = AppConstant.MOOD_NORMAL
 
     private var inEditMode = false
 
@@ -70,9 +72,8 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
                     }
                     return@setOnBackBtnClickListener
                 }
-                presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList(), dateBean.time)
-            }
-            else
+                presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList(), dateBean.time, curDiaryMood)
+            } else
             {
                 super.onBackPressed()
             }
@@ -80,6 +81,8 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
 
         dateBean = DateBean(if (diaryBean != null) diaryBean!!.createTime else System.currentTimeMillis())
         ctb_title.setTitleText("${dateBean.year}/${dateBean.month}/${dateBean.day} ${dateBean.getHourAndMinute()}")
+
+        showDiaryMood(diaryBean?.mood ?: AppConstant.MOOD_NORMAL)
 
         ctb_title.setOnTitleClickListener {
             if (!inEditMode)
@@ -114,8 +117,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
                     maxContentTextHeight = UiUtil.getScreenHeight() - it - statusBarHeight - navBarHeight - titleBarHeight - padding * 2
                 }
                 et_diary_content.maxHeight = maxContentTextHeight
-            }
-            else
+            } else
             {
                 et_diary_content.maxHeight = Int.MAX_VALUE
             }
@@ -124,6 +126,16 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
 
         showDiaryContent(diaryBean)
         if (inEditMode) showEditView() else showReadView()
+    }
+
+    private fun showDiaryMood(mood: Int)
+    {
+        curDiaryMood = mood
+        val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
+        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(getMoodImgRes(mood)) {
+            if (inEditMode) DialogUtil.showMoodSelectDialog(this) { showDiaryMood(it) }
+        })
+        ctb_title.setBtnList(titleBtnList)
     }
 
     private fun showDiaryContent(diaryBean: DiaryBean?)
@@ -150,15 +162,17 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
     @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
     fun onPermissionDenied()
     {
-        DialogUtil.showOperationConfirmDialog(this, getString(R.string.notify_failed_to_get_permission),
-                getString(R.string.notify_permission_be_refused)) { selectImageWithPermissionCheck() }
+        DialogUtil.showOperationConfirmDialog(
+            this, getString(R.string.notify_failed_to_get_permission), getString(R.string.notify_permission_be_refused)
+        ) { selectImageWithPermissionCheck() }
     }
 
     @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
     fun onPermissionNeverAskAgain()
     {
-        DialogUtil.showOperationConfirmDialog(this, getString(R.string.notify_failed_to_get_permission),
-                getString(R.string.notify_permission_be_refused_and_never_ask_again)) { UiUtil.goToAppDetailPage() }
+        DialogUtil.showOperationConfirmDialog(
+            this, getString(R.string.notify_failed_to_get_permission), getString(R.string.notify_permission_be_refused_and_never_ask_again)
+        ) { UiUtil.goToAppDetailPage() }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray)
@@ -184,8 +198,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         if (diaryBean == null)
         {
             super.onBackPressed()
-        }
-        else
+        } else
         {
             showReadView()
         }
@@ -236,10 +249,19 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         return if (diaryBean == null)
         {
             !TextUtils.isEmpty(et_diary_content.text.toString()) || diaryImageListAdapter.getImageList().isNotEmpty()
-        }
-        else
+        } else
         {
             diaryBean.content != et_diary_content.text.toString() || diaryBean.imageList != diaryImageListAdapter.getImageList()
+        }
+    }
+
+    private fun getMoodImgRes(mood: Int): Int
+    {
+        return when (mood)
+        {
+            AppConstant.MOOD_HAPPY   -> R.mipmap.ic_mood_happy
+            AppConstant.MOOD_UNHAPPY -> R.mipmap.ic_mood_unhappy
+            else                     -> R.mipmap.ic_mood_normal
         }
     }
 }

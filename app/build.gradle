@@ -61,4 +61,5 @@ dependencies {
     implementation "skin.support:skin-support-design:${skin_version}"            // skin-support-design material design 控件支持[可选]
     implementation "skin.support:skin-support-cardview:${skin_version}"          // skin-support-cardview CardView 控件支持[可选]
     implementation "skin.support:skin-support-constraint-layout:${skin_version}" // skin-support-constraint-layout ConstraintLayout 控件支持[可选]
+    implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
 }

@@ -1,5 +1,6 @@
 package com.lizl.mydiary.mvp.contract
 
+import com.lizl.mydiary.bean.MoodStatisticsBean
 import com.lizl.mydiary.mvp.base.BasePresenter
 import com.lizl.mydiary.mvp.base.BaseView
 
@@ -12,6 +13,8 @@ class UsageStatisticsContract
         fun showWordCount(count: Int)
 
         fun showImageCount(count: Int)
+
+        fun showMoodStatistics(moodStatisticsList: List<MoodStatisticsBean>)
     }
 
     interface Presenter : BasePresenter<View>
