@@ -18,6 +18,7 @@ import com.lizl.mydiary.mvp.contract.DiaryContentContract
 import com.lizl.mydiary.mvp.presenter.DiaryContentPresenter
 import com.lizl.mydiary.util.AppConstant
 import com.lizl.mydiary.util.DialogUtil
+import com.lizl.mydiary.util.DiaryUtil
 import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.activity_diary_content.*
 import kotlinx.android.synthetic.main.activity_main.ctb_title
@@ -73,7 +74,8 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
                     return@setOnBackBtnClickListener
                 }
                 presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList(), dateBean.time, curDiaryMood)
-            } else
+            }
+            else
             {
                 super.onBackPressed()
             }
@@ -117,7 +119,8 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
                     maxContentTextHeight = UiUtil.getScreenHeight() - it - statusBarHeight - navBarHeight - titleBarHeight - padding * 2
                 }
                 et_diary_content.maxHeight = maxContentTextHeight
-            } else
+            }
+            else
             {
                 et_diary_content.maxHeight = Int.MAX_VALUE
             }
@@ -132,7 +135,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
     {
         curDiaryMood = mood
         val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
-        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(getMoodImgRes(mood)) {
+        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(DiaryUtil.instance.getMoodResByMood(mood)) {
             if (inEditMode) DialogUtil.showMoodSelectDialog(this) { showDiaryMood(it) }
         })
         ctb_title.setBtnList(titleBtnList)
@@ -162,17 +165,15 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
     @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
     fun onPermissionDenied()
     {
-        DialogUtil.showOperationConfirmDialog(
-            this, getString(R.string.notify_failed_to_get_permission), getString(R.string.notify_permission_be_refused)
-        ) { selectImageWithPermissionCheck() }
+        DialogUtil.showOperationConfirmDialog(this, getString(R.string.notify_failed_to_get_permission),
+                getString(R.string.notify_permission_be_refused)) { selectImageWithPermissionCheck() }
     }
 
     @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
     fun onPermissionNeverAskAgain()
     {
-        DialogUtil.showOperationConfirmDialog(
-            this, getString(R.string.notify_failed_to_get_permission), getString(R.string.notify_permission_be_refused_and_never_ask_again)
-        ) { UiUtil.goToAppDetailPage() }
+        DialogUtil.showOperationConfirmDialog(this, getString(R.string.notify_failed_to_get_permission),
+                getString(R.string.notify_permission_be_refused_and_never_ask_again)) { UiUtil.goToAppDetailPage() }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray)
@@ -198,7 +199,8 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         if (diaryBean == null)
         {
             super.onBackPressed()
-        } else
+        }
+        else
         {
             showReadView()
         }
@@ -249,19 +251,10 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         return if (diaryBean == null)
         {
             !TextUtils.isEmpty(et_diary_content.text.toString()) || diaryImageListAdapter.getImageList().isNotEmpty()
-        } else
+        }
+        else
         {
             diaryBean.content != et_diary_content.text.toString() || diaryBean.imageList != diaryImageListAdapter.getImageList()
-        }
-    }
-
-    private fun getMoodImgRes(mood: Int): Int
-    {
-        return when (mood)
-        {
-            AppConstant.MOOD_HAPPY   -> R.mipmap.ic_mood_happy
-            AppConstant.MOOD_UNHAPPY -> R.mipmap.ic_mood_unhappy
-            else                     -> R.mipmap.ic_mood_normal
         }
     }
 }

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.daimajia.numberprogressbar.NumberProgressBar
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.MoodStatisticsBean
-import com.lizl.mydiary.util.AppConstant
+import com.lizl.mydiary.util.DiaryUtil
 import kotlinx.android.synthetic.main.item_mood_statistics.view.*
 
 class MoodStatisticsListAdapter : RecyclerView.Adapter<MoodStatisticsListAdapter.ViewHolder>()
@@ -41,14 +41,7 @@ class MoodStatisticsListAdapter : RecyclerView.Adapter<MoodStatisticsListAdapter
     {
         fun bindViewHolder(moodStatisticsBean: MoodStatisticsBean)
         {
-            itemView.iv_mood.setImageResource(
-                when (moodStatisticsBean.mood)
-                {
-                    AppConstant.MOOD_HAPPY   -> R.mipmap.ic_mood_happy
-                    AppConstant.MOOD_UNHAPPY -> R.mipmap.ic_mood_unhappy
-                    else                     -> R.mipmap.ic_mood_normal
-                }
-            )
+            itemView.iv_mood.setImageResource(DiaryUtil.instance.getMoodResByMood(moodStatisticsBean.mood))
 
             val barHeight = itemView.context.resources.getDimension(R.dimen.mood_statistics_progress_bar_height)
             itemView.npb_statistics.max = maxCount

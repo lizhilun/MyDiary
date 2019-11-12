@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.MoodListAdapter
-import com.lizl.mydiary.util.AppConstant
+import com.lizl.mydiary.util.DiaryUtil
 import kotlinx.android.synthetic.main.dialog_mood_select.*
 
 class DialogMoodSelect(context: Context, private val onMoodSelectListener: (mood: Int) -> Unit) : BaseDialog(context)
@@ -17,16 +17,10 @@ class DialogMoodSelect(context: Context, private val onMoodSelectListener: (mood
         val moodListAdapter = MoodListAdapter()
         rv_mood_grid.adapter = moodListAdapter
 
-        val moodList = listOf(R.mipmap.ic_mood_happy, R.mipmap.ic_mood_normal, R.mipmap.ic_mood_unhappy)
-        moodListAdapter.setData(moodList)
+        moodListAdapter.setData(DiaryUtil.instance.getMoodResList())
 
         moodListAdapter.setOnMoodItemClickListener {
-            when (it)
-            {
-                R.mipmap.ic_mood_happy   -> onMoodSelectListener.invoke(AppConstant.MOOD_HAPPY)
-                R.mipmap.ic_mood_normal  -> onMoodSelectListener.invoke(AppConstant.MOOD_NORMAL)
-                R.mipmap.ic_mood_unhappy -> onMoodSelectListener.invoke(AppConstant.MOOD_UNHAPPY)
-            }
+            onMoodSelectListener.invoke(DiaryUtil.instance.getMoodByMoodRes(it))
             dismiss()
         }
     }
