@@ -10,6 +10,7 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.mvp.base.BaseActivity
+import com.lizl.mydiary.util.DiaryUtil
 import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.item_diary_list.view.*
 
@@ -40,7 +41,7 @@ class DiaryListAdapter : BaseAdapter<DiaryBean, DiaryListAdapter.ViewHolder>()
             itemView.tv_year_and_month.text = "${dateBean.year}.${dateBean.month}"
             itemView.tv_diary_content.text = diaryBean.content
             itemView.tv_hour_and_minute.text = dateBean.getHourAndMinute()
-            itemView.tv_word_count.text = "${UiUtil.sumStringWord(diaryBean.content)}${context.getString(R.string.word)}"
+            itemView.tv_word_count.text = "${DiaryUtil.sumStringWord(diaryBean.content)}${context.getString(R.string.word)}"
 
             UiUtil.clearTextViewAutoWrap(itemView.tv_diary_content)
 

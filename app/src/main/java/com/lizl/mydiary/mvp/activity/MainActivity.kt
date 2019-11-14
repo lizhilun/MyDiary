@@ -56,16 +56,16 @@ class MainActivity : BaseActivity<DiaryListPresenter>(), DiaryListContract.View
         ctb_title.setTitleText(getString(R.string.app_name))
         ctb_title.setBtnList(titleBtnList)
 
-        fab_add_diary.setOnClickListener { turnToDiaryContentFragment(null) }
+        fab_add_diary.setOnClickListener { turnToDiaryContentActivity(null) }
 
-        diaryListAdapter.setOnDiaryItemClickListener { turnToDiaryContentFragment(it) }
+        diaryListAdapter.setOnDiaryItemClickListener { turnToDiaryContentActivity(it) }
 
         diaryListAdapter.setOnDiaryItemLongClickListener { showDiaryOperationListDialog(it) }
 
         presenter.queryAllDiary()
     }
 
-    private fun turnToDiaryContentFragment(diaryBean: DiaryBean?)
+    private fun turnToDiaryContentActivity(diaryBean: DiaryBean?)
     {
         val intent = Intent(this, DiaryContentActivity::class.java)
         if (diaryBean != null)

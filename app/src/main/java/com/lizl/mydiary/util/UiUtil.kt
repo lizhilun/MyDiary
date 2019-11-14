@@ -137,14 +137,5 @@ class UiUtil
         {
             return ScreenUtils.getScreenHeight()
         }
-
-        /**
-         * 统计字数
-         */
-        fun sumStringWord(str: String): Int
-        {
-            return if (str.isEmpty()) 0
-            else str.replace("\n", "").replace(" ", "").length
-        }
     }
 }

@@ -6,8 +6,8 @@ import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.contract.UsageStatisticsContract
 import com.lizl.mydiary.util.AppConstant
 import com.lizl.mydiary.util.AppDatabase
+import com.lizl.mydiary.util.DiaryUtil
 import com.lizl.mydiary.util.FileUtil
-import com.lizl.mydiary.util.UiUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -23,7 +23,7 @@ class UsageStatisticsPresenter(private var view: UsageStatisticsContract.View?) 
 
             GlobalScope.launch(Dispatchers.Main) {
                 view?.showDiaryCount(diaryList.count())
-                view?.showWordCount(diaryList.sumBy { UiUtil.sumStringWord(it.content) })
+                view?.showWordCount(diaryList.sumBy { DiaryUtil.sumStringWord(it.content) })
             }
 
             val imageDir = File(FileUtil.getImageFileSavePath())
@@ -31,23 +31,10 @@ class UsageStatisticsPresenter(private var view: UsageStatisticsContract.View?) 
 
             GlobalScope.launch(Dispatchers.Main) { view?.showImageCount(imageCount) }
 
-            var moodHappy = 0
-            var moodNormal = 0
-            var moodUnhappy = 0
-
-            diaryList.forEach {
-                when (it.mood)
-                {
-                    AppConstant.MOOD_HAPPY   -> moodHappy++
-                    AppConstant.MOOD_NORMAL  -> moodNormal++
-                    AppConstant.MOOD_UNHAPPY -> moodUnhappy++
-                }
-            }
-
             val moodStatisticsList = mutableListOf<MoodStatisticsBean>()
-            moodStatisticsList.add(MoodStatisticsBean(AppConstant.MOOD_HAPPY, moodHappy))
-            moodStatisticsList.add(MoodStatisticsBean(AppConstant.MOOD_NORMAL, moodNormal))
-            moodStatisticsList.add(MoodStatisticsBean(AppConstant.MOOD_UNHAPPY, moodUnhappy))
+            moodStatisticsList.add(MoodStatisticsBean(AppConstant.MOOD_HAPPY, diaryList.count { it.mood == AppConstant.MOOD_HAPPY }))
+            moodStatisticsList.add(MoodStatisticsBean(AppConstant.MOOD_NORMAL, diaryList.count { it.mood == AppConstant.MOOD_NORMAL }))
+            moodStatisticsList.add(MoodStatisticsBean(AppConstant.MOOD_UNHAPPY, diaryList.count { it.mood == AppConstant.MOOD_UNHAPPY }))
 
             GlobalScope.launch(Dispatchers.Main) { view?.showMoodStatistics(moodStatisticsList) }
         }

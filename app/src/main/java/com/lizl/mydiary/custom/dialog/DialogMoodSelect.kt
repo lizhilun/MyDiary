@@ -17,10 +17,10 @@ class DialogMoodSelect(context: Context, private val onMoodSelectListener: (mood
         val moodListAdapter = MoodListAdapter()
         rv_mood_grid.adapter = moodListAdapter
 
-        moodListAdapter.setData(DiaryUtil.instance.getMoodResList())
+        moodListAdapter.setData(DiaryUtil.getMoodResList())
 
         moodListAdapter.setOnMoodItemClickListener {
-            onMoodSelectListener.invoke(DiaryUtil.instance.getMoodByMoodRes(it))
+            onMoodSelectListener.invoke(DiaryUtil.getMoodByMoodRes(it))
             dismiss()
         }
     }

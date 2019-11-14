@@ -41,7 +41,7 @@ class MoodStatisticsListAdapter : RecyclerView.Adapter<MoodStatisticsListAdapter
     {
         fun bindViewHolder(moodStatisticsBean: MoodStatisticsBean)
         {
-            itemView.iv_mood.setImageResource(DiaryUtil.instance.getMoodResByMood(moodStatisticsBean.mood))
+            itemView.iv_mood.setImageResource(DiaryUtil.getMoodResByMood(moodStatisticsBean.mood))
 
             val barHeight = itemView.context.resources.getDimension(R.dimen.mood_statistics_progress_bar_height)
             itemView.npb_statistics.max = maxCount

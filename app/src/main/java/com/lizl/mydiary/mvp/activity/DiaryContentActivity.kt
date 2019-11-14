@@ -135,7 +135,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
     {
         curDiaryMood = mood
         val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
-        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(DiaryUtil.instance.getMoodResByMood(mood)) {
+        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(DiaryUtil.getMoodResByMood(mood)) {
             if (inEditMode) DialogUtil.showMoodSelectDialog(this) { showDiaryMood(it) }
         })
         ctb_title.setBtnList(titleBtnList)

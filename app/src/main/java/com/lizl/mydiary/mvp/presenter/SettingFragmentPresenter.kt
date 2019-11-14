@@ -15,7 +15,7 @@ class SettingFragmentPresenter(private var view: SettingFragmentContract.View?) 
             GlobalScope.launch(Dispatchers.Main) {
                 view?.onStartBackup()
             }
-            BackupUtil.manualBackupData() {
+            BackupUtil.manualBackupData {
                 GlobalScope.launch(Dispatchers.Main) {
                     view?.onBackupFinish(it)
                 }

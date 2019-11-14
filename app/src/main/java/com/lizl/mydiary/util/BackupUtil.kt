@@ -70,13 +70,16 @@ class BackupUtil
                         FileUtil.deleteFile(zipFilePath)
                     }
                     val zipResult = ZipUtils.zipFile(backupTempFilePath, zipFilePath)
+
                     FileUtils.deleteDir(backupTempFilePath)
-                    callback.invoke(zipResult)
 
                     FileUtils.notifySystemToScan(backupFilePath)
+
+                    callback.invoke(zipResult)
                 }
                 catch (e: Exception)
                 {
+                    FileUtils.deleteDir(backupTempFilePath)
                     callback.invoke(false)
                 }
             }

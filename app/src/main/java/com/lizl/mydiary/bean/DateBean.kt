@@ -49,23 +49,6 @@ class DateBean(val time: Long)
         }
     }
 
-    fun getHourAndMinute(): String
-    {
-        val stringBuilder = StringBuilder()
-        if (hour < 10)
-        {
-            stringBuilder.append(0)
-        }
-        stringBuilder.append(hour)
+    fun getHourAndMinute(): String = String.format(Locale.getDefault(), "%02d:%02d", hour, minute)
 
-        stringBuilder.append(":")
-
-        if (minute < 10)
-        {
-            stringBuilder.append(0)
-        }
-        stringBuilder.append(minute)
-
-        return stringBuilder.toString()
-    }
 }
