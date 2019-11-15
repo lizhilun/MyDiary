@@ -28,6 +28,7 @@ import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.RuntimePermissions
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 @RuntimePermissions
 class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContentContract.View
@@ -57,11 +58,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
 
         diaryImageListAdapter.setOnAddImageBtnClickListener { selectImageWithPermissionCheck() }
 
-        diaryImageListAdapter.setOnImageClickListener {
-            val imageList = arrayListOf<String>()
-            imageList.addAll(diaryImageListAdapter.getImageList())
-            turnToImageBrowserActivity(imageList, it, inEditMode)
-        }
+        diaryImageListAdapter.setOnImageClickListener { turnToImageBrowserActivity(ArrayList(diaryImageListAdapter.getImageList()), it, inEditMode) }
 
         ctb_title.setOnBackBtnClickListener {
             if (inEditMode)
@@ -87,10 +84,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         showDiaryMood(diaryBean?.mood ?: AppConstant.MOOD_NORMAL)
 
         ctb_title.setOnTitleClickListener {
-            if (!inEditMode)
-            {
-                return@setOnTitleClickListener
-            }
+            if (!inEditMode) return@setOnTitleClickListener
             DialogUtil.showDatePickerDialog(this, dateBean.year, dateBean.month - 1, dateBean.day) { _, year, month, dayOfMonth ->
                 run {
                     DialogUtil.showTimePickerDialog(this, dateBean.hour, dateBean.minute) { _, hourOfDay, minute ->
@@ -196,14 +190,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
     override fun onDiarySaveSuccess()
     {
         DialogUtil.dismissDialog()
-        if (diaryBean == null)
-        {
-            super.onBackPressed()
-        }
-        else
-        {
-            showReadView()
-        }
+        if (diaryBean == null) super.onBackPressed() else showReadView()
     }
 
     override fun onImageSelectedFinish(picList: List<String>)

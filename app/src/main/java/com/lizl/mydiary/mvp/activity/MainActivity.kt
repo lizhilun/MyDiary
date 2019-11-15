@@ -68,10 +68,7 @@ class MainActivity : BaseActivity<DiaryListPresenter>(), DiaryListContract.View
     private fun turnToDiaryContentActivity(diaryBean: DiaryBean?)
     {
         val intent = Intent(this, DiaryContentActivity::class.java)
-        if (diaryBean != null)
-        {
-            intent.putExtra(AppConstant.BUNDLE_DATA_OBJECT, diaryBean)
-        }
+        intent.putExtra(AppConstant.BUNDLE_DATA_OBJECT, diaryBean)
         startActivity(intent)
     }
 

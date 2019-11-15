@@ -7,7 +7,6 @@ class EmptyPresenter : EmptyContract.Presenter
 {
     override fun handleUIEvent(uiEvent: UIEvent)
     {
-
     }
 
     override fun onDestroy()

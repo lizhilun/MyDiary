@@ -10,12 +10,9 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.SkinAppCompatDelegateImpl
-import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.BarUtils
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.config.ConfigConstant
-import com.lizl.mydiary.event.EventConstant
-import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.activity.ImageBrowserActivity
 import com.lizl.mydiary.mvp.activity.LockActivity
 import com.lizl.mydiary.mvp.activity.SettingActivity
@@ -23,8 +20,6 @@ import com.lizl.mydiary.util.AppConstant
 import com.lizl.mydiary.util.SkinUtil
 import com.lizl.mydiary.util.UiUtil
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
 {
@@ -64,11 +59,9 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         Log.d(TAG, "onStart")
         super.onStart()
 
-        if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this)
-
         // 密码保护打开并且应用超时的情况
-        if (this !is LockActivity && UiApplication.appConfig.isAppLockOn() && !TextUtils.isEmpty(
-                        UiApplication.appConfig.getAppLockPassword()) && System.currentTimeMillis() - UiApplication.appConfig.getAppLastStopTime() >= ConfigConstant.APP_TIMEOUT_PERIOD)
+        if (this !is LockActivity && UiApplication.appConfig.isAppLockOn() && !TextUtils.isEmpty(UiApplication.appConfig.getAppLockPassword())
+            && System.currentTimeMillis() - UiApplication.appConfig.getAppLastStopTime() >= ConfigConstant.APP_TIMEOUT_PERIOD)
         {
             turnToLockActivity()
         }
@@ -94,8 +87,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     {
         Log.d(TAG, "onStop")
         super.onStop()
-
-        if (!AppUtils.isAppForeground()) UiApplication.appConfig.setAppLastStopTime(System.currentTimeMillis())
     }
 
     override fun onDestroy()
@@ -157,15 +148,5 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     override fun getDelegate(): AppCompatDelegate
     {
         return SkinAppCompatDelegateImpl.get(this, this)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onUiEvent(uiEvent: UIEvent)
-    {
-        when (uiEvent.event)
-        {
-            EventConstant.UI_EVENT_NIGHT_MODE_CHANGE -> SkinUtil.instance.loadSkin(this)
-            else                                     -> presenter.handleUIEvent(uiEvent)
-        }
     }
 }

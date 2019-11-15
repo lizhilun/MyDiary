@@ -26,20 +26,17 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
 
     override fun initPresenter() = BackupFileListPresenter(this)
 
-    override fun initTitleBar()
-    {
-        ctb_title.setOnBackBtnClickListener { backToPreFragment() }
-    }
-
     override fun initView()
     {
         backupFileListAdapter = BackupFileListAdapter()
         rv_file_list.layoutManager = LinearLayoutManager(activity)
         rv_file_list.adapter = backupFileListAdapter
 
-        presenter.getBackupFileList()
-
         backupFileListAdapter.setOnFileItemClickListener { showFileOperationDialog(it) }
+
+        ctb_title.setOnBackBtnClickListener { backToPreFragment() }
+
+        presenter.getBackupFileList()
     }
 
     override fun showBackupFileList(fileList: List<File>)

@@ -42,11 +42,6 @@ class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmen
 
     private lateinit var autoBackupItem: SettingBean.SettingBooleanBean
 
-    override fun initTitleBar()
-    {
-        ctb_title.setOnBackBtnClickListener { activity?.onBackPressed() }
-    }
-
     override fun initPresenter() = SettingFragmentPresenter(this)
 
     override fun initView()
@@ -54,6 +49,8 @@ class SettingFragment : BaseFragment<SettingFragmentPresenter>(), SettingFragmen
         settingAdapter = SettingListAdapter()
         rv_setting_list.layoutManager = LinearLayoutManager(context!!)
         rv_setting_list.adapter = settingAdapter
+
+        ctb_title.setOnBackBtnClickListener { activity?.onBackPressed() }
 
         initSettingData()
     }

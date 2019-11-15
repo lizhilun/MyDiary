@@ -18,20 +18,17 @@ class UsageStatisticsFragment : BaseFragment<UsageStatisticsPresenter>(), UsageS
 
     override fun initPresenter() = UsageStatisticsPresenter(this)
 
-    override fun initTitleBar()
-    {
-        ctb_title.setOnBackBtnClickListener { backToPreFragment() }
-    }
-
     override fun initView()
     {
         moodStatisticsListAdapter = MoodStatisticsListAdapter()
         rv_mood_statistics.layoutManager = LinearLayoutManager(activity)
         rv_mood_statistics.adapter = moodStatisticsListAdapter
 
-        presenter.getUsageStatistics()
-
         tv_image_count.setOnClickListener { turnToFragment(R.id.imageGalleryFragment) }
+
+        ctb_title.setOnBackBtnClickListener { backToPreFragment() }
+
+        presenter.getUsageStatistics()
     }
 
     override fun showDiaryCount(count: Int)

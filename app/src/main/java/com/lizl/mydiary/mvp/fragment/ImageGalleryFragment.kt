@@ -18,11 +18,6 @@ class ImageGalleryFragment : BaseFragment<ImageGalleryPresenter>(), ImageGallery
 
     override fun initPresenter() = ImageGalleryPresenter(this)
 
-    override fun initTitleBar()
-    {
-        ctb_title.setOnBackBtnClickListener { backToPreFragment() }
-    }
-
     override fun initView()
     {
         diaryImageListAdapter = DiaryImageListAdapter(false, Int.MAX_VALUE)
@@ -30,10 +25,10 @@ class ImageGalleryFragment : BaseFragment<ImageGalleryPresenter>(), ImageGallery
         rv_image_list.adapter = diaryImageListAdapter
 
         diaryImageListAdapter.setOnImageClickListener {
-            val imageList = arrayListOf<String>()
-            imageList.addAll(diaryImageListAdapter.getImageList())
-            (activity as BaseActivity<*>).turnToImageBrowserActivity(imageList, it, false)
+            (activity as BaseActivity<*>).turnToImageBrowserActivity(ArrayList(diaryImageListAdapter.getImageList()), it, false)
         }
+
+        ctb_title.setOnBackBtnClickListener { backToPreFragment() }
 
         presenter.getImageList()
     }

@@ -9,7 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.lizl.mydiary.R
+import com.lizl.mydiary.event.EventConstant
+import com.lizl.mydiary.event.UIEvent
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
 {
@@ -21,6 +25,8 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
     {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
+
+        if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
@@ -37,7 +43,6 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
         presenter = initPresenter()
 
         initView()
-        initTitleBar()
     }
 
     override fun onStart()
@@ -76,6 +81,8 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
     {
         Log.d(TAG, "onDestroy")
         super.onDestroy()
+
+        EventBus.getDefault().unregister(this)
     }
 
     abstract fun getLayoutResId(): Int
@@ -83,8 +90,6 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
     abstract fun initPresenter(): T
 
     abstract fun initView()
-
-    abstract fun initTitleBar()
 
     protected fun backToPreFragment()
     {
@@ -114,6 +119,16 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
         catch (e: Exception)
         {
             Log.e(TAG, e.toString())
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUiEvent(uiEvent: UIEvent)
+    {
+        when (uiEvent.event)
+        {
+            EventConstant.UI_EVENT_NIGHT_MODE_CHANGE -> {}
+            else                                     -> presenter.handleUIEvent(uiEvent)
         }
     }
 }
