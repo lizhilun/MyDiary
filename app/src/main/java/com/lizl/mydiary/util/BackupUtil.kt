@@ -6,6 +6,7 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.bean.DiaryBean
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
@@ -74,6 +75,8 @@ class BackupUtil
                     FileUtils.deleteDir(backupTempFilePath)
 
                     FileUtils.notifySystemToScan(backupFilePath)
+
+                    delay(1000)
 
                     callback.invoke(zipResult)
                 }

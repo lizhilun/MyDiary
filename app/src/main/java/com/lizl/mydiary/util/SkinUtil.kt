@@ -13,6 +13,9 @@ import skin.support.design.app.SkinMaterialViewInflater
 
 class SkinUtil
 {
+
+    private val SKIN_NIGHT = "night"
+
     private object Singleton
     {
         val INSTANCE = SkinUtil()
@@ -52,7 +55,7 @@ class SkinUtil
 
     private fun loadNightSkin(activity: Activity)
     {
-        SkinCompatManager.getInstance().loadSkin("night", SkinCompatManager.SKIN_LOADER_STRATEGY_BUILD_IN)
+        SkinCompatManager.getInstance().loadSkin(SKIN_NIGHT, SkinCompatManager.SKIN_LOADER_STRATEGY_BUILD_IN)
         BarUtils.setStatusBarColor(activity, ContextCompat.getColor(activity, R.color.colorPrimary_night))
     }
 

@@ -10,6 +10,7 @@ import com.lizl.mydiary.event.EventConstant
 import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.contract.DiaryContentContract
 import com.lizl.mydiary.util.AppDatabase
+import com.lizl.mydiary.util.DiaryUtil
 import com.lizl.mydiary.util.FileUtil
 import com.lizl.mydiary.util.MyGlideEngine
 import com.zhihu.matisse.Matisse
@@ -62,7 +63,7 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
                 }
                 else
                 {
-                    saveImageList.add(FileUtil.saveImageToData(imagePath))
+                    saveImageList.add(DiaryUtil.saveDiaryImage(imagePath))
                 }
             }
             saveDiaryBean.imageList = saveImageList

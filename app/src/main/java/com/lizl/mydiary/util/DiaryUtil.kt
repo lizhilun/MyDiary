@@ -1,6 +1,9 @@
 package com.lizl.mydiary.util
 
+import android.graphics.Bitmap
+import com.blankj.utilcode.util.ImageUtils
 import com.lizl.mydiary.R
+import com.lizl.mydiary.UiApplication
 
 class DiaryUtil
 {
@@ -20,6 +23,18 @@ class DiaryUtil
         {
             return if (str.isEmpty()) 0
             else str.replace("\n", "").replace(" ", "").length
+        }
+
+        /**
+         * 保存图片
+         */
+        fun saveDiaryImage(imagePath : String) : String
+        {
+            val bitmap = ImageUtils.getBitmap(imagePath)
+            val comBitmap = ImageUtils.compressByQuality(bitmap, UiApplication.appConfig.getImageSaveQuality())
+            val savePath = "${FileUtil.getImageFileSavePath()}/${System.currentTimeMillis()}.jpg"
+            ImageUtils.save(comBitmap, savePath, Bitmap.CompressFormat.JPEG)
+            return savePath
         }
 
         fun getMoodResList(): List<Int> = moodResMap.values.toList()

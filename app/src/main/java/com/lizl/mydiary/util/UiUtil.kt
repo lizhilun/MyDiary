@@ -21,34 +21,22 @@ class UiUtil
         /**
          * 隐藏输入法
          */
-        fun hideInputKeyboard(view: View)
-        {
-            KeyboardUtils.hideSoftInput(view)
-        }
+        fun hideInputKeyboard(view: View) = KeyboardUtils.hideSoftInput(view)
 
         /**
          * 显示输入法
          */
-        fun showInputKeyboard(view: View)
-        {
-            KeyboardUtils.showSoftInput(view)
-        }
+        fun showInputKeyboard(view: View) = KeyboardUtils.showSoftInput(view)
 
         /**
          * 退回到桌面
          */
-        fun backToLauncher()
-        {
-            ActivityUtils.startHomeActivity()
-        }
+        fun backToLauncher() = ActivityUtils.startHomeActivity()
 
         /**
          * 跳转到APP详情界面（用于获取权限）
          */
-        fun goToAppDetailPage()
-        {
-            AppUtils.launchAppDetailsSettings()
-        }
+        fun goToAppDetailPage() = AppUtils.launchAppDetailsSettings()
 
         /**
          * 去除TextView默认换行样式，自定义换行
@@ -125,17 +113,11 @@ class UiUtil
         /**
          * 获取屏幕宽度
          */
-        fun getScreenWidth(): Int
-        {
-            return ScreenUtils.getScreenWidth()
-        }
+        fun getScreenWidth(): Int = ScreenUtils.getScreenWidth()
 
         /**
          * 获取屏幕高度
          */
-        fun getScreenHeight(): Int
-        {
-            return ScreenUtils.getScreenHeight()
-        }
+        fun getScreenHeight(): Int = ScreenUtils.getScreenHeight()
     }
 }
