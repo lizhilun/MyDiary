@@ -13,6 +13,9 @@ import androidx.appcompat.app.SkinAppCompatDelegateImpl
 import com.blankj.utilcode.util.BarUtils
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.config.ConfigConstant
+import com.lizl.mydiary.event.EventConstant
+import com.lizl.mydiary.event.UIEvent
+import com.lizl.mydiary.mvp.activity.DiarySearchActivity
 import com.lizl.mydiary.mvp.activity.ImageBrowserActivity
 import com.lizl.mydiary.mvp.activity.LockActivity
 import com.lizl.mydiary.mvp.activity.SettingActivity
@@ -20,6 +23,8 @@ import com.lizl.mydiary.util.AppConstant
 import com.lizl.mydiary.util.SkinUtil
 import com.lizl.mydiary.util.UiUtil
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
 {
@@ -38,6 +43,8 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setContentView(getLayoutResId())
+
+        EventBus.getDefault().register(this)
 
         BarUtils.addMarginTopEqualStatusBarHeight(findViewById<ViewGroup>(android.R.id.content).getChildAt(0))
 
@@ -60,8 +67,8 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         super.onStart()
 
         // 密码保护打开并且应用超时的情况
-        if (this !is LockActivity && UiApplication.appConfig.isAppLockOn() && !TextUtils.isEmpty(UiApplication.appConfig.getAppLockPassword())
-            && System.currentTimeMillis() - UiApplication.appConfig.getAppLastStopTime() >= ConfigConstant.APP_TIMEOUT_PERIOD)
+        if (this !is LockActivity && UiApplication.appConfig.isAppLockOn() && !TextUtils.isEmpty(
+                        UiApplication.appConfig.getAppLockPassword()) && System.currentTimeMillis() - UiApplication.appConfig.getAppLastStopTime() >= ConfigConstant.APP_TIMEOUT_PERIOD)
         {
             turnToLockActivity()
         }
@@ -125,11 +132,17 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     fun turnToImageBrowserActivity(imageUrlList: ArrayList<String>, selectImageUrl: String, editable: Boolean)
     {
         val intent = Intent(this, ImageBrowserActivity::class.java)
-        val bundle = Bundle()
-        bundle.putStringArrayList(AppConstant.BUNDLE_DATA_STRING_ARRAY, imageUrlList)
-        bundle.putString(AppConstant.BUNDLE_DATA_STRING, selectImageUrl)
-        bundle.putBoolean(AppConstant.BUNDLE_DATA_BOOLEAN, editable)
-        intent.putExtras(bundle)
+        intent.putStringArrayListExtra(AppConstant.BUNDLE_DATA_STRING_ARRAY, imageUrlList)
+        intent.putExtra(AppConstant.BUNDLE_DATA_STRING, selectImageUrl)
+        intent.putExtra(AppConstant.BUNDLE_DATA_BOOLEAN, editable)
+        startActivity(intent)
+    }
+
+    fun turnToDiarySearchActivity(keyword: String?, mood: Int)
+    {
+        val intent = Intent(this, DiarySearchActivity::class.java)
+        intent.putExtra(AppConstant.BUNDLE_DATA_STRING, keyword)
+        intent.putExtra(AppConstant.BUNDLE_DATA_INT, mood)
         startActivity(intent)
     }
 
@@ -148,5 +161,15 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     override fun getDelegate(): AppCompatDelegate
     {
         return SkinAppCompatDelegateImpl.get(this, this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUiEvent(uiEvent: UIEvent)
+    {
+        when (uiEvent.event)
+        {
+            EventConstant.UI_EVENT_NIGHT_MODE_CHANGE -> SkinUtil.instance.loadSkin(this)
+            else                                     -> presenter.handleUIEvent(uiEvent)
+        }
     }
 }

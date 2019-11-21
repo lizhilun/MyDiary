@@ -17,6 +17,8 @@ class MoodStatisticsListAdapter : RecyclerView.Adapter<MoodStatisticsListAdapter
     private val moodStatisticsList = mutableListOf<MoodStatisticsBean>()
     private var maxCount = 0
 
+    private var onMoodItemClickListener: ((moodStatisticsBean: MoodStatisticsBean) -> Unit)? = null
+
     fun setData(moodStatisticsList: List<MoodStatisticsBean>)
     {
         this.moodStatisticsList.clear()
@@ -53,6 +55,13 @@ class MoodStatisticsListAdapter : RecyclerView.Adapter<MoodStatisticsListAdapter
             itemView.npb_statistics.setProgressTextVisibility(NumberProgressBar.ProgressTextVisibility.Invisible)
 
             itemView.tv_count.text = moodStatisticsBean.diaryCount.toString()
+
+            itemView.setOnClickListener { onMoodItemClickListener?.invoke(moodStatisticsBean) }
         }
+    }
+
+    fun setOnMoodItemClickListener(onMoodItemClickListener: (moodStatisticsBean: MoodStatisticsBean) -> Unit)
+    {
+        this.onMoodItemClickListener = onMoodItemClickListener
     }
 }

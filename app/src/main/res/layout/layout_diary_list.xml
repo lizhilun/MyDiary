@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<skin.support.widget.SkinCompatLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_diary_list_herder" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_diary_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="none" />
+
+    <skin.support.widget.SkinCompatTextView
+        android:id="@+id/tv_end_footer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/diary_item_space"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:text="END"
+        android:textColor="@color/colorSecondaryTextColor"
+        android:textSize="@dimen/global_text_size"
+        android:visibility="gone" />
+</skin.support.widget.SkinCompatLinearLayout>

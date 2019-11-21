@@ -7,10 +7,9 @@
     <com.lizl.mydiary.custom.view.CustomTitleBar
         android:id="@+id/ctb_title"
         style="@style/ToolbarLayoutStyle"
-        app:backBtnVisible="false"
+        app:backBtnVisible="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:titleText="@string/app_name" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.lizl.mydiary.custom.view.DiaryListView
         android:id="@+id/view_diary_list"
@@ -18,18 +17,5 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ctb_title" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_diary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:layout_marginBottom="24dp"
-        app:backgroundTint="?attr/colorPrimary"
-        app:fabSize="normal"
-        app:layout_anchorGravity="bottom|end"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@mipmap/ic_write" />
 
 </skin.support.constraint.SkinCompatConstraintLayout>

@@ -32,7 +32,6 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
 
     private var onBackBtnClickListener: (() -> Unit)? = null
     private var onSearchTextChangeListener: ((searchText: String) -> Unit)? = null
-    private var onSearchFinishListener: (() -> Unit)? = null
     private var onTitleClickListener: (() -> Unit)? = null
 
     constructor(context: Context) : this(context, null)
@@ -101,28 +100,21 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         constraintSet.connect(titleTextView.id, ConstraintSet.START, backBtn.id, ConstraintSet.END)
 
         constraintSet.constrainHeight(btnListView.id, LayoutParams.MATCH_PARENT)
-        constraintSet.constrainWidth(btnListView.id, LayoutParams.MATCH_CONSTRAINT)
-        constraintSet.connect(btnListView.id, ConstraintSet.START, titleTextView.id, ConstraintSet.END)
+        constraintSet.constrainWidth(btnListView.id, LayoutParams.WRAP_CONTENT)
         constraintSet.connect(btnListView.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
 
         constraintSet.constrainHeight(searchEditText.id, LayoutParams.MATCH_PARENT)
         constraintSet.constrainWidth(searchEditText.id, LayoutParams.MATCH_CONSTRAINT)
         constraintSet.connect(searchEditText.id, ConstraintSet.START, titleTextView.id, ConstraintSet.END)
-        constraintSet.connect(searchEditText.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, padding)
+        constraintSet.connect(searchEditText.id, ConstraintSet.END, btnListView.id, ConstraintSet.START, padding)
 
         constraintSet.applyTo(this)
 
         searchEditText.isVisible = false
 
-        backBtn.setOnClickListener {
-            if (inSearchMode)
-            {
-                stopSearchMode()
-                return@setOnClickListener
-            }
-            onBackBtnClickListener?.invoke()
-        }
+        backBtn.setOnClickListener { onBackBtnClickListener?.invoke() }
 
+        searchEditText.setOnClickListener { UiUtil.showInputKeyboard(searchEditText) }
         searchEditText.addTextChangedListener { onSearchTextChangeListener?.invoke(it.toString()) }
 
         titleTextView.setOnClickListener { onTitleClickListener?.invoke() }
@@ -149,15 +141,14 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         titleTextView.text = text
     }
 
-    fun startSearchMode(onSearchTextChangeListener: (searchText: String) -> Unit, onSearchFinishListener: () -> Unit)
+    fun startSearchMode(withTitleBtn: Boolean, onSearchTextChangeListener: (searchText: String) -> Unit)
     {
         searchEditText.isVisible = true
         backBtn.isVisible = true
-        btnListView.isVisible = false
+        btnListView.isVisible = withTitleBtn
         titleTextView.isVisible = false
         inSearchMode = true
 
-        this.onSearchFinishListener = onSearchFinishListener
         this.onSearchTextChangeListener = onSearchTextChangeListener
 
         UiUtil.showInputKeyboard(searchEditText)
@@ -171,13 +162,13 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         titleTextView.isVisible = true
         inSearchMode = false
 
-        onSearchFinishListener?.invoke()
-        onSearchFinishListener = null
         onSearchTextChangeListener = null
 
         searchEditText.setText("")
         UiUtil.hideInputKeyboard(searchEditText)
     }
+
+    fun getSearchText() = searchEditText.text.toString()
 
     fun setOnTitleClickListener(onTitleClickListener: () -> Unit)
     {

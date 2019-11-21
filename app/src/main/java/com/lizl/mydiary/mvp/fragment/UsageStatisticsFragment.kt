@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.MoodStatisticsListAdapter
 import com.lizl.mydiary.bean.MoodStatisticsBean
+import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.contract.UsageStatisticsContract
 import com.lizl.mydiary.mvp.presenter.UsageStatisticsPresenter
@@ -29,6 +30,8 @@ class UsageStatisticsFragment : BaseFragment<UsageStatisticsPresenter>(), UsageS
         ctb_title.setOnBackBtnClickListener { backToPreFragment() }
 
         presenter.getUsageStatistics()
+
+        moodStatisticsListAdapter.setOnMoodItemClickListener { (activity as BaseActivity<*>).turnToDiarySearchActivity(null, it.mood) }
     }
 
     override fun showDiaryCount(count: Int)

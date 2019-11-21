@@ -22,12 +22,10 @@ class ImageBrowserActivity : BaseActivity<EmptyPresenter>()
 
     override fun initView()
     {
-        val bundle = intent.extras!!
-
-        imageList = bundle.getStringArrayList(AppConstant.BUNDLE_DATA_STRING_ARRAY)!!
-        val selectImageUrl = bundle.getString(AppConstant.BUNDLE_DATA_STRING)
+        imageList = intent?.getStringArrayListExtra(AppConstant.BUNDLE_DATA_STRING_ARRAY)!!
+        val selectImageUrl = intent?.getStringExtra(AppConstant.BUNDLE_DATA_STRING)
         val imagePosition = imageList.indexOf(selectImageUrl!!)
-        val editable = bundle.getBoolean(AppConstant.BUNDLE_DATA_BOOLEAN)
+        val editable = intent?.getBooleanExtra(AppConstant.BUNDLE_DATA_BOOLEAN, false)!!
 
         val imageViewPagerAdapter = ImageViewPagerAdapter(imageList)
         vp_image_list.adapter = imageViewPagerAdapter

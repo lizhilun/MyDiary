@@ -5,5 +5,4 @@
         <attr name="titleText" format="string|reference" />
     </declare-styleable>
 
-
 </resources>

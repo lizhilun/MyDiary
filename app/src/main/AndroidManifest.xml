@@ -36,6 +36,8 @@
 
         <activity android:name=".mvp.activity.DiaryContentActivity" />
 
+        <activity android:name=".mvp.activity.DiarySearchActivity" />
+
         <!--知乎图片选择器，适配7.0系统-->
         <provider
             android:name="androidx.core.content.FileProvider"

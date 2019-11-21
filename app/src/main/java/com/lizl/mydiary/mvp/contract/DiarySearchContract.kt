@@ -4,17 +4,15 @@ import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.mvp.base.BasePresenter
 import com.lizl.mydiary.mvp.base.BaseView
 
-class DiaryListContract
+class DiarySearchContract
 {
     interface View : BaseView
     {
-        fun onDiariesQueryFinish(diaryList: List<DiaryBean>)
-
-        fun onDiarySaveSuccess(diaryBean: DiaryBean)
+        fun showDiaryResult(diaryList: List<DiaryBean>)
     }
 
     interface Presenter : BasePresenter<View>
     {
-        fun queryAllDiary()
+        fun searchDiary(keyword: String, mood: Int)
     }
 }

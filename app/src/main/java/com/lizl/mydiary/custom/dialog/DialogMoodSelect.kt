@@ -7,17 +7,17 @@ import com.lizl.mydiary.adapter.MoodListAdapter
 import com.lizl.mydiary.util.DiaryUtil
 import kotlinx.android.synthetic.main.dialog_mood_select.*
 
-class DialogMoodSelect(context: Context, private val onMoodSelectListener: (mood: Int) -> Unit) : BaseDialog(context)
+class DialogMoodSelect(context: Context, private val withAll: Boolean, private val onMoodSelectListener: (mood: Int) -> Unit) : BaseDialog(context)
 {
     override fun getDialogContentViewResId() = R.layout.dialog_mood_select
 
     override fun initView()
     {
-        rv_mood_grid.layoutManager = GridLayoutManager(context, 3)
+        rv_mood_grid.layoutManager = GridLayoutManager(context, if (withAll) 4 else 3)
         val moodListAdapter = MoodListAdapter()
         rv_mood_grid.adapter = moodListAdapter
 
-        moodListAdapter.setData(DiaryUtil.getMoodResList())
+        moodListAdapter.setData(DiaryUtil.getMoodResList(withAll))
 
         moodListAdapter.setOnMoodItemClickListener {
             onMoodSelectListener.invoke(DiaryUtil.getMoodByMoodRes(it))
