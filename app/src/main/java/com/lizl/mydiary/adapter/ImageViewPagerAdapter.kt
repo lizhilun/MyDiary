@@ -1,10 +1,10 @@
 package com.lizl.mydiary.adapter
 
+import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.viewpager.widget.PagerAdapter
-import com.lizl.mydiary.util.GlideUtil
+import com.github.chrisbanes.photoview.PhotoView
 
 class ImageViewPagerAdapter(private val imageList: List<String>) : PagerAdapter()
 {
@@ -17,9 +17,9 @@ class ImageViewPagerAdapter(private val imageList: List<String>) : PagerAdapter(
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any
     {
-        val imageView = AppCompatImageView(container.context)
+        val imageView = PhotoView(container.context)
 
-        GlideUtil.displayImage(container.context, imageList[position], imageView)
+        imageView.setImageURI(Uri.parse(imageList[position]))
 
         container.addView(imageView)
         return imageView
