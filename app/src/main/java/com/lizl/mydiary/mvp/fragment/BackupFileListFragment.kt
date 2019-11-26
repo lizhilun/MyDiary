@@ -12,7 +12,6 @@ import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.contract.BackupFileListContract
 import com.lizl.mydiary.mvp.presenter.BackupFileListPresenter
-import com.lizl.mydiary.util.BackupUtil
 import com.lizl.mydiary.util.DialogUtil
 import kotlinx.android.synthetic.main.fragment_backup_file_list.*
 import org.greenrobot.eventbus.EventBus

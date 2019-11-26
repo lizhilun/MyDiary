@@ -9,9 +9,13 @@
     <skin.support.widget.SkinCompatTextView
         android:id="@+id/tv_file_name"
         style="@style/GlobalTextStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/global_content_padding_edge"
+        android:layout_marginEnd="@dimen/global_content_padding_edge"
+        android:ellipsize="middle"
+        android:singleLine="true"
+        app:layout_constraintEnd_toStartOf="@+id/tv_file_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

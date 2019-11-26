@@ -14,7 +14,7 @@ class DialogInput(context: Context, private var title: String, private var defau
 {
     override fun getDialogContentViewResId() = R.layout.dialog_input
 
-    override fun getDialogWidth() = 0
+    override fun getDialogWidth() = (UiUtil.getScreenWidth() * 0.9).toInt()
 
     override fun initView()
     {
