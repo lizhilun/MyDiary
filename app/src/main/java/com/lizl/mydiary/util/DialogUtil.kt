@@ -87,6 +87,14 @@ class DialogUtil
             dialog?.show()
         }
 
+        fun showInputDialog(context: Context, title: String, defaultValue: String?, editHint: String,
+                            inputCompletedCallback: (String) -> Unit)
+        {
+            dialog?.dismiss()
+            dialog = DialogInput(context, title, defaultValue, editHint, inputCompletedCallback)
+            dialog?.show()
+        }
+
         fun dismissDialog()
         {
             dialog?.dismiss()

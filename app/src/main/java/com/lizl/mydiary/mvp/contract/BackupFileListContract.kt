@@ -12,6 +12,8 @@ class BackupFileListContract
 
         fun onBackupFileDeleted(file: File)
 
+        fun onBackupFileUpdate(file: File)
+
         fun showRestoringDataView()
 
         fun onRestoreDataFinish(result: Boolean)
@@ -24,5 +26,9 @@ class BackupFileListContract
         fun deleteBackupFile(file: File)
 
         fun restoreData(file: File)
+
+        fun renameBackupFile(file: File, newName : String)
+
+        fun clearBackupFiles()
     }
 }

@@ -6,6 +6,7 @@ import com.lizl.mydiary.util.BackupUtil
 import com.lizl.mydiary.util.FileUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -35,6 +36,39 @@ class BackupFileListPresenter(private var view: BackupFileListContract.View?) : 
             BackupUtil.restoreData(file.absolutePath) {
                 GlobalScope.launch(Dispatchers.Main) { view?.onRestoreDataFinish(it) }
             }
+        }
+    }
+
+    override fun renameBackupFile(file: File, newName: String)
+    {
+        GlobalScope.launch {
+            FileUtil.renameFile(file, newName, true)
+            delay(500)
+            getBackupFileList()
+        }
+    }
+
+    override fun clearBackupFiles()
+    {
+        GlobalScope.launch {
+            val backupFileList = BackupUtil.getBackupFileList()
+            if (backupFileList.isEmpty())
+            {
+                return@launch
+            }
+            var latestFile = backupFileList[0]
+            backupFileList.forEach {
+                if (it.lastModified() > latestFile.lastModified())
+                {
+                    FileUtil.deleteFile(latestFile)
+                    latestFile = it
+                }
+                else if (it.lastModified() < latestFile.lastModified())
+                {
+                    FileUtil.deleteFile(it)
+                }
+            }
+            GlobalScope.launch(Dispatchers.Main) { view?.showBackupFileList(listOf(latestFile)) }
         }
     }
 

@@ -48,7 +48,36 @@ class FileUtil
         /**
          * 删除文件
          */
+        fun deleteFile(file: File) = FileUtils.delete(file)
+
+        /**
+         * 删除文件
+         */
         fun deleteFile(filePath: String) = FileUtils.delete(filePath)
+
+        /**
+         * 重命名文件
+         */
+        fun renameFile(file: File, newName: String, needNotify: Boolean): Boolean
+        {
+            if (!file.exists() || newName.isEmpty() || newName.isBlank())
+            {
+                return false
+            }
+
+            if (file.nameWithoutExtension == newName)
+            {
+                return true
+            }
+
+            val newFilePath = file.absolutePath.replace(file.nameWithoutExtension, newName)
+            val result = file.renameTo(File(newFilePath))
+            if (needNotify)
+            {
+                FileUtils.notifySystemToScan(newFilePath)
+            }
+            return result
+        }
 
         /**
          * 写文件

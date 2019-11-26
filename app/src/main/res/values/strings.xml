@@ -63,6 +63,8 @@
     <string name="backup_data">备份数据</string>
     <string name="restore_data">还原数据</string>
     <string name="auto_backup_data">自动备份数据</string>
+    <string name="clear_backup_data">备份文件清理</string>
+    <string name="notify_clear_backup_data">备份文件清理将只保留最新的备份文件，其余的会被删除，是否继续？</string>
 
     <string name="diary_count">已记录</string>
     <string name="word_count">总字数</string>

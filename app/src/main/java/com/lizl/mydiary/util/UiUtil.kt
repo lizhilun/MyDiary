@@ -24,6 +24,17 @@ class UiUtil
         fun hideInputKeyboard(view: View) = KeyboardUtils.hideSoftInput(view)
 
         /**
+         * 隐藏输入法
+         */
+        fun hideInputKeyboard()
+        {
+            if (KeyboardUtils.isSoftInputVisible(ActivityUtils.getTopActivity()))
+            {
+                KeyboardUtils.toggleSoftInput()
+            }
+        }
+
+        /**
          * 显示输入法
          */
         fun showInputKeyboard(view: View) = KeyboardUtils.showSoftInput(view)
