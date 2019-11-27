@@ -16,6 +16,7 @@
     <dimen name="global_divider_line_size">1px</dimen>
     <dimen name="global_frame_line_size">1px</dimen>
     <dimen name="global_toolbar_height">56dp</dimen>
+    <dimen name="global_image_size">64dp</dimen>
 
     <dimen name="diary_item_time_width">80dp</dimen>
     <dimen name="diary_item_space">6dp</dimen>
@@ -23,13 +24,14 @@
     <dimen name="footer_view_height">80dp</dimen>
 
     <dimen name="toolbar_content_padding_edge">16dp</dimen>
-    <dimen name="toolbar_back_icon_size">48dp</dimen>
+    <dimen name="toolbar_back_icon_size">@dimen/global_toolbar_height</dimen>
     <dimen name="toolbar_icon_padding">16dp</dimen>
-    <dimen name="toolbar_back_icon_padding">18dp</dimen>
+    <dimen name="toolbar_back_icon_padding">16dp</dimen>
     <dimen name="toolbar_title_text_size">20sp</dimen>
     <dimen name="toolbar_text_button_height">32dp</dimen>
     <dimen name="toolbar_text_button_width">60dp</dimen>
     <dimen name="toolbar_text_button_text_size">14sp</dimen>
+    <dimen name="toolbar_image_btn_size">@dimen/global_toolbar_height</dimen>
 
     <dimen name="dialog_button_height">60dp</dimen>
     <dimen name="dialog_button_width">60dp</dimen>

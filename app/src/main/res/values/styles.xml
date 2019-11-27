@@ -42,17 +42,17 @@
     </style>
 
     <style name="ToolbarLayoutBackIconStyle">
-        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_width">@dimen/toolbar_back_icon_size</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:paddingTop">@dimen/toolbar_back_icon_padding</item>
         <item name="android:paddingBottom">@dimen/toolbar_back_icon_padding</item>
         <item name="android:scaleType">fitStart</item>
-        <item name="android:src">@mipmap/ic_back</item>
+        <item name="android:src">@drawable/ic_back</item>
     </style>
 
     <style name="ToolbarLayoutImageButtonStyle">
-        <item name="android:layout_width">@dimen/global_toolbar_height</item>
-        <item name="android:layout_height">@dimen/global_toolbar_height</item>
+        <item name="android:layout_width">@dimen/toolbar_image_btn_size</item>
+        <item name="android:layout_height">@dimen/toolbar_image_btn_size</item>
         <item name="android:padding">@dimen/toolbar_icon_padding</item>
         <item name="android:scaleType">fitCenter</item>
     </style>

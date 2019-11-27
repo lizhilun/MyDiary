@@ -204,7 +204,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         et_diary_content.isEnabled = true
         diaryImageListAdapter.setEditable(true)
         fab_edit_diary.isVisible = false
-        ctb_title.setBackBtnRedId(R.mipmap.ic_confirm)
+        ctb_title.setBackBtnRedId(R.drawable.ic_confirm)
 
         et_diary_content.setSelection(et_diary_content.text.toString().length)
         UiUtil.showInputKeyboard(et_diary_content)
@@ -216,7 +216,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         et_diary_content.isEnabled = false
         diaryImageListAdapter.setEditable(false)
         fab_edit_diary.isVisible = true
-        ctb_title.setBackBtnRedId(R.mipmap.ic_back)
+        ctb_title.setBackBtnRedId(R.drawable.ic_back)
     }
 
     override fun onBackPressed()

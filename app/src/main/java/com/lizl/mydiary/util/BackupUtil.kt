@@ -20,7 +20,7 @@ class BackupUtil
         private val backupTempFilePath = "$backupFilePath/temp"
         private val backupTempImageFilePath = "$backupFilePath/temp/picture"
         private val backupTempDiaryFilePath = "$backupFilePath/temp/diary.txt"
-        const val backupFileSuffix = ".iui"
+        private const val backupFileSuffix = ".iui"
         private const val autoBackupFileName = "autoBackup"
 
         fun manualBackupData(callback: (result: Boolean) -> Unit)

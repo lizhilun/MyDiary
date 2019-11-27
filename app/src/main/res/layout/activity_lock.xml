@@ -9,7 +9,6 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginBottom="40dp"
-        android:src="@mipmap/ic_fingerprint_on"
         app:layout_constraintBottom_toTopOf="@+id/tv_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

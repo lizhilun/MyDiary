@@ -36,8 +36,8 @@ class MainActivity : BaseActivity<DiaryListPresenter>(), DiaryListContract.View
     override fun initView()
     {
         val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
-        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_setting) { turnToSettingActivity() })
-        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_search) { turnToDiarySearchActivity(null, -1) })
+        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.drawable.ic_setting) { turnToSettingActivity() })
+        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.drawable.ic_search) { turnToDiarySearchActivity(null, -1) })
         ctb_title.setBtnList(titleBtnList)
 
         fab_add_diary.setOnClickListener { turnToDiaryContentActivity() }

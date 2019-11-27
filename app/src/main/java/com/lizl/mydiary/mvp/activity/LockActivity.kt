@@ -43,12 +43,12 @@ class LockActivity : BaseActivity<EmptyContract.Presenter>(), NumberKeyGridAdapt
             iv_lock.setOnClickListener { showFingerprintDialog() }
             showFingerprintDialog()
 
-            iv_lock.setImageResource(R.mipmap.ic_fingerprint_on)
+            iv_lock.setImageResource(R.drawable.ic_fingerprint)
         }
         else
         {
             tv_hint.text = getString(R.string.hint_input_password)
-            iv_lock.setImageResource(R.mipmap.ic_lock)
+            iv_lock.setImageResource(R.drawable.ic_lock)
         }
 
         tv_number.text = ""

@@ -10,8 +10,8 @@ class DiaryUtil
 
     companion object
     {
-        private val moodResMap = hashMapOf(AppConstant.MOOD_ALL to R.mipmap.ic_mood_all, AppConstant.MOOD_HAPPY to R.mipmap.ic_mood_happy,
-                AppConstant.MOOD_NORMAL to R.mipmap.ic_mood_normal, AppConstant.MOOD_UNHAPPY to R.mipmap.ic_mood_unhappy)
+        private val moodResMap = hashMapOf(AppConstant.MOOD_ALL to R.drawable.ic_mood_all, AppConstant.MOOD_HAPPY to R.drawable.ic_mood_happy,
+                AppConstant.MOOD_NORMAL to R.drawable.ic_mood_normal, AppConstant.MOOD_UNHAPPY to R.drawable.ic_mood_unhappy)
 
         /**
          * 统计字数
@@ -38,7 +38,7 @@ class DiaryUtil
 
         fun getMoodList(withAll: Boolean): List<Int> = moodResMap.filter { withAll || it.key != AppConstant.MOOD_ALL }.keys.toList()
 
-        fun getMoodResByMood(mood: Int): Int = moodResMap[mood] ?: R.mipmap.ic_mood_normal
+        fun getMoodResByMood(mood: Int): Int = moodResMap[mood] ?: R.drawable.ic_mood_normal
 
         fun getMoodByMoodRes(modRes: Int): Int
         {

@@ -1,14 +1,15 @@
 package com.lizl.mydiary.adapter
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import kotlinx.android.synthetic.main.item_number_key.view.*
 
-class NumberKeyGridAdapter(private val keyList: List<String>, private val onItemClickListener: OnNumberKeyClickListener) : RecyclerView.Adapter<NumberKeyGridAdapter.ViewHolder>()
+class NumberKeyGridAdapter(private val keyList: List<String>, private val onItemClickListener: OnNumberKeyClickListener) :
+        RecyclerView.Adapter<NumberKeyGridAdapter.ViewHolder>()
 {
     override fun getItemCount(): Int = keyList.size
 
@@ -31,7 +32,7 @@ class NumberKeyGridAdapter(private val keyList: List<String>, private val onItem
                 itemView.tv_key.visibility = View.GONE
                 itemView.iv_key.visibility = View.VISIBLE
 
-                itemView.iv_key.setImageResource(R.mipmap.ic_backspace)
+                itemView.iv_key.setImageResource(R.drawable.ic_backspace)
             }
             else
             {

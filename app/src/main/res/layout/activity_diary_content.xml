@@ -54,6 +54,6 @@
         app:layout_anchorGravity="bottom|end"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@mipmap/ic_edit" />
+        app:srcCompat="@drawable/ic_edit" />
 
 </skin.support.constraint.SkinCompatConstraintLayout>

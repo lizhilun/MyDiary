@@ -35,7 +35,7 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
         backupFileListAdapter.setOnFileItemClickListener { showFileOperationDialog(it) }
 
         val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
-        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.mipmap.ic_clear) {
+        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.drawable.ic_clear) {
             DialogUtil.showOperationConfirmDialog(activity as Context, getString(R.string.clear_backup_data), getString(R.string.notify_clear_backup_data)) {
                 presenter.clearBackupFiles()
             }

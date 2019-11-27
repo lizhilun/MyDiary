@@ -18,9 +18,9 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/ic_add"
         app:layout_constraintBottom_toBottomOf="@+id/view_background"
         app:layout_constraintEnd_toEndOf="@+id/view_background"
         app:layout_constraintStart_toStartOf="@+id/view_background"
-        app:layout_constraintTop_toTopOf="@+id/view_background" />
+        app:layout_constraintTop_toTopOf="@+id/view_background"
+        app:srcCompat="@drawable/ic_add" />
 </skin.support.constraint.SkinCompatConstraintLayout>
