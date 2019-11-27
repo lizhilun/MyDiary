@@ -1,47 +1,55 @@
 package com.lizl.mydiary.mvp.activity
 
-import android.hardware.biometrics.BiometricPrompt
-import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.adapter.NumberKeyGridAdapter
 import com.lizl.mydiary.custom.others.recylerviewitemdivider.GridDividerItemDecoration
 import com.lizl.mydiary.mvp.base.BaseActivity
-import com.lizl.mydiary.mvp.contract.EmptyContract
-import com.lizl.mydiary.mvp.presenter.EmptyPresenter
+import com.lizl.mydiary.mvp.contract.LockContract
+import com.lizl.mydiary.mvp.presenter.LockPresenter
 import com.lizl.mydiary.util.BiometricAuthenticationUtil
 import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.activity_lock.*
 
-class LockActivity : BaseActivity<EmptyContract.Presenter>(), NumberKeyGridAdapter.OnNumberKeyClickListener
+class LockActivity : BaseActivity<LockPresenter>(), LockContract.View
 {
-
-    private var inputPassword = ""
 
     override fun getLayoutResId() = R.layout.activity_lock
 
-    override fun initPresenter() = EmptyPresenter()
+    override fun initPresenter() = LockPresenter(this)
 
     override fun initView()
     {
         val numberKeyList: List<String> = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "#")
-        val numberKeyGridAdapter = NumberKeyGridAdapter(numberKeyList, this)
+        val numberKeyGridAdapter = NumberKeyGridAdapter(numberKeyList)
         rv_number_key.layoutManager = GridLayoutManager(this, 3)
         rv_number_key.addItemDecoration(GridDividerItemDecoration())
         rv_number_key.adapter = numberKeyGridAdapter
+
+        numberKeyGridAdapter.setOnNumberItemClickListener {
+
+            when (it)
+            {
+                "*"  -> UiUtil.backToLauncher()
+                "#"  -> tv_number.backspace()
+                else -> tv_number.add(it)
+            }
+
+            presenter.checkInputPassword(tv_number.getInputText())
+        }
     }
 
-    override fun onResume()
+    override fun onStart()
     {
-        super.onResume()
+        super.onStart()
 
         if (BiometricAuthenticationUtil.instance.isFingerprintSupport() && UiApplication.appConfig.isFingerprintLockOn())
         {
             tv_hint.text = getString(R.string.hint_verify_fingerprint_or_input_password)
 
-            iv_lock.setOnClickListener { showFingerprintDialog() }
-            showFingerprintDialog()
+            iv_lock.setOnClickListener { presenter.startFingerprintAuthentication() }
+            presenter.startFingerprintAuthentication()
 
             iv_lock.setImageResource(R.drawable.ic_fingerprint)
         }
@@ -51,71 +59,10 @@ class LockActivity : BaseActivity<EmptyContract.Presenter>(), NumberKeyGridAdapt
             iv_lock.setImageResource(R.drawable.ic_lock)
         }
 
-        tv_number.text = ""
-        inputPassword = ""
+        tv_number.clear()
     }
 
-    private fun showFingerprintDialog()
-    {
-        BiometricAuthenticationUtil.instance.authenticate(object : BiometricPrompt.AuthenticationCallback()
-        {
-            override fun onAuthenticationError(errorCode: Int, errString: CharSequence?)
-            {
-                Log.d(TAG, "onAuthenticationError() called with: errorCode = [$errorCode], errString = [$errString]")
-                super.onAuthenticationError(errorCode, errString)
-            }
-
-            override fun onAuthenticationFailed()
-            {
-                Log.d(TAG, "onAuthenticationFailed")
-                super.onAuthenticationFailed()
-            }
-
-            override fun onAuthenticationHelp(helpCode: Int, helpString: CharSequence?)
-            {
-                Log.d(TAG, "onAuthenticationHelp() called with: helpCode = [$helpCode], helpString = [$helpString]")
-                super.onAuthenticationHelp(helpCode, helpString)
-            }
-
-            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult?)
-            {
-                Log.d(TAG, "onAuthenticationSucceeded() called with: result = [$result]")
-                super.onAuthenticationSucceeded(result)
-                onUnlockSuccess()
-            }
-        })
-    }
-
-    override fun onNumberKeyClick(keyValue: String)
-    {
-        when (keyValue)
-        {
-            "*"  -> UiUtil.backToLauncher()
-            "#"  ->
-            {
-                if (inputPassword.isNotEmpty())
-                {
-                    inputPassword = inputPassword.substring(0, inputPassword.length - 1)
-                }
-            }
-            else -> inputPassword += keyValue
-        }
-
-        var numberStr = ""
-        for (i in 1..inputPassword.length)
-        {
-            numberStr += "@"
-        }
-
-        tv_number.text = numberStr
-
-        if (inputPassword == UiApplication.appConfig.getAppLockPassword())
-        {
-            onUnlockSuccess()
-        }
-    }
-
-    private fun onUnlockSuccess()
+    override fun onUnlockSuccess()
     {
         UiApplication.appConfig.setAppLastStopTime(Long.MAX_VALUE)
         finish()

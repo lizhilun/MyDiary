@@ -8,9 +8,10 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import kotlinx.android.synthetic.main.item_number_key.view.*
 
-class NumberKeyGridAdapter(private val keyList: List<String>, private val onItemClickListener: OnNumberKeyClickListener) :
-        RecyclerView.Adapter<NumberKeyGridAdapter.ViewHolder>()
+class NumberKeyGridAdapter(private val keyList: List<String>) : RecyclerView.Adapter<NumberKeyGridAdapter.ViewHolder>()
 {
+    private var onNumberItemClickListener: ((String) -> Unit)? = null
+
     override fun getItemCount(): Int = keyList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
@@ -41,12 +42,12 @@ class NumberKeyGridAdapter(private val keyList: List<String>, private val onItem
                 itemView.tv_key.text = if (keyValue == "*") UiApplication.instance.getText(R.string.exit) else keyValue
             }
 
-            itemView.setOnClickListener { onItemClickListener.onNumberKeyClick(keyValue) }
+            itemView.setOnClickListener { onNumberItemClickListener?.invoke(keyValue) }
         }
     }
 
-    interface OnNumberKeyClickListener
+    fun setOnNumberItemClickListener(onNumberItemClickListener: (String) -> Unit)
     {
-        fun onNumberKeyClick(keyValue: String)
+        this.onNumberItemClickListener = onNumberItemClickListener
     }
 }
