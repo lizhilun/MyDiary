@@ -1,6 +1,6 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="@dimen/global_image_size"
-    android:height="@dimen/global_image_size"
+    android:width="@dimen/global_check_btn_size"
+    android:height="@dimen/global_check_btn_size"
     android:tint="@color/colorThirdTextColor"
     android:viewportWidth="24.0"
     android:viewportHeight="24.0">

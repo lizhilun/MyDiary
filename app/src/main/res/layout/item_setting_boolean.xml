@@ -21,11 +21,11 @@
 
     <skin.support.widget.SkinCompatImageView
         android:id="@+id/iv_boolean_setting_checked"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="@dimen/global_check_btn_size"
+        android:layout_height="@dimen/global_check_btn_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bg_image_toggle_button" />
+        app:srcCompat="@drawable/ic_check_button" />
 
 </skin.support.constraint.SkinCompatConstraintLayout>
