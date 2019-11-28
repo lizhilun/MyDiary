@@ -1,6 +1,5 @@
 package com.lizl.mydiary.mvp.activity
 
-import android.content.Intent
 import android.os.Bundle
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
@@ -10,8 +9,10 @@ import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.DiaryListContract
 import com.lizl.mydiary.mvp.presenter.DiaryListPresenter
+import com.lizl.mydiary.util.ActivityUtil
 import com.lizl.mydiary.util.BackupUtil
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : BaseActivity<DiaryListPresenter>(), DiaryListContract.View
 {
@@ -24,9 +25,6 @@ class MainActivity : BaseActivity<DiaryListPresenter>(), DiaryListContract.View
     {
         super.onCreate(savedInstanceState)
 
-        // Activity走onCreate()将上次应用停止时间置为0，保证onResume()会走是否显示锁定界面流程
-        UiApplication.appConfig.setAppLastStopTime(0)
-
         if (UiApplication.appConfig.isAutoBackup() && System.currentTimeMillis() - UiApplication.appConfig.getLastAutoBackupTime() > ConfigConstant.APP_AUTO_BACKUP_PERIOD)
         {
             BackupUtil.autoBackup()
@@ -36,19 +34,13 @@ class MainActivity : BaseActivity<DiaryListPresenter>(), DiaryListContract.View
     override fun initView()
     {
         val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
-        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.drawable.ic_setting) { turnToSettingActivity() })
-        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.drawable.ic_search) { turnToDiarySearchActivity(null, -1) })
+        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.drawable.ic_setting) { ActivityUtil.turnToActivity(SettingActivity::class.java) })
+        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.drawable.ic_search) { ActivityUtil.turnToActivity(DiarySearchActivity::class.java, -1) })
         ctb_title.setBtnList(titleBtnList)
 
-        fab_add_diary.setOnClickListener { turnToDiaryContentActivity() }
+        fab_add_diary.setOnClickListener { ActivityUtil.turnToActivity(DiaryContentActivity::class.java) }
 
         presenter.queryAllDiary()
-    }
-
-    private fun turnToDiaryContentActivity()
-    {
-        val intent = Intent(this, DiaryContentActivity::class.java)
-        startActivity(intent)
     }
 
     override fun onDiariesQueryFinish(diaryList: List<DiaryBean>)

@@ -16,10 +16,7 @@ import com.lizl.mydiary.bean.TitleBarBtnBean
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.DiaryContentContract
 import com.lizl.mydiary.mvp.presenter.DiaryContentPresenter
-import com.lizl.mydiary.util.AppConstant
-import com.lizl.mydiary.util.DialogUtil
-import com.lizl.mydiary.util.DiaryUtil
-import com.lizl.mydiary.util.UiUtil
+import com.lizl.mydiary.util.*
 import kotlinx.android.synthetic.main.activity_diary_content.*
 import kotlinx.android.synthetic.main.activity_main.ctb_title
 import permissions.dispatcher.NeedsPermission
@@ -28,7 +25,6 @@ import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.RuntimePermissions
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 @RuntimePermissions
 class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContentContract.View
@@ -58,7 +54,9 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
 
         diaryImageListAdapter.setOnAddImageBtnClickListener { selectImageWithPermissionCheck() }
 
-        diaryImageListAdapter.setOnImageClickListener { turnToImageBrowserActivity(ArrayList(diaryImageListAdapter.getImageList()), it, inEditMode) }
+        diaryImageListAdapter.setOnImageClickListener {
+            ActivityUtil.turnToActivity(ImageBrowserActivity::class.java, diaryImageListAdapter.getImageList(), it, inEditMode)
+        }
 
         ctb_title.setOnBackBtnClickListener {
             if (inEditMode)

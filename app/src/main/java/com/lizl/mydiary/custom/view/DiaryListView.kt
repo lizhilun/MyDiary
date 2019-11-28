@@ -1,7 +1,6 @@
 package com.lizl.mydiary.custom.view
 
 import android.content.Context
-import android.content.Intent
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
@@ -12,7 +11,7 @@ import com.lizl.mydiary.adapter.DiaryListAdapter
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.OperationItem
 import com.lizl.mydiary.mvp.activity.DiaryContentActivity
-import com.lizl.mydiary.util.AppConstant
+import com.lizl.mydiary.util.ActivityUtil
 import com.lizl.mydiary.util.AppDatabase
 import com.lizl.mydiary.util.DialogUtil
 import com.lizl.mydiary.util.FileUtil
@@ -41,7 +40,7 @@ class DiaryListView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
         rv_diary_list.layoutManager = LinearLayoutManager(context)
         rv_diary_list.adapter = diaryListAdapter
 
-        diaryListAdapter.setOnDiaryItemClickListener { turnToDiaryContentActivity(it) }
+        diaryListAdapter.setOnDiaryItemClickListener { ActivityUtil.turnToActivity(DiaryContentActivity::class.java, it) }
 
         diaryListAdapter.setOnDiaryItemLongClickListener { showDiaryOperationListDialog(it) }
     }
@@ -80,13 +79,6 @@ class DiaryListView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
         tv_end_footer.isVisible = diaryListAdapter.getData().isNotEmpty()
         layout_diary_header.isVisible = diaryListAdapter.getData().isNotEmpty()
         tv_header_content.text = context.getString(R.string.diary_total_count, diaryListAdapter.getData().size)
-    }
-
-    private fun turnToDiaryContentActivity(diaryBean: DiaryBean?)
-    {
-        val intent = Intent(context, DiaryContentActivity::class.java)
-        intent.putExtra(AppConstant.BUNDLE_DATA_OBJECT, diaryBean)
-        context.startActivity(intent)
     }
 
     private fun showDiaryOperationListDialog(diaryBean: DiaryBean)

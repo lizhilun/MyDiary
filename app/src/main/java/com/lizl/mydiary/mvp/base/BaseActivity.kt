@@ -1,6 +1,5 @@
 package com.lizl.mydiary.mvp.base
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -10,16 +9,14 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.SkinAppCompatDelegateImpl
+import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.BarUtils
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.event.EventConstant
 import com.lizl.mydiary.event.UIEvent
-import com.lizl.mydiary.mvp.activity.DiarySearchActivity
-import com.lizl.mydiary.mvp.activity.ImageBrowserActivity
 import com.lizl.mydiary.mvp.activity.LockActivity
-import com.lizl.mydiary.mvp.activity.SettingActivity
-import com.lizl.mydiary.util.AppConstant
+import com.lizl.mydiary.util.ActivityUtil
 import com.lizl.mydiary.util.SkinUtil
 import com.lizl.mydiary.util.UiUtil
 import org.greenrobot.eventbus.EventBus
@@ -44,6 +41,12 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         super.onCreate(savedInstanceState)
         setContentView(getLayoutResId())
 
+        // Activity走onCreate()将上次应用停止时间置为0，保证onResume()会走是否显示锁定界面流程
+        if (ActivityUtils.getActivityList().size == 1)
+        {
+            UiApplication.appConfig.setAppLastStopTime(0)
+        }
+
         EventBus.getDefault().register(this)
 
         BarUtils.addMarginTopEqualStatusBarHeight(findViewById<ViewGroup>(android.R.id.content).getChildAt(0))
@@ -66,11 +69,16 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         Log.d(TAG, "onStart")
         super.onStart()
 
-        // 密码保护打开并且应用超时的情况
-        if (this !is LockActivity && UiApplication.appConfig.isAppLockOn() && !TextUtils.isEmpty(
-                        UiApplication.appConfig.getAppLockPassword()) && System.currentTimeMillis() - UiApplication.appConfig.getAppLastStopTime() >= ConfigConstant.APP_TIMEOUT_PERIOD)
+        if (this is LockActivity)
         {
-            turnToLockActivity()
+            return
+        }
+
+        // 密码保护打开并且应用超时的情况
+        if (UiApplication.appConfig.isAppLockOn() && !TextUtils.isEmpty(UiApplication.appConfig.getAppLockPassword())
+            && System.currentTimeMillis() - UiApplication.appConfig.getAppLastStopTime() >= ConfigConstant.APP_TIMEOUT_PERIOD)
+        {
+            ActivityUtil.turnToActivity(LockActivity::class.java)
         }
         else
         {
@@ -129,39 +137,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         return super.dispatchTouchEvent(ev)
     }
 
-    fun turnToImageBrowserActivity(imageUrlList: ArrayList<String>, selectImageUrl: String, editable: Boolean)
-    {
-        val intent = Intent(this, ImageBrowserActivity::class.java)
-        intent.putStringArrayListExtra(AppConstant.BUNDLE_DATA_STRING_ARRAY, imageUrlList)
-        intent.putExtra(AppConstant.BUNDLE_DATA_STRING, selectImageUrl)
-        intent.putExtra(AppConstant.BUNDLE_DATA_BOOLEAN, editable)
-        startActivity(intent)
-    }
-
-    fun turnToDiarySearchActivity(keyword: String?, mood: Int)
-    {
-        val intent = Intent(this, DiarySearchActivity::class.java)
-        intent.putExtra(AppConstant.BUNDLE_DATA_STRING, keyword)
-        intent.putExtra(AppConstant.BUNDLE_DATA_INT, mood)
-        startActivity(intent)
-    }
-
-    private fun turnToLockActivity()
-    {
-        val intent = Intent(this, LockActivity::class.java)
-        startActivity(intent)
-    }
-
-    fun turnToSettingActivity()
-    {
-        val intent = Intent(this, SettingActivity::class.java)
-        startActivity(intent)
-    }
-
-    override fun getDelegate(): AppCompatDelegate
-    {
-        return SkinAppCompatDelegateImpl.get(this, this)
-    }
+    override fun getDelegate(): AppCompatDelegate = SkinAppCompatDelegateImpl.get(this, this)
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUiEvent(uiEvent: UIEvent)

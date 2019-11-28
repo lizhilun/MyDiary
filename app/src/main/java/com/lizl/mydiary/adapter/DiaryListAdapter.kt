@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
-import com.lizl.mydiary.mvp.base.BaseActivity
+import com.lizl.mydiary.mvp.activity.ImageBrowserActivity
+import com.lizl.mydiary.util.ActivityUtil
 import com.lizl.mydiary.util.DiaryUtil
 import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.item_diary_list.view.*
@@ -62,7 +63,7 @@ class DiaryListAdapter : BaseAdapter<DiaryBean, DiaryListAdapter.ViewHolder>()
                 diaryImageListAdapter.setOnImageClickListener {
                     val imageList = arrayListOf<String>()
                     imageList.addAll(diaryImageListAdapter.getImageList())
-                    (itemView.context as BaseActivity<*>).turnToImageBrowserActivity(imageList, it, false)
+                    ActivityUtil.turnToActivity(ImageBrowserActivity::class.java, imageList, it, false)
                 }
             }
 
