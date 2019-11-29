@@ -50,26 +50,20 @@ class BackupUtil
                 {
                     val diaryList = AppDatabase.instance.getDiaryDao().getAllDiary()
                     val diaryListText = GsonUtils.toJson(diaryList)
-                    val writeResult = FileUtil.writeTxtFile(diaryListText, backupTempDiaryFilePath)
-                    if (!writeResult)
+                    if (!FileUtil.writeTxtFile(diaryListText, backupTempDiaryFilePath))
                     {
                         FileUtils.deleteDir(backupTempFilePath)
                         callback.invoke(false)
                         return@launch
                     }
-                    val imageFileCopyResult = FileUtil.copyDir(FileUtil.getImageFileSavePath(), backupTempImageFilePath)
-                    if (!imageFileCopyResult)
+                    if (!FileUtil.copyDir(FileUtil.getImageFileSavePath(), backupTempImageFilePath))
                     {
                         FileUtils.deleteDir(backupTempFilePath)
                         callback.invoke(false)
                         return@launch
                     }
                     val zipFilePath = "$backupFilePath/$backupFileName$backupFileSuffix"
-                    val zipFile = File(zipFilePath)
-                    if (zipFile.exists())
-                    {
-                        FileUtil.deleteFile(zipFilePath)
-                    }
+                    FileUtil.deleteFile(zipFilePath)
                     val zipResult = ZipUtils.zipFile(backupTempFilePath, zipFilePath)
 
                     FileUtils.deleteDir(backupTempFilePath)
@@ -95,8 +89,7 @@ class BackupUtil
                 try
                 {
                     ZipUtils.unzipFile(restoreFilePath, backupFilePath)
-                    val diaryTxtFile = File(backupTempDiaryFilePath)
-                    if (!diaryTxtFile.exists())
+                    if (!File(backupTempDiaryFilePath).exists())
                     {
                         FileUtil.deleteFile(backupTempFilePath)
                         callback.invoke(false)
@@ -105,16 +98,8 @@ class BackupUtil
                     val diaryTxt = FileUtil.readTxtFile(backupTempDiaryFilePath)
                     FileUtil.copyDir(backupTempImageFilePath, FileUtil.getImageFileSavePath())
                     val diaryList = GsonUtils.fromJson<Array<DiaryBean>>(diaryTxt, Array<DiaryBean>::class.java)
-                    val saveDiaryList = mutableListOf<DiaryBean>()
-                    for (diaryBean in diaryList)
-                    {
-                        val existBean = AppDatabase.instance.getDiaryDao().getDiaryByUid(diaryBean.uid)
-                        if (existBean == null)
-                        {
-                            saveDiaryList.add(diaryBean)
-                        }
-                    }
-                    AppDatabase.instance.getDiaryDao().insertList(saveDiaryList)
+                    val saveDiaryList = diaryList.filter { AppDatabase.instance.getDiaryDao().getDiaryByUid(it.uid) == null }
+                    AppDatabase.instance.getDiaryDao().insertList(saveDiaryList as MutableList<DiaryBean>)
                     FileUtil.deleteFile(backupTempFilePath)
                     callback.invoke(true)
                 }
@@ -139,13 +124,10 @@ class BackupUtil
             val uri = MediaStore.Files.getContentUri("external")
             val cursor = resolver.query(uri, arrayOf(MediaStore.Files.FileColumns.DATA, MediaStore.Files.FileColumns.SIZE),
                     MediaStore.Files.FileColumns.DATA + " LIKE '%" + backupFileSuffix + "%'", null, null)
-            if (cursor != null)
+            while (cursor?.moveToNext() == true)
             {
-                while (cursor.moveToNext())
-                {
-                    val file = File(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA)))
-                    if (file.exists()) fileList.add(file)
-                }
+                val file = File(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA)))
+                if (file.exists()) fileList.add(file)
             }
             cursor?.close()
 

@@ -35,7 +35,6 @@ class UiApplication : Application()
         setupShortcuts()
     }
 
-
     private fun setupShortcuts()
     {
         val shortcutManager = getSystemService(ShortcutManager::class.java)
@@ -43,6 +42,9 @@ class UiApplication : Application()
 
         val intent = Intent(this, DiaryContentActivity::class.java)
         intent.action = Intent.ACTION_VIEW
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
         val shortcutInfo = ShortcutInfo.Builder(this, "new add")
             .setShortLabel(getString(R.string.new_add))
             .setLongLabel(getString(R.string.new_add))

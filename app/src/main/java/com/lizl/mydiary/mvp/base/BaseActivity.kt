@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.SkinAppCompatDelegateImpl
 import com.blankj.utilcode.util.ActivityUtils
+import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.BarUtils
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.config.ConfigConstant
@@ -102,6 +103,8 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     {
         Log.d(TAG, "onStop")
         super.onStop()
+
+        if (!AppUtils.isAppForeground()) UiApplication.appConfig.setAppLastStopTime(System.currentTimeMillis())
     }
 
     override fun onDestroy()
