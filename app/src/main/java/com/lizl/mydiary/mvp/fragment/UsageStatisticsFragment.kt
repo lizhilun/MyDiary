@@ -1,8 +1,10 @@
 package com.lizl.mydiary.mvp.fragment
 
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.MoodStatisticsListAdapter
+import com.lizl.mydiary.bean.HotWordBean
 import com.lizl.mydiary.bean.MoodStatisticsBean
 import com.lizl.mydiary.mvp.activity.DiarySearchActivity
 import com.lizl.mydiary.mvp.base.BaseFragment
@@ -53,5 +55,10 @@ class UsageStatisticsFragment : BaseFragment<UsageStatisticsPresenter>(), UsageS
     override fun showMoodStatistics(moodStatisticsList: List<MoodStatisticsBean>)
     {
         moodStatisticsListAdapter.setData(moodStatisticsList)
+    }
+
+    override fun showHotWordStatistics(hotWordList: List<HotWordBean>)
+    {
+        hotWordList.forEach { Log.d(TAG, "showHotWordStatistics ${it.word} ${it.freq}") }
     }
 }

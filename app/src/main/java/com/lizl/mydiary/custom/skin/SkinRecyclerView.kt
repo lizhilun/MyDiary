@@ -21,8 +21,7 @@ class SkinRecyclerView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
         mBackgroundTintHelper.loadFromAttributes(attrs, defStyleAttr)
     }
 
-    override fun setBackgroundResource(@DrawableRes
-                                       resId: Int)
+    override fun setBackgroundResource(@DrawableRes resId: Int)
     {
         super.setBackgroundResource(resId)
         mBackgroundTintHelper.onSetBackgroundResource(resId)
