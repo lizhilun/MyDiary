@@ -39,4 +39,8 @@ class AppConfig
     fun setLastAutoBackupTime(time: Long) = SPUtils.getInstance().put(ConfigConstant.APP_LAST_AUTO_BACKUP_TIME, time)
 
     fun getLastAutoBackupTime() = SPUtils.getInstance().getLong(ConfigConstant.APP_LAST_AUTO_BACKUP_TIME, ConfigConstant.DEFAULT_APP_LAST_AUTO_BACKUP_TIME)
+
+    fun getHotWordIgnoreList(): MutableSet<String> = SPUtils.getInstance().getStringSet(ConfigConstant.HOT_WORD_IGNORE_LIST, setOf<String>())
+
+    fun setHotWordIgnoreList(ignoreSet: Set<String>) = SPUtils.getInstance().put(ConfigConstant.HOT_WORD_IGNORE_LIST, ignoreSet)
 }

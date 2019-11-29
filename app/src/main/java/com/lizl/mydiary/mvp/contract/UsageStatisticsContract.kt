@@ -23,5 +23,7 @@ class UsageStatisticsContract
     interface Presenter : BasePresenter<View>
     {
         fun getUsageStatistics()
+
+        fun ignoreHotWord(word : String)
     }
 }

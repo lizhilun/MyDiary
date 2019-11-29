@@ -141,13 +141,14 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         titleTextView.text = text
     }
 
-    fun startSearchMode(withTitleBtn: Boolean, onSearchTextChangeListener: (searchText: String) -> Unit)
+    fun startSearchMode(searchText: String, withTitleBtn: Boolean, onSearchTextChangeListener: (searchText: String) -> Unit)
     {
         searchEditText.isVisible = true
         backBtn.isVisible = true
         btnListView.isVisible = withTitleBtn
         titleTextView.isVisible = false
         inSearchMode = true
+        searchEditText.setText(searchText)
 
         this.onSearchTextChangeListener = onSearchTextChangeListener
 

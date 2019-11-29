@@ -1,7 +1,6 @@
 package com.lizl.mydiary.mvp.presenter
 
 import com.blankj.utilcode.util.ImageUtils
-import com.lizl.mydiary.bean.HotWordBean
 import com.lizl.mydiary.bean.MoodStatisticsBean
 import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.contract.UsageStatisticsContract
@@ -10,7 +9,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
-import java.util.*
 
 class UsageStatisticsPresenter(private var view: UsageStatisticsContract.View?) : UsageStatisticsContract.Presenter
 {
@@ -37,9 +35,18 @@ class UsageStatisticsPresenter(private var view: UsageStatisticsContract.View?) 
 
             GlobalScope.launch(Dispatchers.Main) { view?.showMoodStatistics(moodStatisticsList) }
 
-            val hotWordList = HotWordUtil.getHotWordList()
-            Collections.sort(hotWordList, HotWordComparator())
+            val hotWordList = HotWordUtil.getHotWordList(5)
+            GlobalScope.launch(Dispatchers.Main) { view?.showHotWordStatistics(hotWordList.subList(0, 5)) }
+        }
+    }
 
+    override fun ignoreHotWord(word: String)
+    {
+        GlobalScope.launch {
+
+            HotWordUtil.ignoreWord(word)
+
+            val hotWordList = HotWordUtil.getHotWordList(5)
             GlobalScope.launch(Dispatchers.Main) { view?.showHotWordStatistics(hotWordList.subList(0, 5)) }
         }
     }
@@ -52,15 +59,5 @@ class UsageStatisticsPresenter(private var view: UsageStatisticsContract.View?) 
     override fun onDestroy()
     {
         view = null
-    }
-
-    inner class HotWordComparator : Comparator<HotWordBean>
-    {
-        override fun compare(word1: HotWordBean, word2: HotWordBean): Int
-        {
-            return if (word1.freq > word2.freq) -1
-            else if (word1.freq == word2.freq) 0
-            else 1
-        }
     }
 }

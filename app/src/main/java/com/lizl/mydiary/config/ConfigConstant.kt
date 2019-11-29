@@ -44,5 +44,7 @@ class ConfigConstant
         const val DEFAULT_APP_LAST_AUTO_BACKUP_TIME: Long = 0
         // 自动备份间隔（一天）
         const val APP_AUTO_BACKUP_PERIOD = 24 * 60 * 60 * 1000
+
+        const val HOT_WORD_IGNORE_LIST = "HOT_WORD_IGNORE_LIST"
     }
 }
