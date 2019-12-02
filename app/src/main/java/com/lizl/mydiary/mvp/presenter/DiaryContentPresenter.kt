@@ -51,19 +51,15 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
 
             val saveImageList = mutableListOf<String>()
             val systemFileDir = FileUtil.getImageFileSavePath()
-            for (imagePath in imageList)
-            {
-                if (!FileUtil.isFileExists(imagePath))
+            imageList.forEach {
+                if (!FileUtil.isFileExists(it)) return@forEach
+                if (it.contains(systemFileDir))
                 {
-                    continue
-                }
-                if (imagePath.contains(systemFileDir))
-                {
-                    saveImageList.add(imagePath)
+                    saveImageList.add(it)
                 }
                 else
                 {
-                    saveImageList.add(DiaryUtil.saveDiaryImage(imagePath))
+                    saveImageList.add(DiaryUtil.saveDiaryImage(it))
                 }
             }
             saveDiaryBean.imageList = saveImageList

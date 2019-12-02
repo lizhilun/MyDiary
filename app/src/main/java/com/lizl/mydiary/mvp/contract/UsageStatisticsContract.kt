@@ -1,7 +1,6 @@
 package com.lizl.mydiary.mvp.contract
 
-import com.lizl.mydiary.bean.HotWordBean
-import com.lizl.mydiary.bean.MoodStatisticsBean
+import com.lizl.mydiary.bean.CountStatisticsBean
 import com.lizl.mydiary.mvp.base.BasePresenter
 import com.lizl.mydiary.mvp.base.BaseView
 
@@ -15,15 +14,15 @@ class UsageStatisticsContract
 
         fun showImageCount(count: Int)
 
-        fun showMoodStatistics(moodStatisticsList: List<MoodStatisticsBean>)
+        fun showMoodStatistics(moodStatisticsList: List<CountStatisticsBean.MoodStatisticsBean>)
 
-        fun showHotWordStatistics(hotWordList: List<HotWordBean>)
+        fun showHotWordStatistics(hotWordStatisticsList: List<CountStatisticsBean.HotWordStatisticsBean>)
     }
 
     interface Presenter : BasePresenter<View>
     {
         fun getUsageStatistics()
 
-        fun ignoreHotWord(word : String)
+        fun ignoreHotWord(word: String)
     }
 }

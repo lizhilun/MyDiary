@@ -1,29 +1,29 @@
 package com.lizl.mydiary.util
 
 import com.lizl.mydiary.UiApplication
-import com.lizl.mydiary.bean.HotWordBean
+import com.lizl.mydiary.bean.CountStatisticsBean
 import jackmego.com.jieba_android.JiebaSegmenter
 
 class HotWordUtil
 {
     companion object
     {
-        fun getHotWordList(count: Int): List<HotWordBean>
+        fun getHotWordList(count: Int): List<CountStatisticsBean.HotWordStatisticsBean>
         {
-            val hotWordList = getHotWordList().sortedByDescending { it.frequency }
+            val hotWordList = getHotWordList().sortedByDescending { it.count }
             return if (hotWordList.size > count) hotWordList.subList(0, count) else hotWordList
         }
 
-        private fun getHotWordList(): List<HotWordBean>
+        private fun getHotWordList(): List<CountStatisticsBean.HotWordStatisticsBean>
         {
-            val wordMap = HashMap<String, HotWordBean>()
+            val wordMap = HashMap<String, CountStatisticsBean.HotWordStatisticsBean>()
             val diaryList = AppDatabase.instance.getDiaryDao().getAllDiary()
             val content = StringBuffer()
             diaryList.forEach { content.append(it.content) }
 
             val result = JiebaSegmenter.getJiebaSegmenterSingleton().getDividedString(content.toString())
 
-            val hotWordList = mutableListOf<HotWordBean>()
+            val hotWordList = mutableListOf<CountStatisticsBean.HotWordStatisticsBean>()
 
             val ignoreWordList = UiApplication.appConfig.getHotWordIgnoreList()
 
@@ -32,12 +32,12 @@ class HotWordUtil
                 var hotWordBean = wordMap[it]
                 if (hotWordBean == null)
                 {
-                    hotWordBean = HotWordBean(it, 0)
+                    hotWordBean = CountStatisticsBean.HotWordStatisticsBean(it, 0)
                     wordMap[it] = hotWordBean
                     hotWordList.add(hotWordBean)
                 }
 
-                hotWordBean.frequency = hotWordBean.frequency + 1
+                hotWordBean.count = hotWordBean.count + 1
             }
 
             return hotWordList

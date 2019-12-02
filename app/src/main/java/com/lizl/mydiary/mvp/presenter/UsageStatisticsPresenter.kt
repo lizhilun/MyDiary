@@ -1,7 +1,7 @@
 package com.lizl.mydiary.mvp.presenter
 
 import com.blankj.utilcode.util.ImageUtils
-import com.lizl.mydiary.bean.MoodStatisticsBean
+import com.lizl.mydiary.bean.CountStatisticsBean
 import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.contract.UsageStatisticsContract
 import com.lizl.mydiary.util.*
@@ -28,15 +28,15 @@ class UsageStatisticsPresenter(private var view: UsageStatisticsContract.View?) 
 
             GlobalScope.launch(Dispatchers.Main) { view?.showImageCount(imageCount) }
 
-            val moodStatisticsList = mutableListOf<MoodStatisticsBean>()
-            moodStatisticsList.add(MoodStatisticsBean(AppConstant.MOOD_HAPPY, diaryList.count { it.mood == AppConstant.MOOD_HAPPY }))
-            moodStatisticsList.add(MoodStatisticsBean(AppConstant.MOOD_NORMAL, diaryList.count { it.mood == AppConstant.MOOD_NORMAL }))
-            moodStatisticsList.add(MoodStatisticsBean(AppConstant.MOOD_UNHAPPY, diaryList.count { it.mood == AppConstant.MOOD_UNHAPPY }))
+            val moodStatisticsList = mutableListOf<CountStatisticsBean.MoodStatisticsBean>()
+            moodStatisticsList.add(CountStatisticsBean.MoodStatisticsBean(AppConstant.MOOD_HAPPY, diaryList.count { it.mood == AppConstant.MOOD_HAPPY }))
+            moodStatisticsList.add(CountStatisticsBean.MoodStatisticsBean(AppConstant.MOOD_NORMAL, diaryList.count { it.mood == AppConstant.MOOD_NORMAL }))
+            moodStatisticsList.add(CountStatisticsBean.MoodStatisticsBean(AppConstant.MOOD_UNHAPPY, diaryList.count { it.mood == AppConstant.MOOD_UNHAPPY }))
 
             GlobalScope.launch(Dispatchers.Main) { view?.showMoodStatistics(moodStatisticsList) }
 
             val hotWordList = HotWordUtil.getHotWordList(5)
-            GlobalScope.launch(Dispatchers.Main) { view?.showHotWordStatistics(hotWordList.subList(0, 5)) }
+            GlobalScope.launch(Dispatchers.Main) { view?.showHotWordStatistics(hotWordList) }
         }
     }
 
@@ -47,7 +47,7 @@ class UsageStatisticsPresenter(private var view: UsageStatisticsContract.View?) 
             HotWordUtil.ignoreWord(word)
 
             val hotWordList = HotWordUtil.getHotWordList(5)
-            GlobalScope.launch(Dispatchers.Main) { view?.showHotWordStatistics(hotWordList.subList(0, 5)) }
+            GlobalScope.launch(Dispatchers.Main) { view?.showHotWordStatistics(hotWordList) }
         }
     }
 
