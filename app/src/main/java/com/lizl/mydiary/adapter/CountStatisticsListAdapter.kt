@@ -11,6 +11,7 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.CountStatisticsBean
 import com.lizl.mydiary.util.DiaryUtil
 import kotlinx.android.synthetic.main.item_count_statistics.view.*
+import java.util.*
 
 class CountStatisticsListAdapter : RecyclerView.Adapter<CountStatisticsListAdapter.ViewHolder>()
 {
@@ -47,17 +48,18 @@ class CountStatisticsListAdapter : RecyclerView.Adapter<CountStatisticsListAdapt
         {
             when (statisticsBean)
             {
-                is CountStatisticsBean.MoodStatisticsBean    ->
+                is CountStatisticsBean.MoodStatisticsBean ->
                 {
-                    itemView.iv_mood.isVisible = true
-                    itemView.tv_word.isVisible = false
-                    itemView.iv_mood.setImageResource(DiaryUtil.getMoodResByMood(statisticsBean.mood))
+                    itemView.iv_statistics.isVisible = true
+                    itemView.tv_statistics.isVisible = false
+                    itemView.iv_statistics.setImageResource(DiaryUtil.getMoodResByMood(statisticsBean.mood))
                 }
-                is CountStatisticsBean.HotWordStatisticsBean ->
+                is CountStatisticsBean.TimeStatisticsBean ->
                 {
-                    itemView.iv_mood.isVisible = false
-                    itemView.tv_word.isVisible = true
-                    itemView.tv_word.text = statisticsBean.word
+                    itemView.iv_statistics.isVisible = false
+                    itemView.tv_statistics.isVisible = true
+                    itemView.tv_statistics.text = String.format(Locale.getDefault(), "%02d:00\n%02d:00", statisticsBean.startTime,
+                            if (statisticsBean.startTime == 23) 0 else statisticsBean.startTime + 1)
                 }
             }
 

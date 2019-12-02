@@ -9,7 +9,6 @@ import com.blankj.utilcode.util.Utils
 import com.lizl.mydiary.config.AppConfig
 import com.lizl.mydiary.mvp.activity.DiaryContentActivity
 import com.lizl.mydiary.util.SkinUtil
-import jackmego.com.jieba_android.JiebaSegmenter
 import kotlin.properties.Delegates
 
 
@@ -55,7 +54,5 @@ class UiApplication : Application()
         shortcutInfoList.add(shortcutInfo)
 
         shortcutManager.dynamicShortcuts = shortcutInfoList
-
-        JiebaSegmenter.init(this)
     }
 }

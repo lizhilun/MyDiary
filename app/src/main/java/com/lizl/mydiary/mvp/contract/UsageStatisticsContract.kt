@@ -16,13 +16,11 @@ class UsageStatisticsContract
 
         fun showMoodStatistics(moodStatisticsList: List<CountStatisticsBean.MoodStatisticsBean>)
 
-        fun showHotWordStatistics(hotWordStatisticsList: List<CountStatisticsBean.HotWordStatisticsBean>)
+        fun showTimeStatistics(timeStatisticsList: List<CountStatisticsBean.TimeStatisticsBean>)
     }
 
     interface Presenter : BasePresenter<View>
     {
         fun getUsageStatistics()
-
-        fun ignoreHotWord(word: String)
     }
 }

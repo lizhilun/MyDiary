@@ -63,5 +63,4 @@ dependencies {
     implementation "skin.support:skin-support-constraint-layout:${skin_version}" // skin-support-constraint-layout ConstraintLayout 控件支持[可选]
     implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
-    implementation 'jackmego.com.jieba_android:jieba_android-release:0.1.0'
 }

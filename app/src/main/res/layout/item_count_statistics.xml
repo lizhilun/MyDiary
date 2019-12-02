@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <skin.support.widget.SkinCompatImageView
-        android:id="@+id/iv_mood"
+        android:id="@+id/iv_statistics"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:paddingTop="10dp"
@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <skin.support.widget.SkinCompatTextView
-        android:id="@+id/tv_word"
+        android:id="@+id/tv_statistics"
         style="@style/GlobalTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

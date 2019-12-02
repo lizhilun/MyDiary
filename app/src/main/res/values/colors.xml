@@ -7,7 +7,7 @@
     <color name="colorTextColor">#212121</color>
     <color name="colorSecondaryTextColor">#616161</color>
     <color name="colorThirdTextColor">#9E9E9E</color>
-    <color name="colorWindowBg">#FAFAFA</color>
+    <color name="colorWindowBg">#F1F1F1</color>
     <color name="colorClickRipple">#33757575</color>
 
     <color name="transparent">#00000000</color>
@@ -20,7 +20,7 @@
 
     <color name="color_dialog_bg">#FFFFFF</color>
 
-    <color name="color_add_image_bg">#E0E0E0</color>
+    <color name="color_add_image_bg">#DADADA</color>
 
     <color name="color_dialog_button_text_enable">@color/colorPrimary</color>
     <color name="color_dialog_button_text_disable">#cc999999</color>
