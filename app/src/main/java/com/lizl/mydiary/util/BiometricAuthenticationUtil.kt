@@ -9,21 +9,11 @@ import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 
-class BiometricAuthenticationUtil
+object BiometricAuthenticationUtil
 {
     private val TAG = "BiometricAuthenticationUtil"
 
     private lateinit var mBiometricPrompt: BiometricPrompt
-
-    private object Singleton
-    {
-        val INSTANCE = BiometricAuthenticationUtil()
-    }
-
-    companion object
-    {
-        val instance = Singleton.INSTANCE
-    }
 
     private fun getBiometricPrompt(): BiometricPrompt
     {

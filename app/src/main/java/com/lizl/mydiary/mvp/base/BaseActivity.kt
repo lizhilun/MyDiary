@@ -52,7 +52,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
 
         BarUtils.addMarginTopEqualStatusBarHeight(findViewById<ViewGroup>(android.R.id.content).getChildAt(0))
 
-        SkinUtil.instance.loadSkin(this)
+        SkinUtil.loadSkin(this)
 
         presenter = initPresenter()
 
@@ -147,7 +147,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     {
         when (uiEvent.event)
         {
-            EventConstant.UI_EVENT_NIGHT_MODE_CHANGE -> SkinUtil.instance.loadSkin(this)
+            EventConstant.UI_EVENT_NIGHT_MODE_CHANGE -> SkinUtil.loadSkin(this)
             else                                     -> presenter.handleUIEvent(uiEvent)
         }
     }

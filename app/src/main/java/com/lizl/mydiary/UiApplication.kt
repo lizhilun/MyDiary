@@ -30,7 +30,7 @@ class UiApplication : Application()
         super.onCreate()
 
         Utils.init(this)
-        SkinUtil.instance.init(this)
+        SkinUtil.init(this)
 
         setupShortcuts()
     }

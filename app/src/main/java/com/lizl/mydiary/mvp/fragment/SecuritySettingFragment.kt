@@ -42,7 +42,7 @@ class SecuritySettingFragment : BaseSettingListFragment<EmptyPresenter>()
                     UiApplication.appConfig.setAppLockOn(true)
                     settingAdapter.update(bean)
                     var insertPosition = settingAdapter.getPosition(bean)
-                    if (BiometricAuthenticationUtil.instance.isFingerprintSupport())
+                    if (BiometricAuthenticationUtil.isFingerprintSupport())
                     {
                         settingAdapter.insert(fingerprintItem, ++insertPosition)
                     }
@@ -73,7 +73,7 @@ class SecuritySettingFragment : BaseSettingListFragment<EmptyPresenter>()
 
         if (UiApplication.appConfig.isAppLockOn())
         {
-            if (BiometricAuthenticationUtil.instance.isFingerprintSupport())
+            if (BiometricAuthenticationUtil.isFingerprintSupport())
             {
                 settingList.add(fingerprintItem)
             }

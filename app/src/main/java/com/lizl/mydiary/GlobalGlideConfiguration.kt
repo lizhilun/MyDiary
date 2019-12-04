@@ -17,7 +17,6 @@ class GlobalGlideConfiguration : AppGlideModule()
 
     override fun applyOptions(context: Context, builder: GlideBuilder)
     {
-
         //1.设置Glide内存缓存大小
         val maxMemory = Runtime.getRuntime().maxMemory().toInt() //获取系统分配给应用的总内存大小
         val memoryCacheSize = maxMemory / 8 //设置图片内存缓存占用八分之一

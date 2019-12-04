@@ -44,7 +44,7 @@ class LockActivity : BaseActivity<LockPresenter>(), LockContract.View
     {
         super.onStart()
 
-        if (BiometricAuthenticationUtil.instance.isFingerprintSupport() && UiApplication.appConfig.isFingerprintLockOn())
+        if (BiometricAuthenticationUtil.isFingerprintSupport() && UiApplication.appConfig.isFingerprintLockOn())
         {
             tv_hint.text = getString(R.string.hint_verify_fingerprint_or_input_password)
 

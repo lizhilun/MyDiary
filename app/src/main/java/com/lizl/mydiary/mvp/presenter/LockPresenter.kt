@@ -14,7 +14,7 @@ class LockPresenter(private var view: LockContract.View?) : LockContract.Present
 
     override fun startFingerprintAuthentication()
     {
-        BiometricAuthenticationUtil.instance.authenticate(object : BiometricPrompt.AuthenticationCallback()
+        BiometricAuthenticationUtil.authenticate(object : BiometricPrompt.AuthenticationCallback()
         {
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence?)
             {

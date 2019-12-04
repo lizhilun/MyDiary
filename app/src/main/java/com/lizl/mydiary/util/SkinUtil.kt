@@ -11,20 +11,10 @@ import skin.support.app.SkinCardViewInflater
 import skin.support.constraint.app.SkinConstraintViewInflater
 import skin.support.design.app.SkinMaterialViewInflater
 
-class SkinUtil
+object SkinUtil
 {
 
     private val SKIN_NIGHT = "night"
-
-    private object Singleton
-    {
-        val INSTANCE = SkinUtil()
-    }
-
-    companion object
-    {
-        val instance = Singleton.INSTANCE
-    }
 
     fun init(application: Application)
     {

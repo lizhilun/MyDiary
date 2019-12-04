@@ -23,7 +23,7 @@ class DialogRadioGroup(context: Context, private val title: String, private val 
         radioList.forEach {
             val radioButton = SkinCompatRadioButton(context)
             radioButton.setPadding(padding, padding, padding, padding)
-            radioButton.setTextColor(SkinUtil.instance.getGlobalTextColor())
+            radioButton.setTextColor(SkinUtil.getGlobalTextColor())
             radioButton.setButtonDrawable(R.drawable.ic_check_button)
             radioButton.id = View.generateViewId()
             radioButton.text = it
