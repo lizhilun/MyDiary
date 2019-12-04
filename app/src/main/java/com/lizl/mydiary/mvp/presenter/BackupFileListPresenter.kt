@@ -52,10 +52,7 @@ class BackupFileListPresenter(private var view: BackupFileListContract.View?) : 
     {
         GlobalScope.launch {
             val backupFileList = BackupUtil.getBackupFileList()
-            if (backupFileList.isEmpty())
-            {
-                return@launch
-            }
+            if (backupFileList.isEmpty()) return@launch
             var latestFile = backupFileList[0]
             backupFileList.forEach {
                 if (it.lastModified() > latestFile.lastModified())

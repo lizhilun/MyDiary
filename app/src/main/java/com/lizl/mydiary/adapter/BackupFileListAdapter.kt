@@ -43,20 +43,11 @@ class BackupFileListAdapter : BaseAdapter<File, BackupFileListAdapter.ViewHolder
 
     fun addAll(fileList: List<File>)
     {
-        Collections.sort(fileList, FileComparator())
-        super.addAll(fileList)
+        super.addAll(fileList.sortedByDescending { it.lastModified() })
     }
 
     fun setOnFileItemClickListener(onFileItemClickListener: (File) -> Unit)
     {
         this.onFileItemClickListener = onFileItemClickListener
-    }
-
-    inner class FileComparator : Comparator<File>
-    {
-        override fun compare(file1: File, file2: File): Int
-        {
-            return if (file1.lastModified() > file2.lastModified()) -1 else 1
-        }
     }
 }

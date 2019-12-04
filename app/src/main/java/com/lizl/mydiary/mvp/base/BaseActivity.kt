@@ -77,7 +77,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
 
         // 密码保护打开并且应用超时的情况
         if (UiApplication.appConfig.isAppLockOn() && !TextUtils.isEmpty(UiApplication.appConfig.getAppLockPassword())
-            && System.currentTimeMillis() - UiApplication.appConfig.getAppLastStopTime() >= ConfigConstant.APP_TIMEOUT_PERIOD)
+            && System.currentTimeMillis() - UiApplication.appConfig.getAppLastStopTime() >= UiApplication.appConfig.getAppTimeoutInterval())
         {
             ActivityUtil.turnToActivity(LockActivity::class.java)
         }

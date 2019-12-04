@@ -13,4 +13,7 @@ class SettingBean
 
     class SettingIntRadioBean(val settingName: String, val settingKey: String, val defaultValue: Int, val radioMap: Map<Int, String>,
                               val callback: (bean: SettingIntRadioBean) -> Unit) : SettingBaseBean()
+
+    class SettingLongRadioBean(val settingName: String, val settingKey: String, val defaultValue: Long, val radioMap: Map<Long, String>,
+                               val callback: (bean: SettingLongRadioBean) -> Unit) : SettingBaseBean()
 }

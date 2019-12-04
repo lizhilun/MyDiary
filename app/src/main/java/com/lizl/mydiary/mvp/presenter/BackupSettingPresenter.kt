@@ -1,13 +1,13 @@
 package com.lizl.mydiary.mvp.presenter
 
 import com.lizl.mydiary.event.UIEvent
-import com.lizl.mydiary.mvp.contract.SettingFragmentContract
+import com.lizl.mydiary.mvp.contract.BackupSettingContract
 import com.lizl.mydiary.util.BackupUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class SettingFragmentPresenter(private var view: SettingFragmentContract.View?) : SettingFragmentContract.Presenter
+class BackupSettingPresenter(private var view: BackupSettingContract.View?) : BackupSettingContract.Presenter
 {
     override fun backupData()
     {

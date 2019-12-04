@@ -5,6 +5,7 @@ import com.lizl.mydiary.event.EventConstant
 import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.contract.DiaryListContract
 import com.lizl.mydiary.util.AppDatabase
+import com.lizl.mydiary.util.BackupUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -36,6 +37,7 @@ class DiaryListPresenter(private var view: DiaryListContract.View?) : DiaryListC
                 if (uiEvent.value is DiaryBean)
                 {
                     view?.onDiarySaveSuccess(uiEvent.value)
+                    BackupUtil.autoBackup()
                 }
             }
         }

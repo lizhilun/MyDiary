@@ -28,12 +28,22 @@
     <string name="notify_diary_has_not_save_sure_to_quit">编辑的内容还没有保存，确认退出？</string>
     <string name="notify_empty_diary_cannot_save">内容为空，无法保存，是否退出？</string>
 
+    <string name="setting_security">安全设置</string>
     <string name="setting_app_lock">密码保护</string>
     <string name="setting_fingerprint">指纹解锁</string>
     <string name="setting_modify_password">修改密码</string>
+    <string name="setting_auto_lock_interval">自动锁定时间</string>
+    <string name="backup_when_modified">即时保存</string>
+    <string name="minute">分钟</string>
+    <string name="lock_when_exit">退出即锁定</string>
+
+    <string name="setting_backup_and_restore">备份还原设置</string>
     <string name="setting_backup">备份数据</string>
     <string name="setting_restore">还原数据</string>
     <string name="setting_auto_backup">自动备份</string>
+    <string name="setting_auto_backup_interval">自动备份时间</string>
+    <string name="day">天</string>
+
     <string name="setting_image_save_quality">图片保存质量</string>
     <string name="setting_night_mode">夜间模式</string>
     <string name="setting_usage_statistics">使用统计</string>
@@ -62,7 +72,7 @@
     <string name="in_doing">%s中</string>
     <string name="backup_data">备份数据</string>
     <string name="restore_data">还原数据</string>
-    <string name="auto_backup_data">自动备份数据</string>
+    <string name="auto_backup_data">自动备份</string>
     <string name="clear_backup_data">备份文件清理</string>
     <string name="notify_clear_backup_data">备份文件清理将只保留最新的备份文件，其余的会被删除，是否继续？</string>
 

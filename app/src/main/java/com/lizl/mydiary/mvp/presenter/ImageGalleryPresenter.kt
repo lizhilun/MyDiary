@@ -8,7 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
-import java.util.*
 
 class ImageGalleryPresenter(private var view: ImageGalleryContract.View?) : ImageGalleryContract.Presenter
 {
@@ -19,17 +18,14 @@ class ImageGalleryPresenter(private var view: ImageGalleryContract.View?) : Imag
             val imageList = mutableListOf<String>()
 
             val imageDir = File(FileUtil.getImageFileSavePath())
-            if (imageDir.exists())
-            {
-                imageDir.listFiles().forEach {
-                    if (ImageUtils.isImage(it))
-                    {
-                        imageList.add(it.absolutePath)
-                    }
+            imageDir.listFiles()?.forEach {
+                if (ImageUtils.isImage(it))
+                {
+                    imageList.add(it.absolutePath)
                 }
             }
 
-            Collections.sort(imageList, FileComparator())
+            imageList.sortByDescending { File(it).lastModified() }
             GlobalScope.launch(Dispatchers.Main) { view?.showImageList(imageList) }
         }
     }
@@ -42,13 +38,5 @@ class ImageGalleryPresenter(private var view: ImageGalleryContract.View?) : Imag
     override fun onDestroy()
     {
         view = null
-    }
-
-    inner class FileComparator : Comparator<String>
-    {
-        override fun compare(filePath1: String, filePath2: String): Int
-        {
-            return if (File(filePath1).lastModified() > File(filePath2).lastModified()) -1 else 1
-        }
     }
 }

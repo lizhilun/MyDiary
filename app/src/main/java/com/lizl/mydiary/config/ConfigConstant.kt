@@ -21,8 +21,13 @@ class ConfigConstant
         const val APP_LAST_STOP_TIME = "APP_LAST_STOP_TIME"
         const val DEFAULT_APP_LAST_STOP_TIME: Long = 0
 
-        // APP超时锁定时长（默认为5分钟）
-        const val APP_TIMEOUT_PERIOD = 5 * 60 * 1000
+        // APP超时锁定时长
+        const val APP_TIMEOUT_PERIOD = "APP_TIMEOUT_PERIOD"
+        const val APP_TIMEOUT_PERIOD_RIGHT_NOW = 0L
+        const val APP_TIMEOUT_PERIOD_1_MINUTE = 1 * 60 * 1000L
+        const val APP_TIMEOUT_PERIOD_5_MINUTE = 5 * 60 * 1000L
+        const val APP_TIMEOUT_PERIOD_10_MINUTE = 10 * 60 * 1000L
+        const val DEFAULT_APP_TIMEOUT_PERIOD = APP_TIMEOUT_PERIOD_5_MINUTE
 
         // 图片保存质量
         const val IMAGE_SAVE_QUALITY_LOW = 30
@@ -42,7 +47,13 @@ class ConfigConstant
         // 上次自动备份时间
         const val APP_LAST_AUTO_BACKUP_TIME = "APP_LAST_AUTO_BACKUP_TIME"
         const val DEFAULT_APP_LAST_AUTO_BACKUP_TIME: Long = 0
-        // 自动备份间隔（一天）
-        const val APP_AUTO_BACKUP_PERIOD = 24 * 60 * 60 * 1000
+
+        // 自动备份间隔
+        const val APP_AUTO_BACKUP_PERIOD = "APP_AUTO_BACKUP_PERIOD"
+        const val APP_AUTO_BACKUP_PERIOD_RIGHT_NOW = 0L
+        const val APP_AUTO_BACKUP_PERIOD_1_DAY = 24 * 60 * 60 * 1000L
+        const val APP_AUTO_BACKUP_PERIOD_1_WEEK = 7 * 24 * 60 * 60 * 1000L
+        const val APP_AUTO_BACKUP_PERIOD_1_MONTH = 30 * 24 * 60 * 60 * 1000L
+        const val DEFAULT_APP_AUTO_BACKUP_PERIOD = APP_AUTO_BACKUP_PERIOD_1_DAY
     }
 }

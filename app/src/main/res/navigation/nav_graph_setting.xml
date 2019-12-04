@@ -2,11 +2,11 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph_setting"
-    app:startDestination="@id/settingFragment">
+    app:startDestination="@id/generalSettingFragment">
 
     <fragment
-        android:id="@+id/settingFragment"
-        android:name="com.lizl.mydiary.mvp.fragment.SettingFragment" />
+        android:id="@+id/generalSettingFragment"
+        android:name="com.lizl.mydiary.mvp.fragment.GeneralSettingFragment" />
 
     <fragment
         android:id="@+id/backupFileListFragment"
@@ -19,4 +19,12 @@
     <fragment
         android:id="@+id/imageGalleryFragment"
         android:name="com.lizl.mydiary.mvp.fragment.ImageGalleryFragment" />
+
+    <fragment
+        android:id="@+id/securitySettingFragment"
+        android:name="com.lizl.mydiary.mvp.fragment.SecuritySettingFragment" />
+
+    <fragment
+        android:id="@+id/backupSettingFragment"
+        android:name="com.lizl.mydiary.mvp.fragment.BackupSettingFragment" />
 </navigation>

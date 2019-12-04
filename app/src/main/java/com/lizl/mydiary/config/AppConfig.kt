@@ -39,4 +39,8 @@ class AppConfig
     fun setLastAutoBackupTime(time: Long) = SPUtils.getInstance().put(ConfigConstant.APP_LAST_AUTO_BACKUP_TIME, time)
 
     fun getLastAutoBackupTime() = SPUtils.getInstance().getLong(ConfigConstant.APP_LAST_AUTO_BACKUP_TIME, ConfigConstant.DEFAULT_APP_LAST_AUTO_BACKUP_TIME)
+
+    fun getAppTimeoutInterval() = SPUtils.getInstance().getLong(ConfigConstant.APP_TIMEOUT_PERIOD, ConfigConstant.DEFAULT_APP_TIMEOUT_PERIOD)
+
+    fun getAppAutoBackupInterval() = SPUtils.getInstance().getLong(ConfigConstant.APP_AUTO_BACKUP_PERIOD, ConfigConstant.DEFAULT_APP_AUTO_BACKUP_PERIOD)
 }
