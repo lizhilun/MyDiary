@@ -25,7 +25,7 @@ class ImageGalleryPresenter(private var view: ImageGalleryContract.View?) : Imag
                 }
             }
 
-            imageList.sortByDescending { File(it).lastModified() }
+            imageList.sortByDescending { File(it).nameWithoutExtension.toLong() }
             GlobalScope.launch(Dispatchers.Main) { view?.showImageList(imageList) }
         }
     }

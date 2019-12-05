@@ -16,12 +16,11 @@ import java.util.*
 
 object BackupUtil
 {
-    private const val TAG = "BackupUtil"
     private val backupFilePath = PathUtils.getExternalStoragePath() + "/DiaryBackup"
     private val backupTempFilePath = "$backupFilePath/temp"
     private val backupTempImageFilePath = "$backupFilePath/temp/picture"
     private val backupTempDiaryFilePath = "$backupFilePath/temp/diary.txt"
-    private val encrypBackupTempDiaryFilePath = "$backupFilePath/temp/diary.en"
+    private val encryptBackupTempDiaryFilePath = "$backupFilePath/temp/diary.en"
     private const val backupFileSuffix = ".iui"
     private const val autoBackupFileName = "autoBackup"
 
@@ -72,7 +71,7 @@ object BackupUtil
             if (needEncryption)
             {
                 diaryListText = EncryptUtil.encrypt(diaryListText, AppConfig.getSecurityConfig().getAppLockPassword())
-                if (!FileUtil.writeTxtFile(diaryListText, encrypBackupTempDiaryFilePath))
+                if (!FileUtil.writeTxtFile(diaryListText, encryptBackupTempDiaryFilePath))
                 {
                     FileUtils.deleteDir(backupTempFilePath)
                     callback.invoke(false)
@@ -128,7 +127,7 @@ object BackupUtil
                 ZipUtils.unzipFile(restoreFilePath, backupFilePath)
 
                 val unEncryptDiaryFile = File(backupTempDiaryFilePath)
-                val encryptDiaryFile = File(encrypBackupTempDiaryFilePath)
+                val encryptDiaryFile = File(encryptBackupTempDiaryFilePath)
 
                 if (!unEncryptDiaryFile.exists() && !encryptDiaryFile.exists())
                 {
@@ -140,7 +139,7 @@ object BackupUtil
                 val diaryTxt: String
                 if (encryptDiaryFile.exists())
                 {
-                    val textReadResult = FileUtil.readTxtFile(encrypBackupTempDiaryFilePath)
+                    val textReadResult = FileUtil.readTxtFile(encryptBackupTempDiaryFilePath)
                     val decryptResult = EncryptUtil.decrypt(textReadResult, password)
                     if (decryptResult == null)
                     {
@@ -191,29 +190,6 @@ object BackupUtil
         cursor?.close()
 
         return fileList
-    }
-
-    /**
-     * 获取16位密码（不足16位的后面补0，超过16位的取前16位）的byte数据
-     */
-    private fun getPasswordByte(password: String): ByteArray
-    {
-        val passwordSize = password.length
-        var result = ""
-        if (passwordSize > 16)
-        {
-            result = password.substring(0, 16)
-        }
-        else
-        {
-            result += password
-            for (i in passwordSize until 16)
-            {
-                result += "0"
-            }
-        }
-
-        return result.toByteArray()
     }
 
     class BackupJob(val backupFileName: String, val callback: (result: Boolean) -> Unit)
