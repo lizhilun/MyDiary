@@ -55,7 +55,7 @@ class DiaryListAdapter : BaseAdapter<DiaryBean, DiaryListAdapter.ViewHolder>()
             else
             {
                 itemView.rv_image_list.isVisible = true
-                val diaryImageListAdapter = DiaryImageListAdapter(false, 3)
+                val diaryImageListAdapter = DiaryImageListAdapter(false, 3, false)
                 itemView.rv_image_list.layoutManager = GridLayoutManager(context, 3)
                 diaryImageListAdapter.addImageList(diaryBean.imageList!!)
                 itemView.rv_image_list.adapter = diaryImageListAdapter

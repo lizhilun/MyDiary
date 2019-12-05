@@ -21,7 +21,7 @@ class ImageGalleryFragment : BaseFragment<ImageGalleryPresenter>(), ImageGallery
 
     override fun initView()
     {
-        diaryImageListAdapter = DiaryImageListAdapter(false, Int.MAX_VALUE)
+        diaryImageListAdapter = DiaryImageListAdapter(false, Int.MAX_VALUE, true)
         rv_image_list.layoutManager = GridLayoutManager(activity, 3)
         rv_image_list.adapter = diaryImageListAdapter
 

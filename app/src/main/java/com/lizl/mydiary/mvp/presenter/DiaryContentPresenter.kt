@@ -32,6 +32,16 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
     {
         GlobalScope.launch {
 
+            if (diaryBean != null)
+            {
+                if (diaryBean.content == content && diaryBean.createTime == createTime && diaryBean.mood == diaryMood
+                    && isSameList(diaryBean.imageList ?: emptyList(), imageList))
+                {
+                    GlobalScope.launch(Dispatchers.Main) { view?.onDiarySaveSuccess() }
+                    return@launch
+                }
+            }
+
             GlobalScope.launch(Dispatchers.Main) {
                 view?.onDiarySaving()
             }
@@ -134,5 +144,10 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
     override fun onDestroy()
     {
         view = null
+    }
+
+    private fun isSameList(list1: List<String>, list2: List<String>): Boolean
+    {
+        return list1.containsAll(list2) && list2.containsAll(list1)
     }
 }

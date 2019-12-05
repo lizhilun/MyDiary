@@ -49,7 +49,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         diaryBean = intent?.getSerializableExtra(AppConstant.BUNDLE_DATA_OBJECT) as DiaryBean?
         inEditMode = diaryBean == null
 
-        diaryImageListAdapter = DiaryImageListAdapter(inEditMode, 9)
+        diaryImageListAdapter = DiaryImageListAdapter(inEditMode, LayoutStyleConfig.getDiaryImageMaxCount(), true)
         rv_image_list.layoutManager = GridLayoutManager(this, 3)
         rv_image_list.adapter = diaryImageListAdapter
 
@@ -69,6 +69,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
                     }
                     return@setOnBackBtnClickListener
                 }
+
                 presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList(), dateBean.time, curDiaryMood)
             }
             else
@@ -158,7 +159,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
     fun selectImage()
     {
-        presenter.selectImage(this, 9 - diaryImageListAdapter.getImageList().size)
+        presenter.selectImage(this, LayoutStyleConfig.getDiaryImageMaxCount() - diaryImageListAdapter.getImageList().size)
     }
 
     @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
