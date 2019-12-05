@@ -13,6 +13,7 @@ import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.BarUtils
 import com.lizl.mydiary.UiApplication
+import com.lizl.mydiary.config.AppConfig
 import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.event.EventConstant
 import com.lizl.mydiary.event.UIEvent
@@ -45,7 +46,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         // Activity走onCreate()将上次应用停止时间置为0，保证onResume()会走是否显示锁定界面流程
         if (ActivityUtils.getActivityList().size == 1)
         {
-            UiApplication.appConfig.setAppLastStopTime(0)
+            AppConfig.setAppLastStopTime(0)
         }
 
         EventBus.getDefault().register(this)
@@ -76,14 +77,14 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         }
 
         // 密码保护打开并且应用超时的情况
-        if (UiApplication.appConfig.isAppLockOn() && !TextUtils.isEmpty(UiApplication.appConfig.getAppLockPassword())
-            && System.currentTimeMillis() - UiApplication.appConfig.getAppLastStopTime() >= UiApplication.appConfig.getAppTimeoutInterval())
+        if (AppConfig.isAppLockOn() && !TextUtils.isEmpty(AppConfig.getAppLockPassword())
+            && System.currentTimeMillis() - AppConfig.getAppLastStopTime() >= AppConfig.getAppTimeoutInterval())
         {
             ActivityUtil.turnToActivity(LockActivity::class.java)
         }
         else
         {
-            UiApplication.appConfig.setAppLastStopTime(Long.MAX_VALUE)
+            AppConfig.setAppLastStopTime(Long.MAX_VALUE)
         }
     }
 
@@ -104,7 +105,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         Log.d(TAG, "onStop")
         super.onStop()
 
-        if (!AppUtils.isAppForeground()) UiApplication.appConfig.setAppLastStopTime(System.currentTimeMillis())
+        if (!AppUtils.isAppForeground()) AppConfig.setAppLastStopTime(System.currentTimeMillis())
     }
 
     override fun onDestroy()

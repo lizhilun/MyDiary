@@ -2,9 +2,9 @@ package com.lizl.mydiary.mvp.activity
 
 import android.os.Bundle
 import com.lizl.mydiary.R
-import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.TitleBarBtnBean
+import com.lizl.mydiary.config.AppConfig
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.DiaryListContract
 import com.lizl.mydiary.mvp.presenter.DiaryListPresenter
@@ -24,8 +24,8 @@ class MainActivity : BaseActivity<DiaryListPresenter>(), DiaryListContract.View
     {
         super.onCreate(savedInstanceState)
 
-        val autoBackupPeriod = UiApplication.appConfig.getAppAutoBackupInterval()
-        if (UiApplication.appConfig.isAutoBackup() && autoBackupPeriod > 0 && System.currentTimeMillis() - UiApplication.appConfig.getLastAutoBackupTime() > autoBackupPeriod)
+        val autoBackupPeriod = AppConfig.getAppAutoBackupInterval()
+        if (AppConfig.isAutoBackup() && autoBackupPeriod > 0 && System.currentTimeMillis() - AppConfig.getLastAutoBackupTime() > autoBackupPeriod)
         {
             BackupUtil.autoBackup()
         }

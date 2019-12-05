@@ -3,8 +3,8 @@ package com.lizl.mydiary.mvp.fragment
 import android.Manifest
 import com.blankj.utilcode.util.ToastUtils
 import com.lizl.mydiary.R
-import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.bean.SettingBean
+import com.lizl.mydiary.config.AppConfig
 import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.mvp.contract.BackupSettingContract
 import com.lizl.mydiary.mvp.presenter.BackupSettingPresenter
@@ -52,14 +52,14 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
             }
             else
             {
-                UiApplication.appConfig.setAutoBackup(false)
+                AppConfig.setAutoBackup(false)
                 settingAdapter.update(bean)
                 settingAdapter.remove(autoBackupTimeItem)
             }
         }
         settingList.add(autoBackupItem)
 
-        if (UiApplication.appConfig.isAutoBackup())
+        if (AppConfig.isAutoBackup())
         {
             settingList.add(autoBackupTimeItem)
         }
@@ -68,7 +68,7 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun autoBackup()
     {
-        UiApplication.appConfig.setAutoBackup(true)
+        AppConfig.setAutoBackup(true)
         settingAdapter.update(autoBackupItem)
         settingAdapter.insert(autoBackupTimeItem, settingAdapter.getPosition(autoBackupItem) + 1)
     }

@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import com.blankj.utilcode.util.BarUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
+import com.lizl.mydiary.config.AppConfig
 import skin.support.SkinCompatManager
 import skin.support.app.SkinCardViewInflater
 import skin.support.constraint.app.SkinConstraintViewInflater
@@ -27,7 +28,7 @@ object SkinUtil
 
     fun loadSkin(activity: Activity)
     {
-        if (UiApplication.appConfig.isNightModeOn())
+        if (AppConfig.isNightModeOn())
         {
             loadNightSkin(activity)
         }
@@ -51,7 +52,7 @@ object SkinUtil
 
     fun getGlobalTextColor(): Int
     {
-        return if (UiApplication.appConfig.isNightModeOn())
+        return if (AppConfig.isNightModeOn())
         {
             ContextCompat.getColor(UiApplication.instance, R.color.colorTextColor_night)
         }

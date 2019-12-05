@@ -2,8 +2,8 @@ package com.lizl.mydiary.mvp.activity
 
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lizl.mydiary.R
-import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.adapter.NumberKeyGridAdapter
+import com.lizl.mydiary.config.AppConfig
 import com.lizl.mydiary.custom.others.recylerviewitemdivider.GridDividerItemDecoration
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.LockContract
@@ -44,7 +44,7 @@ class LockActivity : BaseActivity<LockPresenter>(), LockContract.View
     {
         super.onStart()
 
-        if (BiometricAuthenticationUtil.isFingerprintSupport() && UiApplication.appConfig.isFingerprintLockOn())
+        if (BiometricAuthenticationUtil.isFingerprintSupport() && AppConfig.isFingerprintLockOn())
         {
             tv_hint.text = getString(R.string.hint_verify_fingerprint_or_input_password)
 
@@ -64,7 +64,7 @@ class LockActivity : BaseActivity<LockPresenter>(), LockContract.View
 
     override fun onUnlockSuccess()
     {
-        UiApplication.appConfig.setAppLastStopTime(Long.MAX_VALUE)
+        AppConfig.setAppLastStopTime(Long.MAX_VALUE)
         finish()
     }
 

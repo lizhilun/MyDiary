@@ -44,6 +44,8 @@
     <string name="setting_auto_backup_interval">自动备份时间</string>
     <string name="day">天</string>
 
+    <string name="setting_layout_style">样式布局</string>
+
     <string name="setting_image_save_quality">图片保存质量</string>
     <string name="setting_night_mode">夜间模式</string>
     <string name="setting_usage_statistics">使用统计</string>

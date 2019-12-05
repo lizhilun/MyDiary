@@ -3,7 +3,7 @@ package com.lizl.mydiary.util
 import android.graphics.Bitmap
 import com.blankj.utilcode.util.ImageUtils
 import com.lizl.mydiary.R
-import com.lizl.mydiary.UiApplication
+import com.lizl.mydiary.config.AppConfig
 
 object DiaryUtil
 {
@@ -26,7 +26,7 @@ object DiaryUtil
     fun saveDiaryImage(imagePath: String): String
     {
         val bitmap = ImageUtils.getBitmap(imagePath)
-        val comBitmap = ImageUtils.compressByQuality(bitmap, UiApplication.appConfig.getImageSaveQuality())
+        val comBitmap = ImageUtils.compressByQuality(bitmap, AppConfig.getImageSaveQuality())
         val savePath = "${FileUtil.getImageFileSavePath()}/${System.currentTimeMillis()}.jpg"
         ImageUtils.save(comBitmap, savePath, Bitmap.CompressFormat.JPEG)
         return savePath

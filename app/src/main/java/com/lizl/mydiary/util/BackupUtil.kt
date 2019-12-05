@@ -6,8 +6,11 @@ import com.blankj.utilcode.util.*
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.bean.DiaryBean
-import kotlinx.coroutines.*
+import com.lizl.mydiary.config.AppConfig
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -51,7 +54,7 @@ object BackupUtil
             channel.send(BackupJob(autoBackupFileName) {
                 if (it)
                 {
-                    UiApplication.appConfig.setLastAutoBackupTime(System.currentTimeMillis())
+                    AppConfig.setLastAutoBackupTime(System.currentTimeMillis())
                 }
                 ToastUtils.showShort(UiApplication.instance.getString(R.string.auto_backup_data) + UiApplication.instance.getString(
                         if (it) R.string.success else R.string.failed))

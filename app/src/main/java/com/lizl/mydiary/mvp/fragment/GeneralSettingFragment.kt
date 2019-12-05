@@ -19,6 +19,8 @@ class GeneralSettingFragment : BaseSettingListFragment<EmptyPresenter>()
     {
         settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_security)) { turnToFragment(R.id.securitySettingFragment) })
 
+        settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_layout_style)) { turnToFragment(R.id.backupSettingFragment) })
+
         settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_backup_and_restore)) { turnToFragment(R.id.backupSettingFragment) })
 
         settingList.add(SettingBean.SettingDivideBean())

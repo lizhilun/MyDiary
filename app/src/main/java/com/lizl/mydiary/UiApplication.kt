@@ -22,7 +22,6 @@ class UiApplication : Application()
     companion object
     {
         var instance: UiApplication by Delegates.notNull()
-        val appConfig: AppConfig by lazy { AppConfig.instance }
     }
 
     override fun onCreate()
