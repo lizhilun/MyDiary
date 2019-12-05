@@ -12,7 +12,7 @@ import com.lizl.mydiary.adapter.DiaryImageListAdapter
 import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.TitleBarBtnBean
-import com.lizl.mydiary.config.LayoutStyleConfig
+import com.lizl.mydiary.config.AppConfig
 import com.lizl.mydiary.custom.others.IndentTextWatcher
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.DiaryContentContract
@@ -49,7 +49,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         diaryBean = intent?.getSerializableExtra(AppConstant.BUNDLE_DATA_OBJECT) as DiaryBean?
         inEditMode = diaryBean == null
 
-        diaryImageListAdapter = DiaryImageListAdapter(inEditMode, LayoutStyleConfig.getDiaryImageMaxCount(), true)
+        diaryImageListAdapter = DiaryImageListAdapter(inEditMode, AppConfig.getLayoutStyleConfig().getDiaryImageMaxCount(), true)
         rv_image_list.layoutManager = GridLayoutManager(this, 3)
         rv_image_list.adapter = diaryImageListAdapter
 
@@ -121,7 +121,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
             et_diary_content.setScrollEnable(it > 0)
         }
 
-        if (LayoutStyleConfig.isParagraphHeadIndent())
+        if (AppConfig.getLayoutStyleConfig().isParagraphHeadIndent())
         {
             et_diary_content.addTextChangedListener(IndentTextWatcher())
         }
@@ -142,7 +142,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
 
     private fun showDiaryContent(diaryBean: DiaryBean?)
     {
-        val diaryShowContent = diaryBean?.content ?: if (LayoutStyleConfig.isParagraphHeadIndent()) '\u3000'.toString() else ""
+        val diaryShowContent = diaryBean?.content ?: if (AppConfig.getLayoutStyleConfig().isParagraphHeadIndent()) '\u3000'.toString() else ""
         et_diary_content.setText(diaryShowContent)
         if (diaryBean?.imageList != null)
         {
@@ -159,7 +159,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
     fun selectImage()
     {
-        presenter.selectImage(this, LayoutStyleConfig.getDiaryImageMaxCount() - diaryImageListAdapter.getImageList().size)
+        presenter.selectImage(this, AppConfig.getLayoutStyleConfig().getDiaryImageMaxCount() - diaryImageListAdapter.getImageList().size)
     }
 
     @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)

@@ -46,7 +46,7 @@ class LockPresenter(private var view: LockContract.View?) : LockContract.Present
 
     override fun checkInputPassword(password: String)
     {
-        if (password == AppConfig.getAppLockPassword())
+        if (password == AppConfig.getSecurityConfig().getAppLockPassword())
         {
             view?.onUnlockSuccess()
         }

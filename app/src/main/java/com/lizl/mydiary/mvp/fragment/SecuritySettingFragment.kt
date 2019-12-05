@@ -18,11 +18,11 @@ class SecuritySettingFragment : BaseSettingListFragment<EmptyPresenter>()
     override fun initSettingData()
     {
         val fingerprintItem = SettingBean.SettingBooleanBean(getString(R.string.setting_fingerprint), ConfigConstant.IS_FINGERPRINT_LOCK_ON,
-                ConfigConstant.DEFAULT_IS_FINGERPRINT_LOCK_ON, true) { result, bean -> }
+                ConfigConstant.DEFAULT_IS_FINGERPRINT_LOCK_ON, true) { _, _ -> }
 
         val modifyPasswordItem = SettingBean.SettingNormalBean(getString(R.string.setting_modify_password)) {
-            DialogUtil.showModifyPasswordDialog(context!!, AppConfig.getAppLockPassword()) {
-                AppConfig.setAppLockPassword(it)
+            DialogUtil.showModifyPasswordDialog(context!!, AppConfig.getSecurityConfig().getAppLockPassword()) {
+                AppConfig.getSecurityConfig().setAppLockPassword(it)
             }
         }
 
@@ -38,8 +38,8 @@ class SecuritySettingFragment : BaseSettingListFragment<EmptyPresenter>()
             if (result)
             {
                 val onInputFinishListener: (String) -> Unit = {
-                    AppConfig.setAppLockPassword(it)
-                    AppConfig.setAppLockOn(true)
+                    AppConfig.getSecurityConfig().setAppLockPassword(it)
+                    AppConfig.getSecurityConfig().setAppLockOn(true)
                     settingAdapter.update(bean)
                     var insertPosition = settingAdapter.getPosition(bean)
                     if (BiometricAuthenticationUtil.isFingerprintSupport())
@@ -50,19 +50,19 @@ class SecuritySettingFragment : BaseSettingListFragment<EmptyPresenter>()
                     settingAdapter.insert(lockTimeItem, ++insertPosition)
                 }
 
-                if (TextUtils.isEmpty(AppConfig.getAppLockPassword()))
+                if (TextUtils.isEmpty(AppConfig.getSecurityConfig().getAppLockPassword()))
                 {
                     DialogUtil.showSetPasswordDialog(context!!, onInputFinishListener)
                 }
                 else
                 {
-                    DialogUtil.showPasswordConfirmDialog(context!!, AppConfig.getAppLockPassword(), onInputFinishListener)
+                    DialogUtil.showPasswordConfirmDialog(context!!, AppConfig.getSecurityConfig().getAppLockPassword(), onInputFinishListener)
                 }
             }
             else
             {
-                DialogUtil.showPasswordConfirmDialog(context!!, AppConfig.getAppLockPassword()) {
-                    AppConfig.setAppLockOn(false)
+                DialogUtil.showPasswordConfirmDialog(context!!, AppConfig.getSecurityConfig().getAppLockPassword()) {
+                    AppConfig.getSecurityConfig().setAppLockOn(false)
                     settingAdapter.update(bean)
                     settingAdapter.remove(fingerprintItem)
                     settingAdapter.remove(modifyPasswordItem)
@@ -71,7 +71,7 @@ class SecuritySettingFragment : BaseSettingListFragment<EmptyPresenter>()
             }
         })
 
-        if (AppConfig.isAppLockOn())
+        if (AppConfig.getSecurityConfig().isAppLockOn())
         {
             if (BiometricAuthenticationUtil.isFingerprintSupport())
             {

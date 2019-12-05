@@ -44,7 +44,7 @@ class LockActivity : BaseActivity<LockPresenter>(), LockContract.View
     {
         super.onStart()
 
-        if (BiometricAuthenticationUtil.isFingerprintSupport() && AppConfig.isFingerprintLockOn())
+        if (BiometricAuthenticationUtil.isFingerprintSupport() && AppConfig.getSecurityConfig().isFingerprintLockOn())
         {
             tv_hint.text = getString(R.string.hint_verify_fingerprint_or_input_password)
 
@@ -64,7 +64,7 @@ class LockActivity : BaseActivity<LockPresenter>(), LockContract.View
 
     override fun onUnlockSuccess()
     {
-        AppConfig.setAppLastStopTime(Long.MAX_VALUE)
+        AppConfig.getSecurityConfig().setAppLastStopTime(Long.MAX_VALUE)
         finish()
     }
 

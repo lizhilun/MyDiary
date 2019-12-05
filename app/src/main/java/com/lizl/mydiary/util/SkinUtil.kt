@@ -28,7 +28,7 @@ object SkinUtil
 
     fun loadSkin(activity: Activity)
     {
-        if (AppConfig.isNightModeOn())
+        if (AppConfig.getGeneralConfig().isNightModeOn())
         {
             loadNightSkin(activity)
         }
@@ -52,7 +52,7 @@ object SkinUtil
 
     fun getGlobalTextColor(): Int
     {
-        return if (AppConfig.isNightModeOn())
+        return if (AppConfig.getGeneralConfig().isNightModeOn())
         {
             ContextCompat.getColor(UiApplication.instance, R.color.colorTextColor_night)
         }

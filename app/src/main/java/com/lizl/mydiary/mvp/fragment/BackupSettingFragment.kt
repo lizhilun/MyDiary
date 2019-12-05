@@ -52,14 +52,14 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
             }
             else
             {
-                AppConfig.setAutoBackup(false)
+                AppConfig.getBackupConfig().setAutoBackup(false)
                 settingAdapter.update(bean)
                 settingAdapter.remove(autoBackupTimeItem)
             }
         }
         settingList.add(autoBackupItem)
 
-        if (AppConfig.isAutoBackup())
+        if (AppConfig.getBackupConfig().isAutoBackup())
         {
             settingList.add(autoBackupTimeItem)
         }
@@ -68,7 +68,7 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun autoBackup()
     {
-        AppConfig.setAutoBackup(true)
+        AppConfig.getBackupConfig().setAutoBackup(true)
         settingAdapter.update(autoBackupItem)
         settingAdapter.insert(autoBackupTimeItem, settingAdapter.getPosition(autoBackupItem) + 1)
     }

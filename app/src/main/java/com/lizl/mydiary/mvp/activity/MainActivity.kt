@@ -24,8 +24,9 @@ class MainActivity : BaseActivity<DiaryListPresenter>(), DiaryListContract.View
     {
         super.onCreate(savedInstanceState)
 
-        val autoBackupPeriod = AppConfig.getAppAutoBackupInterval()
-        if (AppConfig.isAutoBackup() && autoBackupPeriod > 0 && System.currentTimeMillis() - AppConfig.getLastAutoBackupTime() > autoBackupPeriod)
+        val autoBackupPeriod = AppConfig.getBackupConfig().getAppAutoBackupInterval()
+        if (AppConfig.getBackupConfig().isAutoBackup() && autoBackupPeriod > 0
+            && System.currentTimeMillis() - AppConfig.getBackupConfig().getLastAutoBackupTime() > autoBackupPeriod)
         {
             BackupUtil.autoBackup()
         }

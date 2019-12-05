@@ -26,7 +26,7 @@ object DiaryUtil
     fun saveDiaryImage(imagePath: String): String
     {
         val bitmap = ImageUtils.getBitmap(imagePath)
-        val comBitmap = ImageUtils.compressByQuality(bitmap, AppConfig.getImageSaveQuality())
+        val comBitmap = ImageUtils.compressByQuality(bitmap, AppConfig.getLayoutStyleConfig().getImageSaveQuality())
         val savePath = "${FileUtil.getImageFileSavePath()}/${System.currentTimeMillis()}.jpg"
         ImageUtils.save(comBitmap, savePath, Bitmap.CompressFormat.JPEG)
         return savePath

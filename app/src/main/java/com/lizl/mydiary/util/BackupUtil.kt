@@ -54,7 +54,7 @@ object BackupUtil
             channel.send(BackupJob(autoBackupFileName) {
                 if (it)
                 {
-                    AppConfig.setLastAutoBackupTime(System.currentTimeMillis())
+                    AppConfig.getBackupConfig().setLastAutoBackupTime(System.currentTimeMillis())
                 }
                 ToastUtils.showShort(UiApplication.instance.getString(R.string.auto_backup_data) + UiApplication.instance.getString(
                         if (it) R.string.success else R.string.failed))
