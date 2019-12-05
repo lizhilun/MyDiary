@@ -43,6 +43,8 @@
     <string name="setting_auto_backup">自动备份</string>
     <string name="setting_auto_backup_interval">自动备份时间</string>
     <string name="day">天</string>
+    <string name="setting_backup_file_encryption">备份文件加密</string>
+    <string name="notify_set_lock_password_before_encryption">请先设置锁定密码</string>
 
     <string name="setting_layout_style">样式布局</string>
     <string name="setting_paragraph_head_indent">段首缩进</string>
@@ -80,6 +82,7 @@
     <string name="auto_backup_data">自动备份</string>
     <string name="clear_backup_data">备份文件清理</string>
     <string name="notify_clear_backup_data">备份文件清理将只保留最新的备份文件，其余的会被删除，是否继续？</string>
+    <string name="notify_restore_data_failed_wrong_password">文件还原失败，请输入备份文件时的加密密码</string>
 
     <string name="diary_count">已记录</string>
     <string name="word_count">总字数</string>

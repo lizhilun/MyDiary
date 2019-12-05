@@ -16,7 +16,7 @@ class BackupFileListContract
 
         fun showRestoringDataView()
 
-        fun onRestoreDataFinish(result: Boolean)
+        fun onRestoreDataFinish(result: Boolean, backupFile: File, failedReason: String)
     }
 
     interface Presenter : BasePresenter<View>
@@ -27,7 +27,9 @@ class BackupFileListContract
 
         fun restoreData(file: File)
 
-        fun renameBackupFile(file: File, newName : String)
+        fun restoreData(file: File, password: String)
+
+        fun renameBackupFile(file: File, newName: String)
 
         fun clearBackupFiles()
     }

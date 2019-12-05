@@ -2,7 +2,6 @@ package com.lizl.mydiary.adapter
 
 import android.view.View
 import android.view.ViewGroup
-import com.blankj.utilcode.util.SPUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.SettingBean
 import com.lizl.mydiary.util.DialogUtil
@@ -63,14 +62,14 @@ class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListA
     {
         fun bindBooleanViewHolder(settingItem: SettingBean.SettingBooleanBean, position: Int)
         {
-            val isChecked = SPUtils.getInstance().getBoolean(settingItem.settingKey, settingItem.defaultValue)
+            val isChecked = settingItem.getValue()
             itemView.tv_boolean_setting_name.text = settingItem.settingName
             itemView.iv_boolean_setting_checked.isSelected = isChecked
 
             itemView.setOnClickListener {
                 if (settingItem.needSave)
                 {
-                    SPUtils.getInstance().put(settingItem.settingKey, !isChecked)
+                    settingItem.saveValue(!isChecked)
                     notifyItemChanged(position)
                 }
                 settingItem.callback.invoke(!isChecked, settingItem)
@@ -88,8 +87,7 @@ class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListA
         {
             itemView.tv_value_setting_name.text = settingItem.settingName
 
-            val settingValue = SPUtils.getInstance().getInt(settingItem.settingKey, settingItem.defaultValue)
-            val showValue = settingItem.radioMap.getValue(settingValue)
+            val showValue = settingItem.radioMap.getValue(settingItem.getValue())
 
             itemView.tv_value_setting_value.text = showValue
 
@@ -101,7 +99,7 @@ class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListA
                     settingItem.radioMap.forEach {
                         if (it.value == result)
                         {
-                            SPUtils.getInstance().put(settingItem.settingKey, it.key)
+                            settingItem.saveValue(it.key)
                             update(settingItem)
                             settingItem.callback.invoke(settingItem)
                             return@forEach
@@ -115,8 +113,7 @@ class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListA
         {
             itemView.tv_value_setting_name.text = settingItem.settingName
 
-            val settingValue = SPUtils.getInstance().getLong(settingItem.settingKey, settingItem.defaultValue)
-            val showValue = settingItem.radioMap.getValue(settingValue)
+            val showValue = settingItem.radioMap.getValue(settingItem.getValue())
 
             itemView.tv_value_setting_value.text = showValue
 
@@ -128,7 +125,7 @@ class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListA
                     settingItem.radioMap.forEach {
                         if (it.value == result)
                         {
-                            SPUtils.getInstance().put(settingItem.settingKey, it.key)
+                            settingItem.saveValue(it.key)
                             update(settingItem)
                             settingItem.callback.invoke(settingItem)
                             return@forEach

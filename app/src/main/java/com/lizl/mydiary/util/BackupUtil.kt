@@ -1,7 +1,6 @@
 package com.lizl.mydiary.util
 
 import android.provider.MediaStore
-import android.util.Log
 import com.blankj.utilcode.util.*
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
@@ -22,6 +21,7 @@ object BackupUtil
     private val backupTempFilePath = "$backupFilePath/temp"
     private val backupTempImageFilePath = "$backupFilePath/temp/picture"
     private val backupTempDiaryFilePath = "$backupFilePath/temp/diary.txt"
+    private val encrypBackupTempDiaryFilePath = "$backupFilePath/temp/diary.en"
     private const val backupFileSuffix = ".iui"
     private const val autoBackupFileName = "autoBackup"
 
@@ -64,17 +64,31 @@ object BackupUtil
 
     private suspend fun backupData(backupFileName: String, callback: (result: Boolean) -> Unit)
     {
-        Log.d(TAG, "backupData() called with: backupFileName = [$backupFileName], callback = [$callback]")
         try
         {
             val diaryList = AppDatabase.instance.getDiaryDao().getAllDiary()
-            val diaryListText = GsonUtils.toJson(diaryList)
-            if (!FileUtil.writeTxtFile(diaryListText, backupTempDiaryFilePath))
+            val needEncryption = AppConfig.getBackupConfig().isBackupFileEncryption() && AppConfig.getSecurityConfig().getAppLockPassword().isNotEmpty()
+            var diaryListText = GsonUtils.toJson(diaryList)
+            if (needEncryption)
             {
-                FileUtils.deleteDir(backupTempFilePath)
-                callback.invoke(false)
-                return
+                diaryListText = EncryptUtil.encrypt(diaryListText, AppConfig.getSecurityConfig().getAppLockPassword())
+                if (!FileUtil.writeTxtFile(diaryListText, encrypBackupTempDiaryFilePath))
+                {
+                    FileUtils.deleteDir(backupTempFilePath)
+                    callback.invoke(false)
+                    return
+                }
             }
+            else
+            {
+                if (!FileUtil.writeTxtFile(diaryListText, backupTempDiaryFilePath))
+                {
+                    FileUtils.deleteDir(backupTempFilePath)
+                    callback.invoke(false)
+                    return
+                }
+            }
+
             if (!FileUtil.copyDir(FileUtil.getImageFileSavePath(), backupTempImageFilePath))
             {
                 FileUtils.deleteDir(backupTempFilePath)
@@ -100,31 +114,58 @@ object BackupUtil
         }
     }
 
-    fun restoreData(restoreFilePath: String, callback: (result: Boolean) -> Unit)
+    fun restoreData(restoreFilePath: String, callback: (result: Boolean, failedReason: String) -> Unit)
+    {
+        restoreData(restoreFilePath, AppConfig.getSecurityConfig().getAppLockPassword(), callback)
+    }
+
+    fun restoreData(restoreFilePath: String, password: String, callback: (result: Boolean, failedReason: String) -> Unit)
     {
         GlobalScope.launch {
 
             try
             {
                 ZipUtils.unzipFile(restoreFilePath, backupFilePath)
-                if (!File(backupTempDiaryFilePath).exists())
+
+                val unEncryptDiaryFile = File(backupTempDiaryFilePath)
+                val encryptDiaryFile = File(encrypBackupTempDiaryFilePath)
+
+                if (!unEncryptDiaryFile.exists() && !encryptDiaryFile.exists())
                 {
                     FileUtil.deleteFile(backupTempFilePath)
-                    callback.invoke(false)
+                    callback.invoke(false, AppConstant.RESTORE_DATA_FAILED_WRONG_BACKUP_FILE)
                     return@launch
                 }
-                val diaryTxt = FileUtil.readTxtFile(backupTempDiaryFilePath)
+
+                val diaryTxt: String
+                if (encryptDiaryFile.exists())
+                {
+                    val textReadResult = FileUtil.readTxtFile(encrypBackupTempDiaryFilePath)
+                    val decryptResult = EncryptUtil.decrypt(textReadResult, password)
+                    if (decryptResult == null)
+                    {
+                        FileUtil.deleteFile(backupTempFilePath)
+                        callback.invoke(false, AppConstant.RESTORE_DATA_FAILED_WRONG_PASSWORD)
+                        return@launch
+                    }
+                    diaryTxt = decryptResult
+                }
+                else
+                {
+                    diaryTxt = FileUtil.readTxtFile(backupTempDiaryFilePath)
+                }
+
                 FileUtil.copyDir(backupTempImageFilePath, FileUtil.getImageFileSavePath())
                 val diaryList = GsonUtils.fromJson<Array<DiaryBean>>(diaryTxt, Array<DiaryBean>::class.java)
                 val saveDiaryList = diaryList.filter { AppDatabase.instance.getDiaryDao().getDiaryByUid(it.uid) == null }
                 AppDatabase.instance.getDiaryDao().insertList(saveDiaryList as MutableList<DiaryBean>)
                 FileUtil.deleteFile(backupTempFilePath)
-                callback.invoke(true)
+                callback.invoke(true, "")
             }
             catch (e: Exception)
             {
                 FileUtil.deleteFile(backupTempFilePath)
-                callback.invoke(false)
+                callback.invoke(false, AppConstant.RESTORE_DATA_FAILED_WRONG_BACKUP_FILE)
             }
         }
     }
@@ -150,6 +191,29 @@ object BackupUtil
         cursor?.close()
 
         return fileList
+    }
+
+    /**
+     * 获取16位密码（不足16位的后面补0，超过16位的取前16位）的byte数据
+     */
+    private fun getPasswordByte(password: String): ByteArray
+    {
+        val passwordSize = password.length
+        var result = ""
+        if (passwordSize > 16)
+        {
+            result = password.substring(0, 16)
+        }
+        else
+        {
+            result += password
+            for (i in passwordSize until 16)
+            {
+                result += "0"
+            }
+        }
+
+        return result.toByteArray()
     }
 
     class BackupJob(val backupFileName: String, val callback: (result: Boolean) -> Unit)

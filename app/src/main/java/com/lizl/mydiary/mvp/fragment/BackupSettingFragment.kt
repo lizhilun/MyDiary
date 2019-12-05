@@ -1,6 +1,7 @@
 package com.lizl.mydiary.mvp.fragment
 
 import android.Manifest
+import android.content.Context
 import com.blankj.utilcode.util.ToastUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.SettingBean
@@ -44,6 +45,8 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
 
         settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_restore)) { restoreDiaryDataWithPermissionCheck() })
 
+        settingList.add(SettingBean.SettingDivideBean())
+
         autoBackupItem = SettingBean.SettingBooleanBean(settingName = getString(R.string.setting_auto_backup), settingKey = ConfigConstant.IS_AUTO_BACKUP_ON,
                 defaultValue = ConfigConstant.DEFAULT_IS_AUTO_BACKUP_ON, needSave = false) { result, bean ->
             if (result)
@@ -52,7 +55,7 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
             }
             else
             {
-                AppConfig.getBackupConfig().setAutoBackup(false)
+                bean.saveValue(false)
                 settingAdapter.update(bean)
                 settingAdapter.remove(autoBackupTimeItem)
             }
@@ -63,6 +66,31 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
         {
             settingList.add(autoBackupTimeItem)
         }
+
+        settingList.add(SettingBean.SettingDivideBean())
+
+        settingList.add(SettingBean.SettingBooleanBean(settingName = getString(R.string.setting_backup_file_encryption),
+                settingKey = ConfigConstant.IS_BACKUP_FILE_ENCRYPTION, defaultValue = ConfigConstant.DEFAULT_IS_BACKUP_FILE_ENCRYPTION,
+                needSave = false) { result, bean ->
+            if (result)
+            {
+                if (AppConfig.getSecurityConfig().getAppLockPassword().isEmpty())
+                {
+                    DialogUtil.showOperationConfirmDialog(activity as Context, getString(R.string.setting_backup_file_encryption),
+                            getString(R.string.notify_set_lock_password_before_encryption)) { turnToFragment(R.id.securitySettingFragment) }
+                }
+                else
+                {
+                    bean.saveValue(true)
+                    settingAdapter.update(bean)
+                }
+            }
+            else
+            {
+                bean.saveValue(false)
+                settingAdapter.update(bean)
+            }
+        })
     }
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)

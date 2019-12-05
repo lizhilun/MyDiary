@@ -22,6 +22,7 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
         const val PASSWORD_OPERATION_CHECK = 1
         const val PASSWORD_OPERATION_NEW = 2
         const val PASSWORD_OPERATION_MODIFY = 3
+        const val PASSWORD_OPERATION_INPUT = 4
     }
 
     constructor(context: Context, onInputFinishListener: (String) -> Unit) : this(context, PASSWORD_OPERATION_NEW, null, onInputFinishListener)
@@ -51,6 +52,7 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
             PASSWORD_OPERATION_CHECK  -> turnToOperationState(OperationState.CheckState)
             PASSWORD_OPERATION_NEW    -> turnToOperationState(OperationState.InputNewState)
             PASSWORD_OPERATION_MODIFY -> turnToOperationState(OperationState.CheckOldState)
+            PASSWORD_OPERATION_INPUT  -> turnToOperationState(OperationState.InputPasswordState)
         }
         val viewCount = gpv_password.childCount
         for (i in 0 until viewCount)
@@ -164,6 +166,10 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
             override fun getStateNotify() = UiApplication.instance.getString(R.string.please_input_new_password_again)
 
             override fun wrongState() = ReInputNewState
+        },
+        InputPasswordState
+        {
+            override fun getStateNotify() = UiApplication.instance.getString(R.string.please_input_password_to_confirm)
         };
 
         open fun nextState(): OperationState? = null

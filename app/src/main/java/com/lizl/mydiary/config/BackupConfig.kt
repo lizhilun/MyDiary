@@ -23,4 +23,6 @@ class BackupConfig
     fun getLastAutoBackupTime() = SPUtils.getInstance().getLong(ConfigConstant.APP_LAST_AUTO_BACKUP_TIME, ConfigConstant.DEFAULT_APP_LAST_AUTO_BACKUP_TIME)
 
     fun getAppAutoBackupInterval() = SPUtils.getInstance().getLong(ConfigConstant.APP_AUTO_BACKUP_PERIOD, ConfigConstant.DEFAULT_APP_AUTO_BACKUP_PERIOD)
+
+    fun isBackupFileEncryption() = SPUtils.getInstance().getBoolean(ConfigConstant.IS_BACKUP_FILE_ENCRYPTION, ConfigConstant.DEFAULT_IS_BACKUP_FILE_ENCRYPTION)
 }

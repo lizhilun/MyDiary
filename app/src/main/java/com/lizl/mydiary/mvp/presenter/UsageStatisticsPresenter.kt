@@ -31,7 +31,7 @@ class UsageStatisticsPresenter(private var view: UsageStatisticsContract.View?) 
             GlobalScope.launch(Dispatchers.Main) { view?.showWordCount(wordCount) }
 
             val imageDir = File(FileUtil.getImageFileSavePath())
-            val imageCount = imageDir.listFiles().count { ImageUtils.isImage(it) }
+            val imageCount = imageDir.listFiles()?.count { ImageUtils.isImage(it) } ?: 0
             GlobalScope.launch(Dispatchers.Main) { view?.showImageCount(imageCount) }
 
             val moodStatisticsResult = getMoodStatistics()

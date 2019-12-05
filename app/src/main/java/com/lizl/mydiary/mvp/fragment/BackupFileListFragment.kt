@@ -12,6 +12,7 @@ import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.contract.BackupFileListContract
 import com.lizl.mydiary.mvp.presenter.BackupFileListPresenter
+import com.lizl.mydiary.util.AppConstant
 import com.lizl.mydiary.util.DialogUtil
 import kotlinx.android.synthetic.main.fragment_backup_file_list.*
 import org.greenrobot.eventbus.EventBus
@@ -68,11 +69,27 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
         DialogUtil.showLoadingDialog(context!!, getString(R.string.in_doing, getString(R.string.restore_data)))
     }
 
-    override fun onRestoreDataFinish(result: Boolean)
+    override fun onRestoreDataFinish(result: Boolean, backupFile: File, failedReason: String)
     {
         if (result)
         {
             EventBus.getDefault().post(UIEvent(EventConstant.UI_EVENT_IMPORT_DIARY_DATA))
+        }
+        else
+        {
+            when (failedReason)
+            {
+                AppConstant.RESTORE_DATA_FAILED_WRONG_PASSWORD ->
+                {
+                    DialogUtil.showOperationConfirmDialog(activity as Context, "${getString(R.string.restore_data)}${getString(R.string.failed)}",
+                            getString(R.string.notify_restore_data_failed_wrong_password)) {
+                        DialogUtil.showInputPasswordDialog(activity as Context) {
+                            presenter.restoreData(backupFile, it)
+                        }
+                    }
+                    return
+                }
+            }
         }
         ToastUtils.showShort("${getString(R.string.restore_data)}${getString(if (result) R.string.success else R.string.failed)}")
         DialogUtil.dismissDialog()

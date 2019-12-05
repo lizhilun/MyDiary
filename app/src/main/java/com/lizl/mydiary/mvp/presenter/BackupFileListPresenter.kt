@@ -33,8 +33,18 @@ class BackupFileListPresenter(private var view: BackupFileListContract.View?) : 
     {
         GlobalScope.launch {
             GlobalScope.launch(Dispatchers.Main) { view?.showRestoringDataView() }
-            BackupUtil.restoreData(file.absolutePath) {
-                GlobalScope.launch(Dispatchers.Main) { view?.onRestoreDataFinish(it) }
+            BackupUtil.restoreData(file.absolutePath) { result, failedReason ->
+                GlobalScope.launch(Dispatchers.Main) { view?.onRestoreDataFinish(result, file, failedReason) }
+            }
+        }
+    }
+
+    override fun restoreData(file: File, password: String)
+    {
+        GlobalScope.launch {
+            GlobalScope.launch(Dispatchers.Main) { view?.showRestoringDataView() }
+            BackupUtil.restoreData(file.absolutePath, password) { result, failedReason ->
+                GlobalScope.launch(Dispatchers.Main) { view?.onRestoreDataFinish(result, file, failedReason) }
             }
         }
     }

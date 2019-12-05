@@ -49,6 +49,13 @@ object DialogUtil
         dialog?.show()
     }
 
+    fun showInputPasswordDialog(context: Context, onInputFinishListener: (String) -> Unit)
+    {
+        dialog?.dismiss()
+        dialog = DialogPassword(context, DialogPassword.PASSWORD_OPERATION_INPUT, "", onInputFinishListener)
+        dialog?.show()
+    }
+
     fun showModifyPasswordDialog(context: Context, oldPassword: String, onInputFinishListener: (String) -> Unit)
     {
         dialog?.dismiss()
