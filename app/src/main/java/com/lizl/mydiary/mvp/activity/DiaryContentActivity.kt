@@ -2,7 +2,6 @@ package com.lizl.mydiary.mvp.activity
 
 import android.Manifest
 import android.content.Intent
-import android.text.TextUtils
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.blankj.utilcode.util.BarUtils
@@ -13,6 +12,8 @@ import com.lizl.mydiary.adapter.DiaryImageListAdapter
 import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.TitleBarBtnBean
+import com.lizl.mydiary.config.LayoutStyleConfig
+import com.lizl.mydiary.custom.others.IndentTextWatcher
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.DiaryContentContract
 import com.lizl.mydiary.mvp.presenter.DiaryContentPresenter
@@ -119,6 +120,11 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
             et_diary_content.setScrollEnable(it > 0)
         }
 
+        if (LayoutStyleConfig.isParagraphHeadIndent())
+        {
+            et_diary_content.addTextChangedListener(IndentTextWatcher())
+        }
+
         showDiaryContent(diaryBean)
         if (inEditMode) showEditView() else showReadView()
     }
@@ -135,7 +141,8 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
 
     private fun showDiaryContent(diaryBean: DiaryBean?)
     {
-        et_diary_content.setText(diaryBean?.content)
+        val diaryShowContent = diaryBean?.content ?: if (LayoutStyleConfig.isParagraphHeadIndent()) '\u3000'.toString() else ""
+        et_diary_content.setText(diaryShowContent)
         if (diaryBean?.imageList != null)
         {
             diaryImageListAdapter.addImageList(diaryBean.imageList!!)
@@ -229,13 +236,13 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         super.onBackPressed()
     }
 
-    private fun isEmptyDiary() = TextUtils.isEmpty(et_diary_content.text.toString()) && diaryImageListAdapter.getImageList().isNullOrEmpty()
+    private fun isEmptyDiary() = et_diary_content.text.toString().isBlank() && diaryImageListAdapter.getImageList().isNullOrEmpty()
 
     private fun isDiaryModified(diaryBean: DiaryBean?): Boolean
     {
         return if (diaryBean == null)
         {
-            !TextUtils.isEmpty(et_diary_content.text.toString()) || diaryImageListAdapter.getImageList().isNotEmpty()
+            et_diary_content.text.toString().isNotBlank() || diaryImageListAdapter.getImageList().isNotEmpty()
         }
         else
         {

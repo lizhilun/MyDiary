@@ -27,4 +27,8 @@
     <fragment
         android:id="@+id/backupSettingFragment"
         android:name="com.lizl.mydiary.mvp.fragment.BackupSettingFragment" />
+
+    <fragment
+        android:id="@+id/layoutStyleSettingFragment"
+        android:name="com.lizl.mydiary.mvp.fragment.LayoutStyleSettingFragment" />
 </navigation>

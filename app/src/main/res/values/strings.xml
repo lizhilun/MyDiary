@@ -45,6 +45,8 @@
     <string name="day">天</string>
 
     <string name="setting_layout_style">样式布局</string>
+    <string name="setting_paragraph_head_indent">段首缩进</string>
+    <string name="setting_font_size">段首缩进</string>
 
     <string name="setting_image_save_quality">图片保存质量</string>
     <string name="setting_night_mode">夜间模式</string>
