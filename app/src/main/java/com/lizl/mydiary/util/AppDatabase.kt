@@ -9,13 +9,15 @@ import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.dao.DiaryDao
 
-@Database(entities = [DiaryBean::class], version = 2, exportSchema = false)
+@Database(entities = [DiaryBean::class], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase()
 {
     private object Singleton
     {
         val singleton: AppDatabase = Room.databaseBuilder(UiApplication.instance, AppDatabase::class.java, "Diary.db")
-            .addMigrations(MIGRATION_1_2).allowMainThreadQueries().build()
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                .allowMainThreadQueries()
+                .build()
     }
 
     companion object
@@ -25,6 +27,14 @@ abstract class AppDatabase : RoomDatabase()
             override fun migrate(database: SupportSQLiteDatabase)
             {
                 database.execSQL("ALTER TABLE diaries ADD COLUMN mood INTEGER  NOT NULL DEFAULT 2")
+            }
+        }
+
+        val MIGRATION_2_3 = object : Migration(2, 3)
+        {
+            override fun migrate(database: SupportSQLiteDatabase)
+            {
+                database.execSQL("ALTER TABLE diaries ADD COLUMN tag TEXT")
             }
         }
 

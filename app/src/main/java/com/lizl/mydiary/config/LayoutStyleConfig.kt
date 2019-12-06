@@ -17,6 +17,8 @@ class LayoutStyleConfig
     fun isParagraphHeadIndent() = SPUtils.getInstance().getBoolean(ConfigConstant.LAYOUT_STYLE_PARAGRAPH_HEAD_INDENT,
             ConfigConstant.DEFAULT_LAYOUT_STYLE_PARAGRAPH_HEAD_INDENT)
 
+    fun isDiaryTagEnable() = SPUtils.getInstance().getBoolean(ConfigConstant.LAYOUT_STYLE_SHOW_DIARY_TAG, ConfigConstant.DEFAULT_LAYOUT_STYLE_SHOW_DIARY_TAG)
+
     fun getDiaryImageMaxCount() = SPUtils.getInstance().getInt(ConfigConstant.LAYOUT_STYLE_IMAGE_COUNT, ConfigConstant.DEFAULT_LAYOUT_STYLE_IMAGE_COUNT)
 
     fun getImageSaveQuality() = SPUtils.getInstance().getInt(ConfigConstant.IMAGE_SAVE_QUALITY, ConfigConstant.DEFAULT_IMAGE_SAVE_QUALITY)

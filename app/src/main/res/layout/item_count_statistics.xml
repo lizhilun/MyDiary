@@ -20,6 +20,7 @@
         style="@style/GlobalTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:paddingEnd="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guide_left"
         app:layout_constraintStart_toStartOf="parent"

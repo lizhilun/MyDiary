@@ -98,6 +98,13 @@ object DialogUtil
         dialog?.show()
     }
 
+    fun showDiaryTagListDialog(context: Context, onTagSelectFinishListener: (String) -> Unit)
+    {
+        dialog?.dismiss()
+        dialog = DialogDiaryTagList(context, onTagSelectFinishListener)
+        dialog?.show()
+    }
+
     fun dismissDialog()
     {
         dialog?.dismiss()

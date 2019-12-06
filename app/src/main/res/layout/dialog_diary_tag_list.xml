@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<skin.support.constraint.SkinCompatConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_dialog_bg"
+    android:orientation="vertical">
+
+    <com.lizl.mydiary.custom.skin.SkinRecyclerView
+        android:id="@+id/rv_tag_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/global_content_padding_edge"
+        android:overScrollMode="never"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <skin.support.widget.SkinCompatEditText
+        android:id="@+id/et_new_tag"
+        style="@style/GlobalTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="@dimen/global_content_padding_edge"
+        android:layout_marginTop="@dimen/global_content_padding_edge"
+        android:layout_marginEnd="@dimen/global_content_padding_edge"
+        android:background="@drawable/bg_input_edit"
+        android:maxLines="1"
+        app:layout_constraintTop_toBottomOf="@+id/rv_tag_list" />
+
+    <skin.support.widget.SkinCompatTextView
+        android:id="@+id/tv_cancel"
+        style="@style/DialogButtonTextStyle"
+        android:layout_marginEnd="10dp"
+        android:enabled="true"
+        android:text="@string/cancel"
+        app:layout_constraintEnd_toStartOf="@+id/tv_confirm"
+        app:layout_constraintTop_toBottomOf="@+id/et_new_tag" />
+
+    <skin.support.widget.SkinCompatTextView
+        android:id="@+id/tv_confirm"
+        style="@style/DialogButtonTextStyle"
+        android:layout_marginEnd="20dp"
+        android:enabled="false"
+        android:text="@string/confirm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_new_tag" />
+</skin.support.constraint.SkinCompatConstraintLayout>

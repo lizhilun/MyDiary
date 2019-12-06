@@ -1,5 +1,6 @@
 package com.lizl.mydiary.mvp.fragment
 
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.CountStatisticsListAdapter
@@ -16,6 +17,7 @@ class UsageStatisticsFragment : BaseFragment<UsageStatisticsPresenter>(), UsageS
 
     private lateinit var countStatisticsListAdapter: CountStatisticsListAdapter
     private lateinit var timeStatisticsListAdapter: CountStatisticsListAdapter
+    private lateinit var tagStatisticsListAdapter: CountStatisticsListAdapter
 
     override fun getLayoutResId() = R.layout.fragment_usage_statistics
 
@@ -30,6 +32,10 @@ class UsageStatisticsFragment : BaseFragment<UsageStatisticsPresenter>(), UsageS
         timeStatisticsListAdapter = CountStatisticsListAdapter()
         rv_time_statistics.layoutManager = LinearLayoutManager(activity)
         rv_time_statistics.adapter = timeStatisticsListAdapter
+
+        tagStatisticsListAdapter = CountStatisticsListAdapter()
+        rv_tag_statistics.layoutManager = LinearLayoutManager(activity)
+        rv_tag_statistics.adapter = tagStatisticsListAdapter
 
         tv_image_count.setOnClickListener { turnToFragment(R.id.imageGalleryFragment) }
 
@@ -68,5 +74,11 @@ class UsageStatisticsFragment : BaseFragment<UsageStatisticsPresenter>(), UsageS
     override fun showTimeStatistics(timeStatisticsList: List<CountStatisticsBean.TimeStatisticsBean>)
     {
         timeStatisticsListAdapter.setData(timeStatisticsList)
+    }
+
+    override fun showTagStatistics(tagStatisticsList: List<CountStatisticsBean.TagStatisticsBean>)
+    {
+        rv_tag_statistics.isVisible = true
+        tagStatisticsListAdapter.setData(tagStatisticsList)
     }
 }

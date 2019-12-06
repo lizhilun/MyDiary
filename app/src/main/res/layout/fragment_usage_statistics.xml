@@ -80,6 +80,17 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_diary_count" />
 
         <com.lizl.mydiary.custom.skin.SkinRecyclerView
+            android:id="@+id/rv_tag_statistics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:overScrollMode="never"
+            android:paddingStart="@dimen/global_content_padding_edge"
+            android:paddingEnd="@dimen/global_content_padding_edge"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/rv_mood_statistics" />
+
+        <com.lizl.mydiary.custom.skin.SkinRecyclerView
             android:id="@+id/rv_time_statistics"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -87,7 +98,7 @@
             android:overScrollMode="never"
             android:paddingStart="@dimen/global_content_padding_edge"
             android:paddingEnd="@dimen/global_content_padding_edge"
-            app:layout_constraintTop_toBottomOf="@+id/rv_mood_statistics" />
+            app:layout_constraintTop_toBottomOf="@+id/rv_tag_statistics" />
     </skin.support.constraint.SkinCompatConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

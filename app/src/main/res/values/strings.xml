@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MyDiary</string>
 
+    <string name="diary">日记</string>
     <string name="cancel">取消</string>
     <string name="confirm">确认</string>
     <string name="delete">删除</string>
@@ -49,6 +50,7 @@
     <string name="setting_layout_style">样式布局</string>
     <string name="setting_paragraph_head_indent">段首缩进</string>
     <string name="setting_font_size">段首缩进</string>
+    <string name="setting_diary_tag">日记TAG</string>
     <string name="setting_image_count">图片最大数量</string>
     <string name="setting_image_save_quality">图片保存质量</string>
 

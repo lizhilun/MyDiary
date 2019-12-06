@@ -70,7 +70,8 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
                     return@setOnBackBtnClickListener
                 }
 
-                presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList(), dateBean.time, curDiaryMood)
+                val tag = tv_diary_tag.text.toString().replace("#", "")
+                presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList(), dateBean.time, curDiaryMood, tag)
             }
             else
             {
@@ -80,6 +81,13 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
 
         dateBean = DateBean(if (diaryBean != null) diaryBean!!.createTime else System.currentTimeMillis())
         ctb_title.setTitleText("${dateBean.year}/${dateBean.month}/${dateBean.day} ${dateBean.getHourAndMinute()}")
+
+        var diaryTag = diaryBean?.tag
+        if (diaryTag.isNullOrBlank())
+        {
+            diaryTag = getString(R.string.diary)
+        }
+        tv_diary_tag.text = "#$diaryTag#"
 
         showDiaryMood(diaryBean?.mood ?: AppConstant.MOOD_NORMAL)
 
@@ -110,7 +118,8 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
                     val statusBarHeight = BarUtils.getStatusBarHeight()
                     val titleBarHeight = resources.getDimensionPixelOffset(R.dimen.global_toolbar_height)
                     val padding = resources.getDimensionPixelOffset(R.dimen.global_content_padding_content)
-                    maxContentTextHeight = UiUtil.getScreenHeight() - it - statusBarHeight - navBarHeight - titleBarHeight - padding * 2
+                    val tagTextHeight = if (tv_diary_tag.isVisible) tv_diary_tag.height else padding
+                    maxContentTextHeight = UiUtil.getScreenHeight() - it - statusBarHeight - navBarHeight - titleBarHeight - tagTextHeight - padding
                 }
                 et_diary_content.maxHeight = maxContentTextHeight
             }
@@ -124,6 +133,16 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         if (AppConfig.getLayoutStyleConfig().isParagraphHeadIndent())
         {
             et_diary_content.addTextChangedListener(IndentTextWatcher())
+        }
+
+        tv_diary_tag.isVisible = AppConfig.getLayoutStyleConfig().isDiaryTagEnable()
+        tv_diary_tag.setOnClickListener {
+            if (inEditMode)
+            {
+                DialogUtil.showDiaryTagListDialog(this) {
+                    tv_diary_tag.text = "#$it#"
+                }
+            }
         }
 
         showDiaryContent(diaryBean)

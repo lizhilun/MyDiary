@@ -1,5 +1,6 @@
 package com.lizl.mydiary.util
 
+import android.text.InputFilter
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewTreeObserver
@@ -128,4 +129,21 @@ object UiUtil
      * 获取屏幕高度
      */
     fun getScreenHeight(): Int = ScreenUtils.getScreenHeight()
+
+    /**
+     * 获取限制空格和换行的inputFilter
+     */
+    fun getNoWrapOrSpaceFilter(): InputFilter
+    {
+        return InputFilter { source, start, end, dest, dstart, dend ->
+            if (source == " " || source.toString().contentEquals("\n"))
+            {
+                ""
+            }
+            else
+            {
+                null
+            }
+        }
+    }
 }

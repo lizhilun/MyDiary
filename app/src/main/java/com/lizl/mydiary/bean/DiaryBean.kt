@@ -25,5 +25,8 @@ class DiaryBean : Serializable
     var mood = AppConstant.MOOD_NORMAL
 
     @ColumnInfo
+    var tag: String? = null
+
+    @ColumnInfo
     var imageList: List<String>? = null
 }

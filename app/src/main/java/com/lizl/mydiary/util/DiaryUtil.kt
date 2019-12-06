@@ -2,7 +2,9 @@ package com.lizl.mydiary.util
 
 import android.graphics.Bitmap
 import com.blankj.utilcode.util.ImageUtils
+import com.blankj.utilcode.util.SPUtils
 import com.lizl.mydiary.R
+import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.config.AppConfig
 
 object DiaryUtil
@@ -10,6 +12,8 @@ object DiaryUtil
 
     private val moodResMap = hashMapOf(AppConstant.MOOD_ALL to R.drawable.ic_mood_all, AppConstant.MOOD_HAPPY to R.drawable.ic_mood_happy,
             AppConstant.MOOD_NORMAL to R.drawable.ic_mood_normal, AppConstant.MOOD_UNHAPPY to R.drawable.ic_mood_unhappy)
+
+    private const val DIARY_TAG_LIST = "DIARY_TAG_LIST"
 
     /**
      * 统计字数
@@ -42,6 +46,28 @@ object DiaryUtil
     {
         moodResMap.forEach { (key, value) -> if (value == modRes) return key }
         return AppConstant.MOOD_NORMAL
+    }
+
+    fun getDiaryTagList(): List<String>
+    {
+        val diaryTagSet = SPUtils.getInstance().getStringSet(DIARY_TAG_LIST, emptySet()).toMutableSet()
+        if (diaryTagSet.isEmpty())
+        {
+            diaryTagSet.add(UiApplication.instance.getString(R.string.diary))
+            SPUtils.getInstance().put(DIARY_TAG_LIST, diaryTagSet)
+        }
+        return diaryTagSet.toList()
+    }
+
+    fun addDiaryTag(tag: String)
+    {
+        if (tag.isBlank()) return
+        val diaryTagSet = SPUtils.getInstance().getStringSet(DIARY_TAG_LIST, emptySet()).toMutableSet()
+        if (!diaryTagSet.contains(tag))
+        {
+            diaryTagSet.add(tag)
+        }
+        SPUtils.getInstance().put(DIARY_TAG_LIST, diaryTagSet)
     }
 
 }

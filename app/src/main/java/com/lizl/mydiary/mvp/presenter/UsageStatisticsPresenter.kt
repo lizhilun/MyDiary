@@ -5,6 +5,7 @@ import com.blankj.utilcode.util.ImageUtils
 import com.lizl.mydiary.bean.CountStatisticsBean
 import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
+import com.lizl.mydiary.config.AppConfig
 import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.contract.UsageStatisticsContract
 import com.lizl.mydiary.util.AppDatabase
@@ -39,6 +40,12 @@ class UsageStatisticsPresenter(private var view: UsageStatisticsContract.View?) 
 
             val timeStatisticsResult = getTimeStatistics()
             GlobalScope.launch(Dispatchers.Main) { view?.showTimeStatistics(timeStatisticsResult) }
+
+            if (AppConfig.getLayoutStyleConfig().isDiaryTagEnable())
+            {
+                val tagStatisticsResult = getTagStatistics()
+                GlobalScope.launch(Dispatchers.Main) { view?.showTagStatistics(tagStatisticsResult) }
+            }
         }
     }
 
@@ -80,6 +87,26 @@ class UsageStatisticsPresenter(private var view: UsageStatisticsContract.View?) 
         timeStatisticsList.sortByDescending { it.count }
 
         return timeStatisticsList
+    }
+
+    private fun getTagStatistics(): List<CountStatisticsBean.TagStatisticsBean>
+    {
+        val tagStatisticsList = mutableListOf<CountStatisticsBean.TagStatisticsBean>()
+        val tagMap = HashMap<String, CountStatisticsBean.TagStatisticsBean>()
+        diaryList.forEach {
+            if (it.tag.isNullOrEmpty()) return@forEach
+            var tagStatisticsBean = tagMap[it.tag.orEmpty()]
+            if (tagStatisticsBean == null)
+            {
+                tagStatisticsBean = CountStatisticsBean.TagStatisticsBean(it.tag!!, 0)
+                tagMap[it.tag!!] = tagStatisticsBean
+                tagStatisticsList.add(tagStatisticsBean)
+            }
+            tagStatisticsBean.count += 1
+        }
+        tagStatisticsList.sortByDescending { it.count }
+
+        return tagStatisticsList
     }
 
     override fun handleUIEvent(uiEvent: UIEvent)

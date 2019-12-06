@@ -61,6 +61,12 @@ class CountStatisticsListAdapter : RecyclerView.Adapter<CountStatisticsListAdapt
                     itemView.tv_statistics.text = String.format(Locale.getDefault(), "%02d:00\n%02d:00", statisticsBean.startTime,
                             if (statisticsBean.startTime == 23) 0 else statisticsBean.startTime + 1)
                 }
+                is CountStatisticsBean.TagStatisticsBean  ->
+                {
+                    itemView.iv_statistics.isVisible = false
+                    itemView.tv_statistics.isVisible = true
+                    itemView.tv_statistics.text = statisticsBean.tag
+                }
             }
 
             val barHeight = itemView.context.resources.getDimension(R.dimen.mood_statistics_progress_bar_height)
