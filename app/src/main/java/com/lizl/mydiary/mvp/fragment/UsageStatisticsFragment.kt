@@ -49,6 +49,13 @@ class UsageStatisticsFragment : BaseFragment<UsageStatisticsPresenter>(), UsageS
                 ActivityUtil.turnToActivity(DiarySearchActivity::class.java, it.mood)
             }
         }
+
+        tagStatisticsListAdapter.setOnItemClickListener {
+            if (it is CountStatisticsBean.TagStatisticsBean)
+            {
+                ActivityUtil.turnToActivity(DiarySearchActivity::class.java, "#${it.tag}#")
+            }
+        }
     }
 
     override fun showDiaryCount(count: Int)

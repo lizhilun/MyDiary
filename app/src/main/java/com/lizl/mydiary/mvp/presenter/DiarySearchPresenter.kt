@@ -21,13 +21,33 @@ class DiarySearchPresenter(private var view: DiarySearchContract.View?) : DiaryS
 
             val searchResult = mutableListOf<DiaryBean>()
 
+            var tagKeyWord = ""
+            if (keyword.startsWith("#") && keyword.endsWith("#") && keyword.length > 2)
+            {
+                tagKeyWord = keyword.substring(1, keyword.length - 1)
+            }
+
             if (isKeywordValid && isMoodValid)
             {
-                searchResult.addAll(AppDatabase.instance.getDiaryDao().searchDiary(keyword).filter { mood == AppConstant.MOOD_ALL || it.mood == mood })
+                if (tagKeyWord.isNotBlank())
+                {
+                    searchResult.addAll(AppDatabase.instance.getDiaryDao().searchDiaryByTag(tagKeyWord).filter { mood == AppConstant.MOOD_ALL || it.mood == mood })
+                }
+                else
+                {
+                    searchResult.addAll(AppDatabase.instance.getDiaryDao().searchDiary(keyword).filter { mood == AppConstant.MOOD_ALL || it.mood == mood })
+                }
             }
             else if (isKeywordValid && !isMoodValid)
             {
-                searchResult.addAll(AppDatabase.instance.getDiaryDao().searchDiary(keyword))
+                if (tagKeyWord.isNotBlank())
+                {
+                    searchResult.addAll(AppDatabase.instance.getDiaryDao().searchDiaryByTag(tagKeyWord))
+                }
+                else
+                {
+                    searchResult.addAll(AppDatabase.instance.getDiaryDao().searchDiary(keyword))
+                }
             }
             else if (!isKeywordValid && isMoodValid)
             {
