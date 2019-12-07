@@ -51,6 +51,9 @@
     <string name="setting_paragraph_head_indent">段首缩进</string>
     <string name="setting_font_size">段首缩进</string>
     <string name="setting_diary_tag">日记TAG</string>
+    <string name="setting_font">字体设置</string>
+    <string name="font_setting_sample_title">预览字体效果</string>
+    <string name="font_setting_sample">\n调节只在日记详情页生效\n可以对字体大小和字体间距进行设置</string>
     <string name="setting_image_count">图片最大数量</string>
     <string name="setting_image_save_quality">图片保存质量</string>
 

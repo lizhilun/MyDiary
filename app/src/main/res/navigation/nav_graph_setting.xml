@@ -31,4 +31,8 @@
     <fragment
         android:id="@+id/layoutStyleSettingFragment"
         android:name="com.lizl.mydiary.mvp.fragment.LayoutStyleSettingFragment" />
+
+    <fragment
+        android:id="@+id/fontSettingFragment"
+        android:name="com.lizl.mydiary.mvp.fragment.FontSettingFragment" />
 </navigation>

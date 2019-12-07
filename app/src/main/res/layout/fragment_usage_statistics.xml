@@ -1,104 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<skin.support.constraint.SkinCompatConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/global_content_padding_edge">
+    android:layout_height="match_parent">
 
-    <skin.support.constraint.SkinCompatConstraintLayout
+    <com.lizl.mydiary.custom.view.CustomTitleBar
+        android:id="@+id/ctb_title"
+        style="@style/ToolbarLayoutStyle"
+        app:backBtnVisible="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleText="@string/setting_usage_statistics" />
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        android:paddingBottom="@dimen/global_content_padding_edge"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ctb_title">
 
-        <com.lizl.mydiary.custom.view.CustomTitleBar
-            android:id="@+id/ctb_title"
-            style="@style/ToolbarLayoutStyle"
-            app:backBtnVisible="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:titleText="@string/setting_usage_statistics" />
-
-        <skin.support.widget.SkinCompatTextView
-            android:id="@+id/tv_diary_count_str"
-            style="@style/UsageStatisticsStrTextStyle"
-            android:layout_marginTop="40dp"
-            android:text="@string/diary_count"
-            app:layout_constraintEnd_toStartOf="@+id/tv_word_count_str"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ctb_title" />
-
-        <skin.support.widget.SkinCompatTextView
-            android:id="@+id/tv_diary_count"
-            style="@style/UsageStatisticsTextStyle"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="@+id/tv_diary_count_str"
-            app:layout_constraintStart_toStartOf="@+id/tv_diary_count_str"
-            app:layout_constraintTop_toBottomOf="@+id/tv_diary_count_str" />
-
-        <skin.support.widget.SkinCompatTextView
-            android:id="@+id/tv_word_count_str"
-            style="@style/UsageStatisticsStrTextStyle"
-            android:text="@string/word_count"
-            app:layout_constraintEnd_toStartOf="@+id/tv_image_count_str"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toEndOf="@+id/tv_diary_count_str"
-            app:layout_constraintTop_toTopOf="@+id/tv_diary_count_str" />
-
-        <skin.support.widget.SkinCompatTextView
-            android:id="@+id/tv_word_count"
-            style="@style/UsageStatisticsTextStyle"
-            app:layout_constraintEnd_toEndOf="@+id/tv_word_count_str"
-            app:layout_constraintStart_toStartOf="@+id/tv_word_count_str"
-            app:layout_constraintTop_toBottomOf="@+id/tv_word_count_str"
-            app:layout_constraintTop_toTopOf="@+id/tv_diary_count" />
-
-        <skin.support.widget.SkinCompatTextView
-            android:id="@+id/tv_image_count_str"
-            style="@style/UsageStatisticsStrTextStyle"
-            android:text="@string/image_count"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toEndOf="@+id/tv_word_count_str"
-            app:layout_constraintTop_toTopOf="@+id/tv_diary_count_str" />
-
-        <skin.support.widget.SkinCompatTextView
-            android:id="@+id/tv_image_count"
-            style="@style/UsageStatisticsTextStyle"
-            app:layout_constraintEnd_toEndOf="@+id/tv_image_count_str"
-            app:layout_constraintStart_toStartOf="@+id/tv_image_count_str"
-            app:layout_constraintTop_toBottomOf="@+id/tv_image_count_str"
-            app:layout_constraintTop_toTopOf="@+id/tv_diary_count" />
-
-        <com.lizl.mydiary.custom.skin.SkinRecyclerView
-            android:id="@+id/rv_mood_statistics"
+        <skin.support.constraint.SkinCompatConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:overScrollMode="never"
-            android:paddingStart="@dimen/global_content_padding_edge"
-            android:paddingEnd="@dimen/global_content_padding_edge"
-            app:layout_constraintTop_toBottomOf="@+id/tv_diary_count" />
+            android:layout_height="match_parent">
 
-        <com.lizl.mydiary.custom.skin.SkinRecyclerView
-            android:id="@+id/rv_tag_statistics"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:overScrollMode="never"
-            android:paddingStart="@dimen/global_content_padding_edge"
-            android:paddingEnd="@dimen/global_content_padding_edge"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/rv_mood_statistics" />
+            <skin.support.widget.SkinCompatTextView
+                android:id="@+id/tv_diary_count_str"
+                style="@style/UsageStatisticsStrTextStyle"
+                android:layout_marginTop="40dp"
+                android:text="@string/diary_count"
+                app:layout_constraintEnd_toStartOf="@+id/tv_word_count_str"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.lizl.mydiary.custom.skin.SkinRecyclerView
-            android:id="@+id/rv_time_statistics"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:overScrollMode="never"
-            android:paddingStart="@dimen/global_content_padding_edge"
-            android:paddingEnd="@dimen/global_content_padding_edge"
-            app:layout_constraintTop_toBottomOf="@+id/rv_tag_statistics" />
-    </skin.support.constraint.SkinCompatConstraintLayout>
+            <skin.support.widget.SkinCompatTextView
+                android:id="@+id/tv_diary_count"
+                style="@style/UsageStatisticsTextStyle"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/tv_diary_count_str"
+                app:layout_constraintStart_toStartOf="@+id/tv_diary_count_str"
+                app:layout_constraintTop_toBottomOf="@+id/tv_diary_count_str" />
 
-</androidx.core.widget.NestedScrollView>
+            <skin.support.widget.SkinCompatTextView
+                android:id="@+id/tv_word_count_str"
+                style="@style/UsageStatisticsStrTextStyle"
+                android:text="@string/word_count"
+                app:layout_constraintEnd_toStartOf="@+id/tv_image_count_str"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toEndOf="@+id/tv_diary_count_str"
+                app:layout_constraintTop_toTopOf="@+id/tv_diary_count_str" />
+
+            <skin.support.widget.SkinCompatTextView
+                android:id="@+id/tv_word_count"
+                style="@style/UsageStatisticsTextStyle"
+                app:layout_constraintEnd_toEndOf="@+id/tv_word_count_str"
+                app:layout_constraintStart_toStartOf="@+id/tv_word_count_str"
+                app:layout_constraintTop_toBottomOf="@+id/tv_word_count_str"
+                app:layout_constraintTop_toTopOf="@+id/tv_diary_count" />
+
+            <skin.support.widget.SkinCompatTextView
+                android:id="@+id/tv_image_count_str"
+                style="@style/UsageStatisticsStrTextStyle"
+                android:text="@string/image_count"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toEndOf="@+id/tv_word_count_str"
+                app:layout_constraintTop_toTopOf="@+id/tv_diary_count_str" />
+
+            <skin.support.widget.SkinCompatTextView
+                android:id="@+id/tv_image_count"
+                style="@style/UsageStatisticsTextStyle"
+                app:layout_constraintEnd_toEndOf="@+id/tv_image_count_str"
+                app:layout_constraintStart_toStartOf="@+id/tv_image_count_str"
+                app:layout_constraintTop_toBottomOf="@+id/tv_image_count_str"
+                app:layout_constraintTop_toTopOf="@+id/tv_diary_count" />
+
+            <com.lizl.mydiary.custom.skin.SkinRecyclerView
+                android:id="@+id/rv_mood_statistics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:overScrollMode="never"
+                android:paddingStart="@dimen/global_content_padding_edge"
+                android:paddingEnd="@dimen/global_content_padding_edge"
+                app:layout_constraintTop_toBottomOf="@+id/tv_diary_count" />
+
+            <com.lizl.mydiary.custom.skin.SkinRecyclerView
+                android:id="@+id/rv_tag_statistics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:overScrollMode="never"
+                android:paddingStart="@dimen/global_content_padding_edge"
+                android:paddingEnd="@dimen/global_content_padding_edge"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/rv_mood_statistics" />
+
+            <com.lizl.mydiary.custom.skin.SkinRecyclerView
+                android:id="@+id/rv_time_statistics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:overScrollMode="never"
+                android:paddingStart="@dimen/global_content_padding_edge"
+                android:paddingEnd="@dimen/global_content_padding_edge"
+                app:layout_constraintTop_toBottomOf="@+id/rv_tag_statistics" />
+        </skin.support.constraint.SkinCompatConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</skin.support.constraint.SkinCompatConstraintLayout>

@@ -14,6 +14,8 @@ object DiaryUtil
             AppConstant.MOOD_NORMAL to R.drawable.ic_mood_normal, AppConstant.MOOD_UNHAPPY to R.drawable.ic_mood_unhappy)
 
     private const val DIARY_TAG_LIST = "DIARY_TAG_LIST"
+    private const val DIARY_TEXT_SIZE_LEVEL = "DIARY_TEXT_SIZE_LEVEL"
+    private const val DIARY_TEXT_LINE_SPACE_LEVEL = "DIARY_TEXT_LINE_SPACE_LEVEL"
 
     /**
      * 统计字数
@@ -70,4 +72,39 @@ object DiaryUtil
         SPUtils.getInstance().put(DIARY_TAG_LIST, diaryTagSet)
     }
 
+    fun setDiaryFontSizeLevel(level: Int) = SPUtils.getInstance().put(DIARY_TEXT_SIZE_LEVEL, level)
+
+    fun getDiaryFontSizeLevel() = SPUtils.getInstance().getInt(DIARY_TEXT_SIZE_LEVEL, 1)
+
+    fun getDiaryFontSize(): Float
+    {
+        return when (getDiaryFontSizeLevel())
+        {
+            0    -> UiApplication.instance.resources.getDimension(R.dimen.diary_font_size_level_0)
+            1    -> UiApplication.instance.resources.getDimension(R.dimen.diary_font_size_level_1)
+            2    -> UiApplication.instance.resources.getDimension(R.dimen.diary_font_size_level_2)
+            3    -> UiApplication.instance.resources.getDimension(R.dimen.diary_font_size_level_3)
+            4    -> UiApplication.instance.resources.getDimension(R.dimen.diary_font_size_level_4)
+            5    -> UiApplication.instance.resources.getDimension(R.dimen.diary_font_size_level_5)
+            else -> UiApplication.instance.resources.getDimension(R.dimen.global_text_size)
+        }
+    }
+
+    fun setDiaryFontLineSpaceLevel(level: Int) = SPUtils.getInstance().put(DIARY_TEXT_LINE_SPACE_LEVEL, level)
+
+    fun getDiaryFontLineSpaceLevel() = SPUtils.getInstance().getInt(DIARY_TEXT_LINE_SPACE_LEVEL, 3)
+
+    fun getDiaryLineSpace(): Float
+    {
+        return when (getDiaryFontLineSpaceLevel())
+        {
+            0    -> 1F
+            1    -> 1.1F
+            2    -> 1.2F
+            3    -> 1.3F
+            4    -> 1.4F
+            5    -> 1.5F
+            else -> 1F
+        }
+    }
 }

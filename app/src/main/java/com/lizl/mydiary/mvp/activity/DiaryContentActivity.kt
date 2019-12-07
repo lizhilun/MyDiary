@@ -2,6 +2,8 @@ package com.lizl.mydiary.mvp.activity
 
 import android.Manifest
 import android.content.Intent
+import android.content.res.TypedArray
+import android.util.TypedValue
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.blankj.utilcode.util.BarUtils
@@ -88,6 +90,9 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
             diaryTag = getString(R.string.diary)
         }
         tv_diary_tag.text = "#$diaryTag#"
+
+        et_diary_content.setTextSize(TypedValue.COMPLEX_UNIT_PX, DiaryUtil.getDiaryFontSize())
+        et_diary_content.setLineSpacing(0F, DiaryUtil.getDiaryLineSpace())
 
         showDiaryMood(diaryBean?.mood ?: AppConstant.MOOD_NORMAL)
 

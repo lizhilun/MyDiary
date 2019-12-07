@@ -48,4 +48,13 @@
     <dimen name="mood_statistics_progress_bar_height">20dp</dimen>
     <dimen name="dialog_mood_select_width">300dp</dimen>
 
+    <dimen name="font_size_seek_bar_side_notice_width">30dp</dimen>
+    <dimen name="font_size_seek_bar_height">40dp</dimen>
+    <dimen name="diary_font_size_level_0">14sp</dimen>
+    <dimen name="diary_font_size_level_1">16sp</dimen>
+    <dimen name="diary_font_size_level_2">18sp</dimen>
+    <dimen name="diary_font_size_level_3">20sp</dimen>
+    <dimen name="diary_font_size_level_4">22sp</dimen>
+    <dimen name="diary_font_size_level_5">24sp</dimen>
+
 </resources>

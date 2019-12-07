@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<skin.support.constraint.SkinCompatConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.lizl.mydiary.custom.view.CustomTitleBar
+        android:id="@+id/ctb_title"
+        style="@style/ToolbarLayoutStyle"
+        app:backBtnVisible="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleText="@string/setting_font" />
+
+    <skin.support.widget.SkinCompatTextView
+        android:id="@+id/tv_sample_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/global_content_padding_edge"
+        android:layout_marginTop="@dimen/global_content_padding_edge"
+        android:layout_marginEnd="@dimen/global_content_padding_edge"
+        android:text="@string/font_setting_sample_title"
+        android:textColor="@color/colorTextColor"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/ctb_title" />
+
+    <skin.support.widget.SkinCompatTextView
+        android:id="@+id/tv_sample"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/font_setting_sample"
+        android:textColor="@color/colorTextColor"
+        app:layout_constraintEnd_toEndOf="@+id/tv_sample_title"
+        app:layout_constraintStart_toStartOf="@+id/tv_sample_title"
+        app:layout_constraintTop_toTopOf="@+id/tv_sample_title" />
+
+    <skin.support.widget.SkinCompatTextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:paddingStart="2dp"
+        android:text="A"
+        android:textColor="@color/colorTextColor"
+        android:textSize="@dimen/global_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/sb_font_size"
+        app:layout_constraintEnd_toEndOf="@+id/iv_line_space_small"
+        app:layout_constraintEnd_toStartOf="@+id/sb_font_size"
+        app:layout_constraintStart_toStartOf="@+id/iv_line_space_small"
+        app:layout_constraintTop_toTopOf="@+id/sb_font_size" />
+
+    <skin.support.widget.SkinCompatTextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:paddingEnd="2dp"
+        android:text="A"
+        android:textColor="@color/colorTextColor"
+        android:textSize="@dimen/global_text_size_biggest"
+        app:layout_constraintBottom_toBottomOf="@+id/sb_font_size"
+        app:layout_constraintEnd_toEndOf="@+id/iv_line_space_big"
+        app:layout_constraintStart_toStartOf="@+id/iv_line_space_big"
+        app:layout_constraintTop_toTopOf="@+id/sb_font_size" />
+
+    <com.warkiz.widget.IndicatorSeekBar
+        android:id="@+id/sb_font_size"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="@dimen/font_size_seek_bar_height"
+        app:isb_max="5"
+        app:isb_min="0"
+        app:isb_only_thumb_draggable="false"
+        app:isb_seek_smoothly="false"
+        app:isb_show_indicator="none"
+        app:isb_show_thumb_text="false"
+        app:isb_show_tick_marks_type="oval"
+        app:isb_show_tick_texts="false"
+        app:isb_thumb_color="@color/colorPrimary"
+        app:isb_thumb_size="16dp"
+        app:isb_tick_marks_color="@color/colorPrimary"
+        app:isb_tick_marks_size="8dp"
+        app:isb_ticks_count="6"
+        app:isb_track_background_color="@color/colorPrimary"
+        app:isb_track_background_size="2dp"
+        app:isb_track_progress_color="@color/colorPrimary"
+        app:isb_track_progress_size="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/sb_font_line_space"
+        app:layout_constraintEnd_toEndOf="@+id/sb_font_line_space"
+        app:layout_constraintStart_toStartOf="@+id/sb_font_line_space" />
+
+    <skin.support.widget.SkinCompatImageView
+        android:id="@+id/iv_line_space_small"
+        android:layout_width="@dimen/font_size_seek_bar_side_notice_width"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/global_content_padding_edge"
+        android:scaleType="fitStart"
+        android:src="@drawable/ic_line_space_small"
+        app:layout_constraintBottom_toBottomOf="@+id/sb_font_line_space"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sb_font_line_space" />
+
+    <skin.support.widget.SkinCompatImageView
+        android:id="@+id/iv_line_space_big"
+        android:layout_width="@dimen/font_size_seek_bar_side_notice_width"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/global_content_padding_edge"
+        android:scaleType="fitEnd"
+        android:src="@drawable/ic_line_space_big"
+        app:layout_constraintBottom_toBottomOf="@+id/sb_font_line_space"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sb_font_line_space" />
+
+    <com.warkiz.widget.IndicatorSeekBar
+        android:id="@+id/sb_font_line_space"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/font_size_seek_bar_height"
+        android:layout_marginBottom="@dimen/global_content_padding_edge"
+        app:isb_max="5"
+        app:isb_min="0"
+        app:isb_only_thumb_draggable="false"
+        app:isb_seek_smoothly="false"
+        app:isb_show_indicator="none"
+        app:isb_show_thumb_text="false"
+        app:isb_show_tick_marks_type="oval"
+        app:isb_show_tick_texts="false"
+        app:isb_thumb_color="@color/colorPrimary"
+        app:isb_thumb_size="18dp"
+        app:isb_tick_marks_color="@color/colorPrimary"
+        app:isb_tick_marks_size="6dp"
+        app:isb_ticks_count="6"
+        app:isb_track_background_color="@color/colorPrimary"
+        app:isb_track_background_size="2dp"
+        app:isb_track_progress_color="@color/colorPrimary"
+        app:isb_track_progress_size="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_line_space_big"
+        app:layout_constraintStart_toEndOf="@+id/iv_line_space_small" />
+</skin.support.constraint.SkinCompatConstraintLayout>

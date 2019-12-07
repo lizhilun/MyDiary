@@ -3,6 +3,7 @@ package com.lizl.mydiary.custom.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.widget.ScrollView
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +36,8 @@ class DiaryListView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
     {
         val diaryListView = LayoutInflater.from(context).inflate(R.layout.layout_diary_list, this, false)
         addView(diaryListView)
+
+        overScrollMode = OVER_SCROLL_NEVER
 
         diaryListAdapter = DiaryListAdapter()
         rv_diary_list.layoutManager = LinearLayoutManager(context)
