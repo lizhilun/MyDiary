@@ -2,7 +2,6 @@ package com.lizl.mydiary.mvp.activity
 
 import android.Manifest
 import android.content.Intent
-import android.content.res.TypedArray
 import android.util.TypedValue
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
@@ -72,7 +71,8 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
                     return@setOnBackBtnClickListener
                 }
 
-                val tag = tv_diary_tag.text.toString().replace("#", "")
+                val tagText = tv_diary_tag.text.toString()
+                val tag = tagText.substring(1, tagText.length - 1)
                 presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList(), dateBean.time, curDiaryMood, tag)
             }
             else

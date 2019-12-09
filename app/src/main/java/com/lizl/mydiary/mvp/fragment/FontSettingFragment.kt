@@ -24,6 +24,8 @@ class FontSettingFragment : BaseFragment<EmptyPresenter>()
         sb_font_size.setProgress(DiaryUtil.getDiaryFontSizeLevel().toFloat())
         sb_font_line_space.setProgress(DiaryUtil.getDiaryFontLineSpaceLevel().toFloat())
 
+        ctb_title.setOnBackBtnClickListener { activity?.onBackPressed() }
+
         sb_font_size.onSeekChangeListener = object : OnSeekChangeListener
         {
             override fun onSeeking(seekParams: SeekParams)
@@ -63,14 +65,14 @@ class FontSettingFragment : BaseFragment<EmptyPresenter>()
         }
     }
 
-    private fun updateFontSize(fontSize : Float)
+    private fun updateFontSize(fontSize: Float)
     {
         tv_sample.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize)
         tv_sample_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize)
     }
 
-    private fun updateFontLineSpace(fontLineSapce : Float)
+    private fun updateFontLineSpace(fontLineSpace: Float)
     {
-        tv_sample.setLineSpacing(0F, fontLineSapce)
+        tv_sample.setLineSpacing(0F, fontLineSpace)
     }
 }

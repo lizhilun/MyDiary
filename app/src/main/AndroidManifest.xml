@@ -30,7 +30,9 @@
 
         <activity android:name=".mvp.activity.ImageBrowserActivity" />
 
-        <activity android:name=".mvp.activity.LockActivity" />
+        <activity
+            android:name=".mvp.activity.LockActivity"
+            android:launchMode="singleTask" />
 
         <activity android:name=".mvp.activity.SettingActivity" />
 
