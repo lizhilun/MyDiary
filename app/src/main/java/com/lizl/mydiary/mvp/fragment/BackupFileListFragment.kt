@@ -66,7 +66,7 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
 
     override fun showRestoringDataView()
     {
-        DialogUtil.showLoadingDialog(context!!, getString(R.string.in_doing, getString(R.string.restore_data)))
+        DialogUtil.showLoadingDialog(activity as Context, getString(R.string.in_doing, getString(R.string.restore_data)))
     }
 
     override fun onRestoreDataFinish(result: Boolean, backupFile: File, failedReason: String)

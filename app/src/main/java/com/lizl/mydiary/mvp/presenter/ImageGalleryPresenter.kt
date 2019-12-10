@@ -25,9 +25,21 @@ class ImageGalleryPresenter(private var view: ImageGalleryContract.View?) : Imag
                 }
             }
 
-            imageList.sortByDescending { File(it).nameWithoutExtension.toLong() }
+            imageList.sortByDescending { File(it).getCreateTime() }
             GlobalScope.launch(Dispatchers.Main) { view?.showImageList(imageList) }
         }
+    }
+
+    private fun File.getCreateTime(): Long
+    {
+        try
+        {
+            return this.nameWithoutExtension.toLong()
+        }
+        catch (e: NumberFormatException)
+        {
+        }
+        return this.lastModified()
     }
 
     override fun handleUIEvent(uiEvent: UIEvent)

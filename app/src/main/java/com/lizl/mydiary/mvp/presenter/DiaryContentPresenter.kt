@@ -28,7 +28,7 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
 
     private val REQUEST_CODE_SELECT_IMAGE = 23
 
-    override fun saveDiary(diaryBean: DiaryBean?, content: String, imageList: List<String>, createTime: Long, diaryMood: Int, diaryTag : String)
+    override fun saveDiary(diaryBean: DiaryBean?, content: String, imageList: List<String>, createTime: Long, diaryMood: Int, diaryTag: String)
     {
         GlobalScope.launch {
 
@@ -42,9 +42,7 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
                 }
             }
 
-            GlobalScope.launch(Dispatchers.Main) {
-                view?.onDiarySaving()
-            }
+            GlobalScope.launch(Dispatchers.Main) { view?.onDiarySaving() }
 
             var saveDiaryBean = diaryBean
             if (saveDiaryBean == null)
@@ -77,9 +75,7 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
 
             AppDatabase.instance.getDiaryDao().insert(saveDiaryBean)
 
-            GlobalScope.launch(Dispatchers.Main) {
-                view?.onDiarySaveSuccess()
-            }
+            GlobalScope.launch(Dispatchers.Main) { view?.onDiarySaveSuccess() }
 
             EventBus.getDefault().post(UIEvent(EventConstant.UI_EVENT_DIARY_SAVE_SUCCESS, saveDiaryBean))
         }
@@ -122,9 +118,7 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
 
             selectImageList.forEach { imageList.add(FileUtil.getFilePathFromUri(it)!!) }
 
-            GlobalScope.launch(Dispatchers.Main) {
-                view?.onImageSelectedFinish(imageList)
-            }
+            GlobalScope.launch(Dispatchers.Main) { view?.onImageSelectedFinish(imageList) }
         }
     }
 

@@ -3,7 +3,6 @@ package com.lizl.mydiary.custom.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.ScrollView
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager

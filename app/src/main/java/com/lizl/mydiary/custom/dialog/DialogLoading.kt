@@ -8,10 +8,7 @@ import kotlinx.android.synthetic.main.dialog_loading.*
 class DialogLoading(context: Context, private val loadingText: String) : BaseDialog(context)
 {
 
-    override fun getDialogContentViewResId(): Int
-    {
-        return R.layout.dialog_loading
-    }
+    override fun getDialogContentViewResId() = R.layout.dialog_loading
 
     override fun initView()
     {

@@ -9,8 +9,8 @@ import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.dialog_password_confirm.*
 
-class DialogPassword(context: Context, private val passwordOperation: Int, private val password: String?, private val onInputFinishListener: (String) -> Unit) :
-        BaseDialog(context)
+class DialogPassword(context: Context, private val passwordOperation: Int, private val password: String? = null,
+                     private val onInputFinishListener: (String) -> Unit) : BaseDialog(context)
 {
 
     private var firstPassword: String? = null
@@ -24,11 +24,6 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
         const val PASSWORD_OPERATION_MODIFY = 3
         const val PASSWORD_OPERATION_INPUT = 4
     }
-
-    constructor(context: Context, onInputFinishListener: (String) -> Unit) : this(context, PASSWORD_OPERATION_NEW, null, onInputFinishListener)
-
-    constructor(context: Context, password: String, isCheckOnly: Boolean, onInputFinishListener: (String) -> Unit) : this(context,
-            if (isCheckOnly) PASSWORD_OPERATION_CHECK else PASSWORD_OPERATION_MODIFY, password, onInputFinishListener)
 
     override fun getDialogContentViewResId() = R.layout.dialog_password_confirm
 
@@ -54,16 +49,23 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
             PASSWORD_OPERATION_MODIFY -> turnToOperationState(OperationState.CheckOldState)
             PASSWORD_OPERATION_INPUT  -> turnToOperationState(OperationState.InputPasswordState)
         }
-        val viewCount = gpv_password.childCount
+
+        val editText = gpv_password.getEditText() ?: return
+        gpv_password.post { UiUtil.showInputKeyboard(editText) }
+    }
+
+    private fun GridPasswordView.getEditText(): EditText?
+    {
+        val viewCount = this.childCount
         for (i in 0 until viewCount)
         {
             val view = gpv_password.getChildAt(i)
             if (view is EditText)
             {
-                view.post { UiUtil.showInputKeyboard(view) }
-                break
+                return view
             }
         }
+        return null
     }
 
     private fun turnToOperationState(operationState: OperationState)
@@ -90,12 +92,9 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
     private fun turnToWrongOperationState()
     {
         clearInputPassword(true)
-        val wrongState = curOperationState.wrongState()
-        if (wrongState != null)
-        {
-            firstPassword = null
-            turnToOperationState(wrongState)
-        }
+        val wrongState = curOperationState.wrongState() ?: return
+        firstPassword = null
+        turnToOperationState(wrongState)
     }
 
     private fun onPasswordInputFinish(inputPassword: String)

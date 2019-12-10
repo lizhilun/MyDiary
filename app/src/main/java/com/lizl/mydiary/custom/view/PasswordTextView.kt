@@ -10,39 +10,36 @@ class PasswordTextView(context: Context, attrs: AttributeSet?, defStyleAttr: Int
 
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
-    private var inputText: String = ""
+    private var inputText = StringBuilder()
 
     fun add(word: String)
     {
-        inputText += word
+        inputText.append(word)
         update()
     }
 
     fun backspace()
     {
-        if (inputText.isEmpty())
-        {
-            return
-        }
-        inputText = inputText.substring(0, inputText.length - 1)
+        if (inputText.isEmpty()) return
+        inputText.deleteCharAt(inputText.length - 1)
         update()
     }
 
     fun clear()
     {
-        inputText = ""
+        inputText.clear()
         update()
     }
 
     private fun update()
     {
-        var showText = ""
+        val showText = StringBuilder()
         for (i in 1..inputText.length)
         {
-            showText += "@"
+            showText.append("@")
         }
-        text = showText
+        text = showText.toString()
     }
 
-    fun getInputText() = inputText
+    fun getInputText() = inputText.toString()
 }

@@ -16,9 +16,8 @@ abstract class BaseDialog(context: Context) : Dialog(context, R.style.GlobalDial
     {
         super.onCreate(savedInstanceState)
 
-        val layoutInflater = LayoutInflater.from(context)
-        val view = layoutInflater.inflate(getDialogContentViewResId(), null)
-        setContentView(view)
+        val contentView = LayoutInflater.from(context).inflate(getDialogContentViewResId(), null)
+        setContentView(contentView)
 
         initView()
     }
@@ -28,7 +27,7 @@ abstract class BaseDialog(context: Context) : Dialog(context, R.style.GlobalDial
         super.onStart()
 
         // 设置Dialog宽度
-        val params = window!!.attributes
+        val params = window?.attributes ?: return
         val dialogWidth = getDialogWidth()
         params.width = if (dialogWidth == 0) (UiUtil.getScreenWidth() * 0.8).toInt() else dialogWidth
         window!!.attributes = params

@@ -23,7 +23,7 @@ object DiaryUtil
     fun sumStringWord(str: String): Int
     {
         return if (str.isEmpty()) 0
-        else str.replace("\n", "").replace(" ", "").length
+        else str.replace("\n", "").replace(" ", "").replace("\u3000", "").length
     }
 
     /**

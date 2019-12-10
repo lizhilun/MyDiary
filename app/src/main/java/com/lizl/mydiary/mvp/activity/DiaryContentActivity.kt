@@ -60,26 +60,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
             ActivityUtil.turnToActivity(ImageBrowserActivity::class.java, diaryImageListAdapter.getImageList(), it, inEditMode)
         }
 
-        ctb_title.setOnBackBtnClickListener {
-            if (inEditMode)
-            {
-                if (isEmptyDiary())
-                {
-                    DialogUtil.showOperationConfirmDialog(this, getString(R.string.notify), getString(R.string.notify_empty_diary_cannot_save)) {
-                        super.onBackPressed()
-                    }
-                    return@setOnBackBtnClickListener
-                }
-
-                val tagText = tv_diary_tag.text.toString()
-                val tag = tagText.substring(1, tagText.length - 1)
-                presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList(), dateBean.time, curDiaryMood, tag)
-            }
-            else
-            {
-                super.onBackPressed()
-            }
-        }
+        ctb_title.setOnBackBtnClickListener { if (inEditMode) onFinishBtnClick() else super.onBackPressed() }
 
         dateBean = DateBean(if (diaryBean != null) diaryBean!!.createTime else System.currentTimeMillis())
         ctb_title.setTitleText("${dateBean.year}/${dateBean.month}/${dateBean.day} ${dateBean.getHourAndMinute()}")
@@ -96,44 +77,11 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
 
         showDiaryMood(diaryBean?.mood ?: AppConstant.MOOD_NORMAL)
 
-        ctb_title.setOnTitleClickListener {
-            if (!inEditMode) return@setOnTitleClickListener
-            DialogUtil.showDatePickerDialog(this, dateBean.year, dateBean.month - 1, dateBean.day) { _, year, month, dayOfMonth ->
-                run {
-                    DialogUtil.showTimePickerDialog(this, dateBean.hour, dateBean.minute) { _, hourOfDay, minute ->
-                        run {
-                            val simpleDateFormat = SimpleDateFormat("yyyy MM dd HH mm", Locale.getDefault())
-                            val date = simpleDateFormat.parse("$year ${month + 1} $dayOfMonth $hourOfDay $minute")
-                            dateBean = DateBean(TimeUtils.date2Millis(date))
-                            ctb_title.setTitleText("${dateBean.year}/${dateBean.month}/${dateBean.day} ${dateBean.getHourAndMinute()}")
-                        }
-                    }
-                }
-            }
-        }
+        ctb_title.setOnTitleClickListener { if (inEditMode) showDatePickerDialog() }
 
         fab_edit_diary.setOnClickListener { showEditView() }
 
-        KeyboardUtils.registerSoftInputChangedListener(this) {
-            if (it > 0)
-            {
-                if (maxContentTextHeight == 0)
-                {
-                    val navBarHeight = if (BarUtils.isNavBarVisible(this)) BarUtils.getNavBarHeight() else 0
-                    val statusBarHeight = BarUtils.getStatusBarHeight()
-                    val titleBarHeight = resources.getDimensionPixelOffset(R.dimen.global_toolbar_height)
-                    val padding = resources.getDimensionPixelOffset(R.dimen.global_content_padding_content)
-                    val tagTextHeight = if (tv_diary_tag.isVisible) tv_diary_tag.height else padding
-                    maxContentTextHeight = UiUtil.getScreenHeight() - it - statusBarHeight - navBarHeight - titleBarHeight - tagTextHeight - padding
-                }
-                et_diary_content.maxHeight = maxContentTextHeight
-            }
-            else
-            {
-                et_diary_content.maxHeight = Int.MAX_VALUE
-            }
-            et_diary_content.setScrollEnable(it > 0)
-        }
+        KeyboardUtils.registerSoftInputChangedListener(this, onSoftInputChangeListener)
 
         if (AppConfig.getLayoutStyleConfig().isParagraphHeadIndent())
         {
@@ -141,14 +89,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         }
 
         tv_diary_tag.isVisible = AppConfig.getLayoutStyleConfig().isDiaryTagEnable()
-        tv_diary_tag.setOnClickListener {
-            if (inEditMode)
-            {
-                DialogUtil.showDiaryTagListDialog(this) {
-                    tv_diary_tag.text = "#$it#"
-                }
-            }
-        }
+        tv_diary_tag.setOnClickListener { if (inEditMode) DialogUtil.showDiaryTagListDialog(this) { tv_diary_tag.text = "#$it#" } }
 
         showDiaryContent(diaryBean)
         if (inEditMode) showEditView() else showReadView()
@@ -172,6 +113,58 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         {
             diaryImageListAdapter.addImageList(diaryBean.imageList!!)
         }
+    }
+
+    private fun onFinishBtnClick()
+    {
+        if (isEmptyDiary())
+        {
+            DialogUtil.showOperationConfirmDialog(this, getString(R.string.notify), getString(R.string.notify_empty_diary_cannot_save)) {
+                super.onBackPressed()
+            }
+            return
+        }
+
+        val tagText = tv_diary_tag.text.toString()
+        val tag = tagText.substring(1, tagText.length - 1)
+        presenter.saveDiary(diaryBean, et_diary_content.text.toString(), diaryImageListAdapter.getImageList(), dateBean.time, curDiaryMood, tag)
+    }
+
+    private fun showDatePickerDialog()
+    {
+        DialogUtil.showDatePickerDialog(this, dateBean.year, dateBean.month - 1, dateBean.day) { _, year, month, dayOfMonth ->
+            run {
+                DialogUtil.showTimePickerDialog(this, dateBean.hour, dateBean.minute) { _, hourOfDay, minute ->
+                    run {
+                        val simpleDateFormat = SimpleDateFormat("yyyy MM dd HH mm", Locale.getDefault())
+                        val date = simpleDateFormat.parse("$year ${month + 1} $dayOfMonth $hourOfDay $minute")
+                        dateBean = DateBean(TimeUtils.date2Millis(date))
+                        ctb_title.setTitleText("${dateBean.year}/${dateBean.month}/${dateBean.day} ${dateBean.getHourAndMinute()}")
+                    }
+                }
+            }
+        }
+    }
+
+    private val onSoftInputChangeListener: (Int) -> Unit = {
+        if (it > 0)
+        {
+            if (maxContentTextHeight == 0)
+            {
+                val navBarHeight = if (BarUtils.isNavBarVisible(this)) BarUtils.getNavBarHeight() else 0
+                val statusBarHeight = BarUtils.getStatusBarHeight()
+                val titleBarHeight = resources.getDimensionPixelOffset(R.dimen.global_toolbar_height)
+                val padding = resources.getDimensionPixelOffset(R.dimen.global_content_padding_content)
+                val tagTextHeight = if (tv_diary_tag.isVisible) tv_diary_tag.height else padding
+                maxContentTextHeight = UiUtil.getScreenHeight() - it - statusBarHeight - navBarHeight - titleBarHeight - tagTextHeight - padding
+            }
+            et_diary_content.maxHeight = maxContentTextHeight
+        }
+        else
+        {
+            et_diary_content.maxHeight = Int.MAX_VALUE
+        }
+        et_diary_content.setScrollEnable(it > 0)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)

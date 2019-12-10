@@ -40,6 +40,8 @@ class DialogDiaryTagList(context: Context, private val onTagSelectFinishListener
         et_new_tag.filters = arrayOf(InputFilter.LengthFilter(4), UiUtil.getNoWrapOrSpaceFilter())
 
         tv_cancel.setOnClickListener { dismiss() }
+
+        setOnDismissListener { UiUtil.hideInputKeyboard() }
     }
 
     override fun getDialogWidth() = (UiUtil.getScreenWidth() * 0.9).toInt()

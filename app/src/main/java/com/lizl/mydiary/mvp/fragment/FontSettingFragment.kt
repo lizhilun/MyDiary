@@ -26,42 +26,14 @@ class FontSettingFragment : BaseFragment<EmptyPresenter>()
 
         ctb_title.setOnBackBtnClickListener { activity?.onBackPressed() }
 
-        sb_font_size.onSeekChangeListener = object : OnSeekChangeListener
-        {
-            override fun onSeeking(seekParams: SeekParams)
-            {
-                DiaryUtil.setDiaryFontSizeLevel(seekParams.progress)
-                updateFontSize(DiaryUtil.getDiaryFontSize())
-            }
-
-            override fun onStartTrackingTouch(seekBar: IndicatorSeekBar)
-            {
-
-            }
-
-            override fun onStopTrackingTouch(seekBar: IndicatorSeekBar)
-            {
-
-            }
+        sb_font_size.setOnSeekChangeListener {
+            DiaryUtil.setDiaryFontSizeLevel(it)
+            updateFontSize(DiaryUtil.getDiaryFontSize())
         }
 
-        sb_font_line_space.onSeekChangeListener = object : OnSeekChangeListener
-        {
-            override fun onSeeking(seekParams: SeekParams)
-            {
-                DiaryUtil.setDiaryFontLineSpaceLevel(seekParams.progress)
-                updateFontLineSpace(DiaryUtil.getDiaryLineSpace())
-            }
-
-            override fun onStartTrackingTouch(seekBar: IndicatorSeekBar)
-            {
-
-            }
-
-            override fun onStopTrackingTouch(seekBar: IndicatorSeekBar)
-            {
-
-            }
+        sb_font_line_space.setOnSeekChangeListener {
+            DiaryUtil.setDiaryFontLineSpaceLevel(it)
+            updateFontLineSpace(DiaryUtil.getDiaryLineSpace())
         }
     }
 
@@ -74,5 +46,26 @@ class FontSettingFragment : BaseFragment<EmptyPresenter>()
     private fun updateFontLineSpace(fontLineSpace: Float)
     {
         tv_sample.setLineSpacing(0F, fontLineSpace)
+    }
+
+    private fun IndicatorSeekBar.setOnSeekChangeListener(onSeekChangeListener: (progress: Int) -> Unit)
+    {
+        this.onSeekChangeListener = object : OnSeekChangeListener
+        {
+            override fun onSeeking(seekParams: SeekParams)
+            {
+                onSeekChangeListener.invoke(seekParams.progress)
+            }
+
+            override fun onStartTrackingTouch(seekBar: IndicatorSeekBar)
+            {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: IndicatorSeekBar)
+            {
+
+            }
+        }
     }
 }

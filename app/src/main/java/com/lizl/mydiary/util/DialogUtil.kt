@@ -38,28 +38,28 @@ object DialogUtil
     fun showPasswordConfirmDialog(context: Context, password: String, onInputFinishListener: (String) -> Unit)
     {
         dialog?.dismiss()
-        dialog = DialogPassword(context, password, true, onInputFinishListener)
+        dialog = DialogPassword(context, DialogPassword.PASSWORD_OPERATION_CHECK, password, onInputFinishListener)
         dialog?.show()
     }
 
     fun showSetPasswordDialog(context: Context, onInputFinishListener: (String) -> Unit)
     {
         dialog?.dismiss()
-        dialog = DialogPassword(context, onInputFinishListener)
-        dialog?.show()
-    }
-
-    fun showInputPasswordDialog(context: Context, onInputFinishListener: (String) -> Unit)
-    {
-        dialog?.dismiss()
-        dialog = DialogPassword(context, DialogPassword.PASSWORD_OPERATION_INPUT, "", onInputFinishListener)
+        dialog = DialogPassword(context, DialogPassword.PASSWORD_OPERATION_NEW, onInputFinishListener = onInputFinishListener)
         dialog?.show()
     }
 
     fun showModifyPasswordDialog(context: Context, oldPassword: String, onInputFinishListener: (String) -> Unit)
     {
         dialog?.dismiss()
-        dialog = DialogPassword(context, oldPassword, false, onInputFinishListener)
+        dialog = DialogPassword(context, DialogPassword.PASSWORD_OPERATION_MODIFY, oldPassword, onInputFinishListener)
+        dialog?.show()
+    }
+
+    fun showInputPasswordDialog(context: Context, onInputFinishListener: (String) -> Unit)
+    {
+        dialog?.dismiss()
+        dialog = DialogPassword(context, DialogPassword.PASSWORD_OPERATION_INPUT, onInputFinishListener = onInputFinishListener)
         dialog?.show()
     }
 
