@@ -3,10 +3,8 @@ package com.lizl.mydiary.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.daimajia.numberprogressbar.NumberProgressBar
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.CountStatisticsBean
 import com.lizl.mydiary.util.DiaryUtil
@@ -20,7 +18,6 @@ class CountStatisticsListAdapter : RecyclerView.Adapter<CountStatisticsListAdapt
     private var maxCount = 0
 
     private var onItemClickListener: ((CountStatisticsBean.BaseCountStatisticsBean) -> Unit)? = null
-    private var onItemLongClickListener: ((CountStatisticsBean.BaseCountStatisticsBean) -> Unit)? = null
 
     fun setData(countStatisticsList: List<CountStatisticsBean.BaseCountStatisticsBean>)
     {
@@ -69,33 +66,17 @@ class CountStatisticsListAdapter : RecyclerView.Adapter<CountStatisticsListAdapt
                 }
             }
 
-            val barHeight = itemView.context.resources.getDimension(R.dimen.mood_statistics_progress_bar_height)
             itemView.npb_statistics.max = maxCount
             itemView.npb_statistics.progress = statisticsBean.count
-            itemView.npb_statistics.reachedBarColor = ContextCompat.getColor(itemView.context, R.color.colorPrimary)
-            itemView.npb_statistics.reachedBarHeight = barHeight
-            itemView.npb_statistics.unreachedBarHeight = barHeight
-            itemView.npb_statistics.unreachedBarColor = ContextCompat.getColor(itemView.context, R.color.transparent)
-            itemView.npb_statistics.setProgressTextVisibility(NumberProgressBar.ProgressTextVisibility.Invisible)
 
             itemView.tv_count.text = statisticsBean.count.toString()
 
             itemView.setOnClickListener { onItemClickListener?.invoke(statisticsBean) }
-
-            itemView.setOnLongClickListener {
-                onItemLongClickListener?.invoke(statisticsBean)
-                true
-            }
         }
     }
 
     fun setOnItemClickListener(onItemClickListener: (CountStatisticsBean.BaseCountStatisticsBean) -> Unit)
     {
         this.onItemClickListener = onItemClickListener
-    }
-
-    fun setOnItemLongClickListener(onItemLongClickListener: (CountStatisticsBean.BaseCountStatisticsBean) -> Unit)
-    {
-        this.onItemLongClickListener = onItemLongClickListener
     }
 }

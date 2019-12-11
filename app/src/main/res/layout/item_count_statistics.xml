@@ -2,7 +2,7 @@
 <skin.support.constraint.SkinCompatConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/mood_statistics_item_height"
+    android:layout_height="@dimen/count_statistics_item_height"
     android:orientation="vertical">
 
     <skin.support.widget.SkinCompatImageView
@@ -36,12 +36,17 @@
     <com.daimajia.numberprogressbar.NumberProgressBar
         android:id="@+id/npb_statistics"
         android:layout_width="0dp"
-        android:layout_height="@dimen/mood_statistics_progress_bar_height"
+        android:layout_height="@dimen/count_statistics_progress_bar_height"
         android:layout_marginEnd="@dimen/global_content_padding_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_count"
         app:layout_constraintStart_toEndOf="@+id/guide_left"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:progress_reached_bar_height="@dimen/count_statistics_progress_bar_height"
+        app:progress_reached_color="@color/colorPrimary"
+        app:progress_text_visibility="invisible"
+        app:progress_unreached_bar_height="@dimen/count_statistics_progress_bar_height"
+        app:progress_unreached_color="@color/transparent" />
 
     <skin.support.widget.SkinCompatTextView
         android:id="@+id/tv_count"

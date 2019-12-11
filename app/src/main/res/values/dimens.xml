@@ -44,8 +44,8 @@
     <dimen name="number_key_height">70dp</dimen>
 
     <dimen name="statistics_type_item_width">64dp</dimen>
-    <dimen name="mood_statistics_item_height">56dp</dimen>
-    <dimen name="mood_statistics_progress_bar_height">20dp</dimen>
+    <dimen name="count_statistics_item_height">56dp</dimen>
+    <dimen name="count_statistics_progress_bar_height">20dp</dimen>
     <dimen name="dialog_mood_select_width">300dp</dimen>
 
     <dimen name="font_size_seek_bar_side_notice_width">30dp</dimen>
