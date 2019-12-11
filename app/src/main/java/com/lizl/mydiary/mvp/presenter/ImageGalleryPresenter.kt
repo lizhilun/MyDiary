@@ -32,14 +32,14 @@ class ImageGalleryPresenter(private var view: ImageGalleryContract.View?) : Imag
 
     private fun File.getCreateTime(): Long
     {
-        try
+        return try
         {
-            return this.nameWithoutExtension.toLong()
+            this.nameWithoutExtension.toLong()
         }
         catch (e: NumberFormatException)
         {
+            this.lastModified()
         }
-        return this.lastModified()
     }
 
     override fun handleUIEvent(uiEvent: UIEvent)

@@ -6,7 +6,6 @@ import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
 import com.blankj.utilcode.util.Utils
-import com.lizl.mydiary.config.AppConfig
 import com.lizl.mydiary.mvp.activity.DiaryContentActivity
 import com.lizl.mydiary.util.SkinUtil
 import kotlin.properties.Delegates
