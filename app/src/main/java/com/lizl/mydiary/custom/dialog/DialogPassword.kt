@@ -7,6 +7,7 @@ import com.jungly.gridpasswordview.GridPasswordView
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.util.UiUtil
+import com.lizl.mydiary.custom.function.setOnPasswordChangedListener
 import kotlinx.android.synthetic.main.dialog_password_confirm.*
 
 class DialogPassword(context: Context, private val passwordOperation: Int, private val password: String? = null,
@@ -29,18 +30,7 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
 
     override fun initView()
     {
-        gpv_password.setOnPasswordChangedListener(object : GridPasswordView.OnPasswordChangedListener
-        {
-            override fun onInputFinish(psw: String)
-            {
-                onPasswordInputFinish(psw)
-            }
-
-            override fun onTextChanged(psw: String)
-            {
-
-            }
-        })
+        gpv_password.setOnPasswordChangedListener { onPasswordInputFinish(it) }
 
         when (passwordOperation)
         {

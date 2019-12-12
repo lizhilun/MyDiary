@@ -5,9 +5,7 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.presenter.EmptyPresenter
 import com.lizl.mydiary.util.DiaryUtil
-import com.warkiz.widget.IndicatorSeekBar
-import com.warkiz.widget.OnSeekChangeListener
-import com.warkiz.widget.SeekParams
+import com.lizl.mydiary.custom.function.setOnSeekChangeListener
 import kotlinx.android.synthetic.main.fragment_setting_font.*
 
 class FontSettingFragment : BaseFragment<EmptyPresenter>()
@@ -46,26 +44,5 @@ class FontSettingFragment : BaseFragment<EmptyPresenter>()
     private fun updateFontLineSpace(fontLineSpace: Float)
     {
         tv_sample.setLineSpacing(0F, fontLineSpace)
-    }
-
-    private fun IndicatorSeekBar.setOnSeekChangeListener(onSeekChangeListener: (progress: Int) -> Unit)
-    {
-        this.onSeekChangeListener = object : OnSeekChangeListener
-        {
-            override fun onSeeking(seekParams: SeekParams)
-            {
-                onSeekChangeListener.invoke(seekParams.progress)
-            }
-
-            override fun onStartTrackingTouch(seekBar: IndicatorSeekBar)
-            {
-
-            }
-
-            override fun onStopTrackingTouch(seekBar: IndicatorSeekBar)
-            {
-
-            }
-        }
     }
 }

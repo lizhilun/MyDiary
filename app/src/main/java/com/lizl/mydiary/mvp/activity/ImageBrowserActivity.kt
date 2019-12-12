@@ -1,9 +1,9 @@
 package com.lizl.mydiary.mvp.activity
 
 import androidx.core.view.isVisible
-import androidx.viewpager.widget.ViewPager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.ImageViewPagerAdapter
+import com.lizl.mydiary.custom.function.addOnPageChangeListener
 import com.lizl.mydiary.event.EventConstant
 import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.base.BaseActivity
@@ -35,21 +35,7 @@ class ImageBrowserActivity : BaseActivity<EmptyPresenter>()
 
         showImagePositionMark(imagePosition + 1)
 
-        vp_image_list.addOnPageChangeListener(object : ViewPager.OnPageChangeListener
-        {
-            override fun onPageScrollStateChanged(p0: Int)
-            {
-            }
-
-            override fun onPageScrolled(p0: Int, p1: Float, p2: Int)
-            {
-            }
-
-            override fun onPageSelected(position: Int)
-            {
-                showImagePositionMark(position + 1)
-            }
-        })
+        vp_image_list.addOnPageChangeListener { showImagePositionMark(it + 1) }
 
         tv_cur_image.bringToFront()
         iv_back.bringToFront()
@@ -72,7 +58,7 @@ class ImageBrowserActivity : BaseActivity<EmptyPresenter>()
         }
     }
 
-    fun showImagePositionMark(imagePosition: Int)
+    private fun showImagePositionMark(imagePosition: Int)
     {
         tv_cur_image.text = "$imagePosition/${imageList.size}"
         tv_cur_image.isVisible = imageList.size > 1
