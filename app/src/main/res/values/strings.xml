@@ -60,6 +60,10 @@
     <string name="setting_night_mode">夜间模式</string>
     <string name="setting_usage_statistics">使用统计</string>
 
+    <string name="on">开</string>
+    <string name="off">关</string>
+    <string name="follow_system">跟随系统</string>
+
     <string name="low">低</string>
     <string name="medium">中等</string>
     <string name="original">原图</string>

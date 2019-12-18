@@ -2,11 +2,13 @@ package com.lizl.mydiary.util
 
 import android.app.Activity
 import android.app.Application
+import android.content.res.Configuration
 import androidx.core.content.ContextCompat
 import com.blankj.utilcode.util.BarUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.config.AppConfig
+import com.lizl.mydiary.config.ConfigConstant
 import skin.support.SkinCompatManager
 import skin.support.app.SkinCardViewInflater
 import skin.support.constraint.app.SkinConstraintViewInflater
@@ -28,7 +30,7 @@ object SkinUtil
 
     fun loadSkin(activity: Activity)
     {
-        if (AppConfig.getGeneralConfig().isNightModeOn())
+        if (isNightModeOn())
         {
             loadNightSkin(activity)
         }
@@ -52,7 +54,7 @@ object SkinUtil
 
     fun getGlobalTextColor(): Int
     {
-        return if (AppConfig.getGeneralConfig().isNightModeOn())
+        return if (isNightModeOn())
         {
             ContextCompat.getColor(UiApplication.instance, R.color.colorTextColor_night)
         }
@@ -61,4 +63,21 @@ object SkinUtil
             ContextCompat.getColor(UiApplication.instance, R.color.colorTextColor)
         }
     }
+
+    private fun isNightModeOn(): Boolean
+    {
+        return when (AppConfig.getGeneralConfig().getAppNightMode())
+        {
+            ConfigConstant.APP_NIGHT_MODE_ON            -> true
+            ConfigConstant.APP_NIGHT_MODE_OFF           -> false
+            ConfigConstant.APP_NIGHT_MODE_FOLLOW_SYSTEM -> isSystemDarkMode()
+            else                                        -> false
+        }
+    }
+
+    private fun isSystemDarkMode(): Boolean
+    {
+        return UiApplication.instance.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+    }
+
 }

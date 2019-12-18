@@ -14,5 +14,5 @@ class GeneralConfig
         val instance = Singleton.singleton
     }
 
-    fun isNightModeOn() = SPUtils.getInstance().getBoolean(ConfigConstant.IS_NIGHT_MODE_ON, ConfigConstant.DEFAULT_NIGHT_MODE_ON)
+    fun getAppNightMode() = SPUtils.getInstance().getInt(ConfigConstant.APP_NIGHT_MODE, ConfigConstant.DEFAULT_APP_NIGHT_MODE)
 }

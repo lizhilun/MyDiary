@@ -27,8 +27,11 @@ object ConfigConstant
     const val DEFAULT_APP_TIMEOUT_PERIOD = APP_TIMEOUT_PERIOD_5_MINUTE
 
     // 夜间模式
-    const val IS_NIGHT_MODE_ON = "IS_NIGHT_MODE_ON"
-    const val DEFAULT_NIGHT_MODE_ON = false
+    const val APP_NIGHT_MODE = "APP_NIGHT_MODE"
+    const val APP_NIGHT_MODE_ON = 1
+    const val APP_NIGHT_MODE_OFF = 2
+    const val APP_NIGHT_MODE_FOLLOW_SYSTEM = 3
+    const val DEFAULT_APP_NIGHT_MODE = APP_NIGHT_MODE_FOLLOW_SYSTEM
 
     // 自动备份
     const val IS_AUTO_BACKUP_ON = "IS_AUTO_BACKUP_ON"
