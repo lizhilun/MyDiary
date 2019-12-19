@@ -64,4 +64,5 @@ dependencies {
     implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
+    implementation group: 'net.lingala.zip4j', name: 'zip4j', version: '2.2.7'
 }

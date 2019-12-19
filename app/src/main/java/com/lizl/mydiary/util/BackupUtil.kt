@@ -1,7 +1,10 @@
 package com.lizl.mydiary.util
 
 import android.provider.MediaStore
-import com.blankj.utilcode.util.*
+import com.blankj.utilcode.util.FileUtils
+import com.blankj.utilcode.util.GsonUtils
+import com.blankj.utilcode.util.PathUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.bean.DiaryBean
@@ -20,7 +23,6 @@ object BackupUtil
     private val backupTempFilePath = "$backupFilePath/temp"
     private val backupTempImageFilePath = "$backupFilePath/temp/picture"
     private val backupTempDiaryFilePath = "$backupFilePath/temp/diary.txt"
-    private val encryptBackupTempDiaryFilePath = "$backupFilePath/temp/diary.en"
     private const val backupFileSuffix = ".iui"
     private const val autoBackupFileName = "autoBackup"
 
@@ -66,26 +68,12 @@ object BackupUtil
         try
         {
             val diaryList = AppDatabase.instance.getDiaryDao().getAllDiary()
-            val needEncryption = AppConfig.getBackupConfig().isBackupFileEncryption() && AppConfig.getSecurityConfig().getAppLockPassword().isNotEmpty()
-            var diaryListText = GsonUtils.toJson(diaryList)
-            if (needEncryption)
+            val diaryListText = GsonUtils.toJson(diaryList)
+            if (!FileUtil.writeTxtFile(diaryListText, backupTempDiaryFilePath))
             {
-                diaryListText = EncryptUtil.encrypt(diaryListText, AppConfig.getSecurityConfig().getAppLockPassword())
-                if (!FileUtil.writeTxtFile(diaryListText, encryptBackupTempDiaryFilePath))
-                {
-                    FileUtils.deleteDir(backupTempFilePath)
-                    callback.invoke(false)
-                    return
-                }
-            }
-            else
-            {
-                if (!FileUtil.writeTxtFile(diaryListText, backupTempDiaryFilePath))
-                {
-                    FileUtils.deleteDir(backupTempFilePath)
-                    callback.invoke(false)
-                    return
-                }
+                FileUtils.deleteDir(backupTempFilePath)
+                callback.invoke(false)
+                return
             }
 
             if (!FileUtil.copyDir(FileUtil.getImageFileSavePath(), backupTempImageFilePath))
@@ -94,9 +82,11 @@ object BackupUtil
                 callback.invoke(false)
                 return
             }
+
             val zipFilePath = "$backupFilePath/$backupFileName$backupFileSuffix"
             FileUtil.deleteFile(zipFilePath)
-            val zipResult = ZipUtils.zipFile(backupTempFilePath, zipFilePath)
+            val zipResult = ZipUtil.zipFile(backupTempFilePath, zipFilePath,
+                    if (AppConfig.getBackupConfig().isBackupFileEncryption()) AppConfig.getSecurityConfig().getAppLockPassword() else "")
 
             FileUtils.deleteDir(backupTempFilePath)
 
@@ -124,35 +114,29 @@ object BackupUtil
 
             try
             {
-                ZipUtils.unzipFile(restoreFilePath, backupFilePath)
+                val unzipResult = ZipUtil.unZipFile(restoreFilePath, backupFilePath, password)
 
-                val unEncryptDiaryFile = File(backupTempDiaryFilePath)
-                val encryptDiaryFile = File(encryptBackupTempDiaryFilePath)
+                if (unzipResult != ZipUtil.UNZIP_SUCCESS)
+                {
+                    FileUtil.deleteFile(backupTempFilePath)
+                    when (unzipResult)
+                    {
+                        ZipUtil.UNZIP_FAILED_WRONG_PASSWORD -> callback.invoke(false, AppConstant.RESTORE_DATA_FAILED_WRONG_PASSWORD)
+                        else                                -> callback.invoke(false, AppConstant.RESTORE_DATA_FAILED_WRONG_BACKUP_FILE)
+                    }
+                    return@launch
+                }
 
-                if (!unEncryptDiaryFile.exists() && !encryptDiaryFile.exists())
+                val diaryFile = File(backupTempDiaryFilePath)
+
+                if (!diaryFile.exists())
                 {
                     FileUtil.deleteFile(backupTempFilePath)
                     callback.invoke(false, AppConstant.RESTORE_DATA_FAILED_WRONG_BACKUP_FILE)
                     return@launch
                 }
 
-                val diaryTxt: String
-                if (encryptDiaryFile.exists())
-                {
-                    val textReadResult = FileUtil.readTxtFile(encryptBackupTempDiaryFilePath)
-                    val decryptResult = EncryptUtil.decrypt(textReadResult, password)
-                    if (decryptResult == null)
-                    {
-                        FileUtil.deleteFile(backupTempFilePath)
-                        callback.invoke(false, AppConstant.RESTORE_DATA_FAILED_WRONG_PASSWORD)
-                        return@launch
-                    }
-                    diaryTxt = decryptResult
-                }
-                else
-                {
-                    diaryTxt = FileUtil.readTxtFile(backupTempDiaryFilePath)
-                }
+                val diaryTxt = FileUtil.readTxtFile(backupTempDiaryFilePath)
 
                 FileUtil.copyDir(backupTempImageFilePath, FileUtil.getImageFileSavePath())
                 val diaryList = GsonUtils.fromJson<Array<DiaryBean>>(diaryTxt, Array<DiaryBean>::class.java)
