@@ -18,19 +18,29 @@ class SettingBean
         fun saveValue(value: Boolean) = SPUtils.getInstance().put(settingKey, value)
     }
 
-    class SettingIntRadioBean(val settingName: String, val settingKey: String, val defaultValue: Int, val radioMap: Map<Int, String>,
-                              val callback: (bean: SettingIntRadioBean) -> Unit) : SettingBaseBean()
+    abstract class SettingRadioBean<T, T2>(open val settingName: String, open val settingKey: String, open val defaultValue: T,
+                                           open val radioMap: Map<T, String>, open val callback: (bean: T2) -> Unit) : SettingBaseBean()
     {
-        fun getValue() = SPUtils.getInstance().getInt(settingKey, defaultValue)
+        abstract fun getValue(): T
 
-        fun saveValue(value: Int) = SPUtils.getInstance().put(settingKey, value)
+        abstract fun saveValue(value: T)
     }
 
-    class SettingLongRadioBean(val settingName: String, val settingKey: String, val defaultValue: Long, val radioMap: Map<Long, String>,
-                               val callback: (bean: SettingLongRadioBean) -> Unit) : SettingBaseBean()
+    class SettingIntRadioBean(override val settingName: String, override val settingKey: String, override val defaultValue: Int,
+                              override val radioMap: Map<Int, String>, override val callback: (bean: SettingIntRadioBean) -> Unit) :
+            SettingRadioBean<Int, SettingIntRadioBean>(settingName, settingKey, defaultValue, radioMap, callback)
     {
-        fun getValue() = SPUtils.getInstance().getLong(settingKey, defaultValue)
+        override fun getValue() : Int = SPUtils.getInstance().getInt(settingKey, defaultValue)
 
-        fun saveValue(value: Long) = SPUtils.getInstance().put(settingKey, value)
+        override fun saveValue(value: Int) = SPUtils.getInstance().put(settingKey, value)
+    }
+
+    class SettingLongRadioBean(override val settingName: String, override val settingKey: String, override val defaultValue: Long,
+                               override val radioMap: Map<Long, String>, override val callback: (bean: SettingLongRadioBean) -> Unit) :
+            SettingRadioBean<Long, SettingLongRadioBean>(settingName, settingKey, defaultValue, radioMap, callback)
+    {
+        override fun getValue() = SPUtils.getInstance().getLong(settingKey, defaultValue)
+
+        override fun saveValue(value: Long) = SPUtils.getInstance().put(settingKey, value)
     }
 }

@@ -23,15 +23,15 @@ class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListA
 
     override fun createCustomViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
     {
-        when (viewType)
+        return ViewHolder(inflateView(when (viewType)
         {
-            ITEM_TYPE_BOOLEAN    -> return ViewHolder(inflateView(R.layout.item_setting_boolean, parent))
-            ITEM_TYPE_DIVIDE     -> return ViewHolder(inflateView(R.layout.item_setting_divide, parent))
-            ITEM_TYPE_NORMAL     -> return ViewHolder(inflateView(R.layout.item_setting_normal, parent))
-            ITEM_TYPE_INT_RADIO  -> return ViewHolder(inflateView(R.layout.item_setting_value, parent))
-            ITEM_TYPE_LONG_RADIO -> return ViewHolder(inflateView(R.layout.item_setting_value, parent))
-        }
-        return ViewHolder(inflateView(R.layout.item_setting_divide, parent))
+            ITEM_TYPE_BOOLEAN    -> R.layout.item_setting_boolean
+            ITEM_TYPE_DIVIDE     -> R.layout.item_setting_divide
+            ITEM_TYPE_NORMAL     -> R.layout.item_setting_normal
+            ITEM_TYPE_INT_RADIO  -> R.layout.item_setting_value
+            ITEM_TYPE_LONG_RADIO -> R.layout.item_setting_value
+            else                 -> R.layout.item_setting_divide
+        }, parent))
     }
 
     override fun bindCustomViewHolder(holder: ViewHolder, bean: SettingBean.SettingBaseBean, position: Int)
@@ -40,8 +40,8 @@ class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListA
         {
             is SettingBean.SettingBooleanBean   -> holder.bindBooleanViewHolder(bean, position)
             is SettingBean.SettingNormalBean    -> holder.bindNormalViewHolder(bean)
-            is SettingBean.SettingIntRadioBean  -> holder.bindIntValueViewHolder(bean)
-            is SettingBean.SettingLongRadioBean -> holder.bindValueLongViewHolder(bean)
+            is SettingBean.SettingIntRadioBean  -> holder.bindRadioViewHolder(bean)
+            is SettingBean.SettingLongRadioBean -> holder.bindRadioViewHolder(bean)
         }
     }
 
@@ -54,7 +54,7 @@ class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListA
             is SettingBean.SettingNormalBean    -> ITEM_TYPE_NORMAL
             is SettingBean.SettingIntRadioBean  -> ITEM_TYPE_INT_RADIO
             is SettingBean.SettingLongRadioBean -> ITEM_TYPE_LONG_RADIO
-            else                                -> -1
+            else                                -> ITEM_TYPE_DIVIDE
         }
     }
 
@@ -83,37 +83,16 @@ class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListA
             itemView.setOnClickListener { settingItem.callback.invoke() }
         }
 
-        fun bindIntValueViewHolder(settingItem: SettingBean.SettingIntRadioBean)
+        fun bindRadioViewHolder(settingItem: SettingBean.SettingRadioBean<*, *>)
         {
             itemView.tv_value_setting_name.text = settingItem.settingName
 
-            val showValue = settingItem.radioMap.getValue(settingItem.getValue())
-
-            itemView.tv_value_setting_value.text = showValue
-
-            val radioList = mutableListOf<String>()
-            settingItem.radioMap.forEach { radioList.add(it.value) }
-
-            itemView.setOnClickListener {
-                DialogUtil.showRadioGroupDialog(context, settingItem.settingName, radioList, showValue) { result ->
-                    settingItem.radioMap.forEach {
-                        if (it.value == result)
-                        {
-                            settingItem.saveValue(it.key)
-                            update(settingItem)
-                            settingItem.callback.invoke(settingItem)
-                            return@forEach
-                        }
-                    }
-                }
+            val showValue = when (settingItem)
+            {
+                is SettingBean.SettingIntRadioBean  -> settingItem.radioMap.getValue(settingItem.getValue())
+                is SettingBean.SettingLongRadioBean -> settingItem.radioMap.getValue(settingItem.getValue())
+                else                                -> ""
             }
-        }
-
-        fun bindValueLongViewHolder(settingItem: SettingBean.SettingLongRadioBean)
-        {
-            itemView.tv_value_setting_name.text = settingItem.settingName
-
-            val showValue = settingItem.radioMap.getValue(settingItem.getValue())
 
             itemView.tv_value_setting_value.text = showValue
 
@@ -125,10 +104,18 @@ class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListA
                     settingItem.radioMap.forEach {
                         if (it.value == result)
                         {
-                            settingItem.saveValue(it.key)
                             update(settingItem)
-                            settingItem.callback.invoke(settingItem)
-                            return@forEach
+                            if (settingItem is SettingBean.SettingIntRadioBean)
+                            {
+                                settingItem.saveValue(it.key as Int)
+                                settingItem.callback.invoke(settingItem)
+                            }
+                            else if (settingItem is SettingBean.SettingLongRadioBean)
+                            {
+                                settingItem.saveValue(it.key as Long)
+                                settingItem.callback.invoke(settingItem)
+                            }
+                            return@showRadioGroupDialog
                         }
                     }
                 }

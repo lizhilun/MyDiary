@@ -1,6 +1,5 @@
 package com.lizl.mydiary.mvp.presenter
 
-import android.util.SparseArray
 import com.blankj.utilcode.util.ImageUtils
 import com.lizl.mydiary.bean.CountStatisticsBean
 import com.lizl.mydiary.bean.DateBean
@@ -18,13 +17,11 @@ import java.io.File
 
 class UsageStatisticsPresenter(private var view: UsageStatisticsContract.View?) : UsageStatisticsContract.Presenter
 {
-    private var diaryList = mutableListOf<DiaryBean>()
-
     override fun getUsageStatistics()
     {
         GlobalScope.launch {
 
-            diaryList = AppDatabase.instance.getDiaryDao().getAllDiary()
+            val diaryList = AppDatabase.instance.getDiaryDao().getAllDiary()
 
             GlobalScope.launch(Dispatchers.Main) { view?.showDiaryCount(diaryList.count()) }
 
@@ -35,78 +32,56 @@ class UsageStatisticsPresenter(private var view: UsageStatisticsContract.View?) 
             val imageCount = imageDir.listFiles()?.count { ImageUtils.isImage(it) } ?: 0
             GlobalScope.launch(Dispatchers.Main) { view?.showImageCount(imageCount) }
 
-            val moodStatisticsResult = getMoodStatistics()
+            val moodStatisticsResult = getMoodStatistics(diaryList)
             GlobalScope.launch(Dispatchers.Main) { view?.showMoodStatistics(moodStatisticsResult) }
 
-            val timeStatisticsResult = getTimeStatistics()
+            val timeStatisticsResult = getTimeStatistics(diaryList)
             GlobalScope.launch(Dispatchers.Main) { view?.showTimeStatistics(timeStatisticsResult) }
 
             if (AppConfig.getLayoutStyleConfig().isDiaryTagEnable())
             {
-                val tagStatisticsResult = getTagStatistics()
+                val tagStatisticsResult = getTagStatistics(diaryList)
                 GlobalScope.launch(Dispatchers.Main) { view?.showTagStatistics(tagStatisticsResult) }
             }
         }
     }
 
-    private fun getMoodStatistics(): List<CountStatisticsBean.MoodStatisticsBean>
+    private fun getMoodStatistics(diaryList: List<DiaryBean>): List<CountStatisticsBean.MoodStatisticsBean>
     {
-        val moodMap = SparseArray<CountStatisticsBean.MoodStatisticsBean>()
-        val moodStatisticsResult = mutableListOf<CountStatisticsBean.MoodStatisticsBean>()
-        diaryList.forEach {
-            var moodStatisticsBean = moodMap[it.mood]
-            if (moodStatisticsBean == null)
-            {
-                moodStatisticsBean = CountStatisticsBean.MoodStatisticsBean(it.mood, 0)
-                moodMap.put(it.mood, moodStatisticsBean)
-                moodStatisticsResult.add(moodStatisticsBean)
-            }
-            moodStatisticsBean.count += 1
-        }
-
-        moodStatisticsResult.sortByDescending { it.count }
-
-        return moodStatisticsResult
+        return getStatistics(diaryList, { it.mood.toString() }, { CountStatisticsBean.MoodStatisticsBean(it.mood, 0) })
     }
 
-    private fun getTimeStatistics(): List<CountStatisticsBean.TimeStatisticsBean>
+    private fun getTimeStatistics(diaryList: List<DiaryBean>): List<CountStatisticsBean.TimeStatisticsBean>
     {
-        val timeStatisticsList = mutableListOf<CountStatisticsBean.TimeStatisticsBean>()
-        val timeMap = SparseArray<CountStatisticsBean.TimeStatisticsBean>()
-        diaryList.forEach {
-            val dateBean = DateBean(it.createTime)
-            var timeStatisticsBean = timeMap[dateBean.hour]
-            if (timeStatisticsBean == null)
-            {
-                timeStatisticsBean = CountStatisticsBean.TimeStatisticsBean(dateBean.hour, 0)
-                timeMap.put(dateBean.hour, timeStatisticsBean)
-                timeStatisticsList.add(timeStatisticsBean)
-            }
-            timeStatisticsBean.count += 1
-        }
-        timeStatisticsList.sortByDescending { it.count }
-
-        return timeStatisticsList
+        return getStatistics(diaryList, { DateBean(it.createTime).hour.toString() },
+                { CountStatisticsBean.TimeStatisticsBean(DateBean(it.createTime).hour, 0) })
     }
 
-    private fun getTagStatistics(): List<CountStatisticsBean.TagStatisticsBean>
+    private fun getTagStatistics(diaryList: List<DiaryBean>): List<CountStatisticsBean.TagStatisticsBean>
     {
-        val tagStatisticsList = mutableListOf<CountStatisticsBean.TagStatisticsBean>()
-        val tagMap = HashMap<String, CountStatisticsBean.TagStatisticsBean>()
-        diaryList.forEach {
-            if (it.tag.isNullOrEmpty()) return@forEach
-            var tagStatisticsBean = tagMap[it.tag.orEmpty()]
-            if (tagStatisticsBean == null)
-            {
-                tagStatisticsBean = CountStatisticsBean.TagStatisticsBean(it.tag!!, 0)
-                tagMap[it.tag!!] = tagStatisticsBean
-                tagStatisticsList.add(tagStatisticsBean)
-            }
-            tagStatisticsBean.count += 1
-        }
-        tagStatisticsList.sortByDescending { it.count }
+        return getStatistics(diaryList, { it.tag.orEmpty() }, { CountStatisticsBean.TagStatisticsBean(it.tag.orEmpty(), 0) })
+    }
 
-        return tagStatisticsList
+    private fun <T : CountStatisticsBean.BaseCountStatisticsBean> getStatistics(diaryList: List<DiaryBean>, unique: (diaryBean: DiaryBean) -> String,
+                                                                                structure: (diaryBean: DiaryBean) -> T): List<T>
+    {
+        val statisticsList = mutableListOf<T>()
+        val statisticsMap = HashMap<String, T>()
+        diaryList.forEach {
+            val uniqueSignStr = unique.invoke(it)
+            if (uniqueSignStr.isEmpty()) return@forEach
+            var bean = statisticsMap[uniqueSignStr]
+            if (bean == null)
+            {
+                bean = structure.invoke(it)
+                statisticsMap[uniqueSignStr] = bean
+                statisticsList.add(bean)
+            }
+            bean.count += 1
+        }
+        statisticsList.sortByDescending { it.count }
+
+        return statisticsList
     }
 
     override fun handleUIEvent(uiEvent: UIEvent)
