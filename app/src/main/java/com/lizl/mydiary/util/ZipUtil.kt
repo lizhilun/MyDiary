@@ -2,6 +2,7 @@ package com.lizl.mydiary.util
 
 import android.util.Log
 import net.lingala.zip4j.ZipFile
+import net.lingala.zip4j.exception.ZipException
 import net.lingala.zip4j.model.ZipParameters
 import net.lingala.zip4j.model.enums.CompressionLevel
 import net.lingala.zip4j.model.enums.CompressionMethod
@@ -43,7 +44,7 @@ object ZipUtil
         }
         catch (e: Exception)
         {
-            Log.e(TAG, "zipFile error:${e.printStackTrace()}")
+            Log.e(TAG, "zipFile error:", e)
             return false
         }
         return true
@@ -60,9 +61,10 @@ object ZipUtil
             }
             zipFile.extractAll(dstFilePath)
         }
-        catch (e: Exception)
+        catch (e: ZipException)
         {
-            if (e.message?.contains("invalid block type") == true)
+            Log.e(TAG, "unZipFile error:", e)
+            if (e.type == ZipException.Type.WRONG_PASSWORD)
             {
                 return UNZIP_FAILED_WRONG_PASSWORD
             }
