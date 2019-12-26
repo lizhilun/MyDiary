@@ -12,9 +12,7 @@ import androidx.appcompat.app.SkinAppCompatDelegateImpl
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.BarUtils
-import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.config.AppConfig
-import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.event.EventConstant
 import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.activity.LockActivity

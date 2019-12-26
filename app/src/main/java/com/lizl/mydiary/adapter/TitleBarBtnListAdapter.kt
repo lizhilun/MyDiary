@@ -20,11 +20,11 @@ class TitleBarBtnListAdapter(private val btnList: List<TitleBarBtnBean.BaseBtnBe
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
     {
-        return when (viewType)
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(when (viewType)
         {
-            ITEM_TYPE_IMAGE -> ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_title_bar_image_btn, parent, false))
-            else            -> ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_title_bar_text_btn, parent, false))
-        }
+            ITEM_TYPE_IMAGE -> R.layout.item_title_bar_image_btn
+            else            -> R.layout.item_title_bar_text_btn
+        }, parent, false))
     }
 
     override fun getItemCount() = btnList.size

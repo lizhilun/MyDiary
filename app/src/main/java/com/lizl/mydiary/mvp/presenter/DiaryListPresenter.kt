@@ -1,6 +1,8 @@
 package com.lizl.mydiary.mvp.presenter
 
 import com.lizl.mydiary.bean.DiaryBean
+import com.lizl.mydiary.config.AppConfig
+import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.event.EventConstant
 import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.contract.DiaryListContract
@@ -37,7 +39,11 @@ class DiaryListPresenter(private var view: DiaryListContract.View?) : DiaryListC
                 if (uiEvent.value is DiaryBean)
                 {
                     view?.onDiarySaveSuccess(uiEvent.value)
-                    BackupUtil.autoBackup()
+                    if (AppConfig.getBackupConfig().isAutoBackup() && AppConfig.getBackupConfig().getAppAutoBackupInterval()
+                        == ConfigConstant.APP_AUTO_BACKUP_PERIOD_RIGHT_NOW)
+                    {
+                        BackupUtil.autoBackup()
+                    }
                 }
             }
         }
