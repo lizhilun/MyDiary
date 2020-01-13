@@ -62,19 +62,8 @@ class BackupFileListPresenter(private var view: BackupFileListContract.View?) : 
     {
         GlobalScope.launch {
             val backupFileList = BackupUtil.getBackupFileList()
-            if (backupFileList.isEmpty()) return@launch
-            var latestFile = backupFileList[0]
-            backupFileList.forEach {
-                if (it.lastModified() > latestFile.lastModified())
-                {
-                    FileUtil.deleteFile(latestFile)
-                    latestFile = it
-                }
-                else if (it.lastModified() < latestFile.lastModified())
-                {
-                    FileUtil.deleteFile(it)
-                }
-            }
+            val latestFile = backupFileList.maxBy { it.lastModified() } ?: return@launch
+            backupFileList.forEach { if (latestFile != it) FileUtil.deleteFile(it) }
             GlobalScope.launch(Dispatchers.Main) { view?.showBackupFileList(listOf(latestFile)) }
         }
     }

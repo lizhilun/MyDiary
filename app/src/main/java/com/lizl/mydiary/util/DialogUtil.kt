@@ -23,8 +23,7 @@ object DialogUtil
     fun showOperationConfirmDialog(context: Context, title: String, notify: String, onConfirmBtnClickListener: () -> Unit)
     {
         dialog?.dismiss()
-        dialog = DialogOperationConfirm(context, title, notify)
-        (dialog as DialogOperationConfirm).setOnConfirmBtnClickListener(onConfirmBtnClickListener)
+        dialog = DialogOperationConfirm(context, title, notify, onConfirmBtnClickListener)
         dialog?.show()
     }
 

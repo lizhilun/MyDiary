@@ -5,6 +5,7 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 
 class EmptyClickRecyclerView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : RecyclerView(context, attrs, defStyleAttr)
@@ -57,7 +58,7 @@ class EmptyClickRecyclerView(context: Context, attrs: AttributeSet?, defStyleAtt
         for (i in count - 1 downTo 0)
         {
             val child = getChildAt(i)
-            if (child.visibility == View.VISIBLE)
+            if (child.isVisible)
             {
                 child.getHitRect(mTouchFrame)
                 if (mTouchFrame.contains(x, y))

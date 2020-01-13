@@ -17,12 +17,10 @@ class ImageViewPagerAdapter(private val imageList: List<String>) : PagerAdapter(
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any
     {
-        val imageView = PhotoView(container.context)
-
-        imageView.setImageURI(Uri.parse(imageList[position]))
-
-        container.addView(imageView)
-        return imageView
+        return PhotoView(container.context).apply {
+            this.setImageURI(Uri.parse(imageList[position]))
+            container.addView(this)
+        }
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, obj: Any)

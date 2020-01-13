@@ -28,7 +28,7 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
     private lateinit var searchEditText: SkinCompatEditText
 
     private var isBackBtnVisible = false
-    var inSearchMode = false
+    private var inSearchMode = false
 
     private var onBackBtnClickListener: (() -> Unit)? = null
     private var onSearchTextChangeListener: ((searchText: String) -> Unit)? = null

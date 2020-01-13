@@ -30,6 +30,7 @@ class ImageBrowserActivity : BaseActivity<EmptyPresenter>()
         val imageViewPagerAdapter = ImageViewPagerAdapter(imageList)
         vp_image_list.adapter = imageViewPagerAdapter
         vp_image_list.currentItem = imagePosition
+        vp_image_list.offscreenPageLimit = 3
 
         tv_delete.isVisible = editable
 

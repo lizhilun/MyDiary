@@ -10,8 +10,6 @@ import java.util.*
 
 object FileUtil
 {
-    val TAG = "FileUtil"
-
     /**
      * 获取系统文件路径
      */
@@ -58,7 +56,7 @@ object FileUtil
      */
     fun renameFile(file: File, newName: String, needNotify: Boolean): Boolean
     {
-        if (!file.exists() || newName.isEmpty() || newName.isBlank())
+        if (!file.exists() || newName.isBlank())
         {
             return false
         }

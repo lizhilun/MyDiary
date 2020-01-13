@@ -65,11 +65,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         dateBean = DateBean(if (diaryBean != null) diaryBean!!.createTime else System.currentTimeMillis())
         ctb_title.setTitleText("${dateBean.year}/${dateBean.month}/${dateBean.day} ${dateBean.getHourAndMinute()}")
 
-        var diaryTag = diaryBean?.tag
-        if (diaryTag.isNullOrBlank())
-        {
-            diaryTag = getString(R.string.diary)
-        }
+        val diaryTag = diaryBean?.tag ?: getString(R.string.diary)
         tv_diary_tag.text = "#$diaryTag#"
 
         et_diary_content.setTextSize(TypedValue.COMPLEX_UNIT_PX, DiaryUtil.getDiaryFontSize())
@@ -147,7 +143,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
     }
 
     private val onSoftInputChangeListener: (Int) -> Unit = {
-        if (it > 0)
+        et_diary_content.maxHeight = if (it > 0)
         {
             if (maxContentTextHeight == 0)
             {
@@ -158,11 +154,11 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
                 val tagTextHeight = if (tv_diary_tag.isVisible) tv_diary_tag.height else padding
                 maxContentTextHeight = UiUtil.getScreenHeight() - it - statusBarHeight - navBarHeight - titleBarHeight - tagTextHeight - padding
             }
-            et_diary_content.maxHeight = maxContentTextHeight
+            maxContentTextHeight
         }
         else
         {
-            et_diary_content.maxHeight = Int.MAX_VALUE
+            Int.MAX_VALUE
         }
         et_diary_content.setScrollEnable(it > 0)
     }

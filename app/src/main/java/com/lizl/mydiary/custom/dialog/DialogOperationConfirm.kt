@@ -7,10 +7,8 @@ import kotlinx.android.synthetic.main.dialog_operation_confirm.*
 /**
  * 用于操作确认的Dialog
  */
-class DialogOperationConfirm(context: Context, private val title: String, private val notify: String) : BaseDialog(context)
+class DialogOperationConfirm(context: Context, private val title: String, private val notify: String, private val onConfirmBtnClickListener: () -> Unit) : BaseDialog(context)
 {
-
-    private var onConfirmBtnClickListener: (() -> Unit)? = null
 
     override fun getDialogContentViewResId() = R.layout.dialog_operation_confirm
 
@@ -24,12 +22,7 @@ class DialogOperationConfirm(context: Context, private val title: String, privat
         tv_cancel.setOnClickListener { dismiss() }
         tv_confirm.setOnClickListener {
             dismiss()
-            onConfirmBtnClickListener?.invoke()
+            onConfirmBtnClickListener.invoke()
         }
-    }
-
-    fun setOnConfirmBtnClickListener(onConfirmBtnClickListener: () -> Unit)
-    {
-        this.onConfirmBtnClickListener = onConfirmBtnClickListener
     }
 }

@@ -26,7 +26,7 @@ object ZipUtil
             val zipParameters = ZipParameters()
 
             zipParameters.compressionMethod = CompressionMethod.DEFLATE
-            zipParameters.compressionLevel = CompressionLevel.FAST
+            zipParameters.compressionLevel = CompressionLevel.FASTEST
             if (password.isNotEmpty())
             {
                 zipParameters.isEncryptFiles = true
@@ -39,7 +39,7 @@ object ZipUtil
             }
             else
             {
-                zipFile.addFolder(oriFile, zipParameters)
+                zipFile.addFile(oriFile, zipParameters)
             }
         }
         catch (e: Exception)
