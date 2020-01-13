@@ -26,8 +26,7 @@ class DialogDiaryTagList(context: Context, private val onTagSelectFinishListener
         }
 
         et_new_tag.addTextChangedListener {
-            val text = it.toString()
-            tv_confirm.isEnabled = text.isNotBlank()
+            tv_confirm.isEnabled = it.toString().isNotBlank()
         }
 
         tv_confirm.setOnClickListener {

@@ -1,7 +1,6 @@
 package com.lizl.mydiary.mvp.base
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
 import android.view.MotionEvent
 import android.view.ViewGroup
@@ -12,9 +11,7 @@ import androidx.appcompat.app.SkinAppCompatDelegateImpl
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.BarUtils
-import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.config.AppConfig
-import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.event.EventConstant
 import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.activity.LockActivity
@@ -77,7 +74,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         }
 
         // 密码保护打开并且应用超时的情况
-        if (AppConfig.getSecurityConfig().isAppLockOn() && !TextUtils.isEmpty(AppConfig.getSecurityConfig().getAppLockPassword())
+        if (AppConfig.getSecurityConfig().isAppLockOn() && AppConfig.getSecurityConfig().getAppLockPassword().isNotBlank()
             && System.currentTimeMillis() - AppConfig.getSecurityConfig().getAppLastStopTime() >= AppConfig.getSecurityConfig().getAppTimeoutInterval())
         {
             ActivityUtil.turnToActivity(LockActivity::class.java)

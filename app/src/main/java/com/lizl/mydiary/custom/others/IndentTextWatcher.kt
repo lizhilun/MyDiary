@@ -1,7 +1,6 @@
 package com.lizl.mydiary.custom.others
 
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
 
 
@@ -41,7 +40,7 @@ class IndentTextWatcher : TextWatcher
     private fun indent(s: Editable, start: Int)
     {
         val value = getIndent(s, start)
-        if (!TextUtils.isEmpty(value))
+        if (!value.isNullOrEmpty())
         {
             s.insert(start + 1, value)
         }

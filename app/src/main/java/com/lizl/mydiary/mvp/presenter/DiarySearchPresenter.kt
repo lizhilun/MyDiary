@@ -18,40 +18,19 @@ class DiarySearchPresenter(private var view: DiarySearchContract.View?) : DiaryS
 
             val isKeywordValid = keyword.isNotBlank()
             val isMoodValid = DiaryUtil.getMoodList(true).contains(mood)
-
-            val searchResult = mutableListOf<DiaryBean>()
-
-            var tagKeyWord = ""
-            if (keyword.startsWith("#") && keyword.endsWith("#") && keyword.length > 2)
+            val tagKeyWord = if (keyword.startsWith("#") && keyword.endsWith("#") && keyword.length > 2)
             {
-                tagKeyWord = keyword.substring(1, keyword.length - 1)
+                keyword.substring(1, keyword.length - 1)
             }
+            else ""
+            val moodSelection = { diaryBean: DiaryBean -> if (isMoodValid) (mood == AppConstant.MOOD_ALL || diaryBean.mood == mood) else true }
 
-            if (isKeywordValid && isMoodValid)
+            val searchResult = when
             {
-                if (tagKeyWord.isNotBlank())
-                {
-                    searchResult.addAll(AppDatabase.instance.getDiaryDao().searchDiaryByTag(tagKeyWord).filter { mood == AppConstant.MOOD_ALL || it.mood == mood })
-                }
-                else
-                {
-                    searchResult.addAll(AppDatabase.instance.getDiaryDao().searchDiary(keyword).filter { mood == AppConstant.MOOD_ALL || it.mood == mood })
-                }
-            }
-            else if (isKeywordValid && !isMoodValid)
-            {
-                if (tagKeyWord.isNotBlank())
-                {
-                    searchResult.addAll(AppDatabase.instance.getDiaryDao().searchDiaryByTag(tagKeyWord))
-                }
-                else
-                {
-                    searchResult.addAll(AppDatabase.instance.getDiaryDao().searchDiary(keyword))
-                }
-            }
-            else if (!isKeywordValid && isMoodValid)
-            {
-                searchResult.addAll(AppDatabase.instance.getDiaryDao().getAllDiary().filter { mood == AppConstant.MOOD_ALL || it.mood == mood })
+                tagKeyWord.isNotBlank() -> AppDatabase.instance.getDiaryDao().searchDiaryByTag(tagKeyWord).filter(moodSelection)
+                isKeywordValid          -> AppDatabase.instance.getDiaryDao().searchDiary(keyword).filter(moodSelection)
+                isMoodValid             -> AppDatabase.instance.getDiaryDao().getAllDiary().filter(moodSelection)
+                else                    -> emptyList()
             }
 
             GlobalScope.launch(Dispatchers.Main) { view?.showDiaryResult(searchResult) }

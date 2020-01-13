@@ -13,8 +13,8 @@ class DialogMoodSelect(context: Context, private val withAll: Boolean, private v
 
     override fun initView()
     {
-        rv_mood_grid.layoutManager = GridLayoutManager(context, if (withAll) 4 else 3)
         val moodListAdapter = MoodListAdapter()
+        rv_mood_grid.layoutManager = GridLayoutManager(context, DiaryUtil.getMoodList(withAll).size)
         rv_mood_grid.adapter = moodListAdapter
 
         moodListAdapter.setData(DiaryUtil.getMoodResList(withAll))

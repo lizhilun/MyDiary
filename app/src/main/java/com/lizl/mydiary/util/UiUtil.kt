@@ -1,7 +1,6 @@
 package com.lizl.mydiary.util
 
 import android.text.InputFilter
-import android.text.TextUtils
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.TextView
@@ -53,10 +52,7 @@ object UiUtil
      */
     fun clearTextViewAutoWrap(tv: TextView)
     {
-        if (TextUtils.isEmpty(tv.text))
-        {
-            return
-        }
+        if (tv.text.isEmpty()) return
         tv.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener
         {
             override fun onGlobalLayout()

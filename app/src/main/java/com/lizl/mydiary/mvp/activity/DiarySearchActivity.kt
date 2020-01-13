@@ -35,14 +35,14 @@ class DiarySearchActivity : BaseActivity<DiarySearchPresenter>(), DiarySearchCon
     private fun showDiaryMood(mood: Int)
     {
         curDiaryMood = mood
-        val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
-        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(DiaryUtil.getMoodResByMood(mood)) {
-            DialogUtil.showMoodSelectDialog(this, true) {
-                showDiaryMood(it)
-                presenter.searchDiary(ctb_title.getSearchText(), it)
-            }
+        ctb_title.setBtnList(mutableListOf<TitleBarBtnBean.BaseBtnBean>().apply {
+            add(TitleBarBtnBean.ImageBtnBean(DiaryUtil.getMoodResByMood(mood)) {
+                DialogUtil.showMoodSelectDialog(this@DiarySearchActivity, true) {
+                    showDiaryMood(it)
+                    presenter.searchDiary(ctb_title.getSearchText(), it)
+                }
+            })
         })
-        ctb_title.setBtnList(titleBtnList)
     }
 
     override fun showDiaryResult(diaryList: List<DiaryBean>)

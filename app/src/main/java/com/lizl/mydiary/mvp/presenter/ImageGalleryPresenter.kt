@@ -16,9 +16,7 @@ class ImageGalleryPresenter(private var view: ImageGalleryContract.View?) : Imag
         GlobalScope.launch {
 
             val imageList = mutableListOf<String>()
-
-            val imageDir = File(FileUtil.getImageFileSavePath())
-            imageDir.listFiles()?.forEach {
+            File(FileUtil.getImageFileSavePath()).listFiles()?.forEach {
                 if (ImageUtils.isImage(it))
                 {
                     imageList.add(it.absolutePath)

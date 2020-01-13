@@ -34,10 +34,10 @@ class MainActivity : BaseActivity<DiaryListPresenter>(), DiaryListContract.View
 
     override fun initView()
     {
-        val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
-        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.drawable.ic_setting) { ActivityUtil.turnToActivity(SettingActivity::class.java) })
-        titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.drawable.ic_search) { ActivityUtil.turnToActivity(DiarySearchActivity::class.java, -1) })
-        ctb_title.setBtnList(titleBtnList)
+        ctb_title.setBtnList(mutableListOf<TitleBarBtnBean.BaseBtnBean>().apply {
+            add(TitleBarBtnBean.ImageBtnBean(R.drawable.ic_setting) { ActivityUtil.turnToActivity(SettingActivity::class.java) })
+            add(TitleBarBtnBean.ImageBtnBean(R.drawable.ic_search) { ActivityUtil.turnToActivity(DiarySearchActivity::class.java, -1) })
+        })
 
         fab_add_diary.setOnClickListener { ActivityUtil.turnToActivity(DiaryContentActivity::class.java) }
 

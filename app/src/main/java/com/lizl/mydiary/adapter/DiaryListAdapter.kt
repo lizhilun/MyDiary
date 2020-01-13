@@ -1,6 +1,5 @@
 package com.lizl.mydiary.adapter
 
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +45,7 @@ class DiaryListAdapter : BaseAdapter<DiaryBean, DiaryListAdapter.ViewHolder>()
 
             UiUtil.clearTextViewAutoWrap(itemView.tv_diary_content)
 
-            itemView.tv_diary_content.isVisible = !TextUtils.isEmpty(diaryBean.content)
+            itemView.tv_diary_content.isVisible = diaryBean.content.isNotEmpty()
 
             if (diaryBean.imageList.isNullOrEmpty())
             {

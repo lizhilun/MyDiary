@@ -97,18 +97,19 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
 
     private fun showFileOperationDialog(file: File)
     {
-        val operationList = mutableListOf<OperationItem>()
+        val operationList = mutableListOf<OperationItem>().apply {
 
-        operationList.add(OperationItem(getString(R.string.import_backup_file)) { presenter.restoreData(file) })
+            add(OperationItem(getString(R.string.import_backup_file)) { presenter.restoreData(file) })
 
-        operationList.add(OperationItem(getString(R.string.delete_backup_file)) { presenter.deleteBackupFile(file) })
+            add(OperationItem(getString(R.string.delete_backup_file)) { presenter.deleteBackupFile(file) })
 
-        operationList.add(OperationItem(getString(R.string.rename_backup_file)) {
-            DialogUtil.showInputDialog(activity as Context, getString(R.string.rename_backup_file), file.nameWithoutExtension,
-                    getString(R.string.hint_rename_backup_file)) {
-                presenter.renameBackupFile(file, it)
-            }
-        })
+            add(OperationItem(getString(R.string.rename_backup_file)) {
+                DialogUtil.showInputDialog(activity as Context, getString(R.string.rename_backup_file), file.nameWithoutExtension,
+                        getString(R.string.hint_rename_backup_file)) {
+                    presenter.renameBackupFile(file, it)
+                }
+            })
+        }
 
         DialogUtil.showOperationListDialog(activity as Context, operationList)
     }

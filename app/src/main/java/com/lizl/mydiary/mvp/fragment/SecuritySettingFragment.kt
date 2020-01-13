@@ -1,6 +1,5 @@
 package com.lizl.mydiary.mvp.fragment
 
-import android.text.TextUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.SettingBean
 import com.lizl.mydiary.config.AppConfig
@@ -50,7 +49,7 @@ class SecuritySettingFragment : BaseSettingListFragment<EmptyPresenter>()
                     settingAdapter.insert(lockTimeItem, ++insertPosition)
                 }
 
-                if (TextUtils.isEmpty(AppConfig.getSecurityConfig().getAppLockPassword()))
+                if (AppConfig.getSecurityConfig().getAppLockPassword().isBlank())
                 {
                     DialogUtil.showSetPasswordDialog(context!!, onInputFinishListener)
                 }

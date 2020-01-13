@@ -1,13 +1,12 @@
 package com.lizl.mydiary.custom.dialog
 
 import android.content.Context
-import android.text.TextUtils
 import android.widget.EditText
 import com.jungly.gridpasswordview.GridPasswordView
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
-import com.lizl.mydiary.util.UiUtil
 import com.lizl.mydiary.custom.function.setOnPasswordChangedListener
+import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.dialog_password_confirm.*
 
 class DialogPassword(context: Context, private val passwordOperation: Int, private val password: String? = null,
@@ -105,9 +104,9 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
 
     private fun checkInputPassword(inputPassword: String): Boolean
     {
-        return if (TextUtils.isEmpty(firstPassword))
+        return if (firstPassword.isNullOrBlank())
         {
-            TextUtils.isEmpty(password) || password == inputPassword
+            password.isNullOrBlank() || password == inputPassword
         }
         else
         {
