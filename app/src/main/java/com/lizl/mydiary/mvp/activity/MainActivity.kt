@@ -1,15 +1,12 @@
 package com.lizl.mydiary.mvp.activity
 
-import android.os.Bundle
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.TitleBarBtnBean
-import com.lizl.mydiary.config.AppConfig
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.DiaryListContract
 import com.lizl.mydiary.mvp.presenter.DiaryListPresenter
 import com.lizl.mydiary.util.ActivityUtil
-import com.lizl.mydiary.util.BackupUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -19,18 +16,6 @@ class MainActivity : BaseActivity<DiaryListPresenter>(), DiaryListContract.View
     override fun getLayoutResId() = R.layout.activity_main
 
     override fun initPresenter() = DiaryListPresenter(this)
-
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
-        super.onCreate(savedInstanceState)
-
-        val autoBackupPeriod = AppConfig.getBackupConfig().getAppAutoBackupInterval()
-        if (AppConfig.getBackupConfig().isAutoBackup() && autoBackupPeriod > 0
-            && System.currentTimeMillis() - AppConfig.getBackupConfig().getLastAutoBackupTime() > autoBackupPeriod)
-        {
-            BackupUtil.autoBackup()
-        }
-    }
 
     override fun initView()
     {
