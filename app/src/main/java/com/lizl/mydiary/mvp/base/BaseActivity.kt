@@ -15,6 +15,7 @@ import com.lizl.mydiary.config.AppConfig
 import com.lizl.mydiary.event.EventConstant
 import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.activity.LockActivity
+import com.lizl.mydiary.mvp.activity.MainActivity
 import com.lizl.mydiary.util.ActivityUtil
 import com.lizl.mydiary.util.SkinUtil
 import com.lizl.mydiary.util.UiUtil
@@ -38,13 +39,21 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-        setContentView(getLayoutResId())
 
-        // Activity走onCreate()将上次应用停止时间置为0，保证onResume()会走是否显示锁定界面流程
+        // 没开密码保护的情况下进入锁屏界面返回主界面
+        if (this is LockActivity && !AppConfig.getSecurityConfig().isAppLockOn())
+        {
+            if (ActivityUtils.getActivityList().size == 1) ActivityUtil.turnToActivity(MainActivity::class.java)
+            finish()
+        }
+
+        // Activity走onCreate()将上次应用停止时间置为0，保证onStart()会走是否显示锁定界面流程
         if (ActivityUtils.getActivityList().size == 1)
         {
             AppConfig.getSecurityConfig().setAppLastStopTime(0)
         }
+
+        setContentView(getLayoutResId())
 
         EventBus.getDefault().register(this)
 

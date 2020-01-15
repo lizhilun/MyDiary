@@ -1,6 +1,7 @@
 package com.lizl.mydiary.mvp.activity
 
 import androidx.recyclerview.widget.GridLayoutManager
+import com.blankj.utilcode.util.ActivityUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.NumberKeyGridAdapter
 import com.lizl.mydiary.config.AppConfig
@@ -8,6 +9,7 @@ import com.lizl.mydiary.custom.others.recylerviewitemdivider.GridDividerItemDeco
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.LockContract
 import com.lizl.mydiary.mvp.presenter.LockPresenter
+import com.lizl.mydiary.util.ActivityUtil
 import com.lizl.mydiary.util.BiometricAuthenticationUtil
 import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.activity_lock.*
@@ -65,6 +67,10 @@ class LockActivity : BaseActivity<LockPresenter>(), LockContract.View
     override fun onUnlockSuccess()
     {
         AppConfig.getSecurityConfig().setAppLastStopTime(Long.MAX_VALUE)
+        if (ActivityUtils.getActivityList().size == 1)
+        {
+            ActivityUtil.turnToActivity(MainActivity::class.java)
+        }
         finish()
     }
 

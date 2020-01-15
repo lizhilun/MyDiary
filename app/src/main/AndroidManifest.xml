@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".mvp.activity.MainActivity"
+            android:name=".mvp.activity.LockActivity"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,9 +31,7 @@
 
         <activity android:name=".mvp.activity.ImageBrowserActivity" />
 
-        <activity
-            android:name=".mvp.activity.LockActivity"
-            android:launchMode="singleTask" />
+        <activity android:name=".mvp.activity.MainActivity" />
 
         <activity android:name=".mvp.activity.SettingActivity" />
 
