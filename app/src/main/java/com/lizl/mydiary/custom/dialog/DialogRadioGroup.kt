@@ -9,15 +9,14 @@ import com.lizl.mydiary.util.SkinUtil
 import kotlinx.android.synthetic.main.dialog_radio_group.*
 import skin.support.widget.SkinCompatRadioButton
 
-class DialogRadioGroup(context: Context, private val title: String, private val radioList: List<String>, private val checkedRadio: String,
-                       private val onSelectFinishListener: (String) -> Unit) : BaseDialog(context)
+class DialogRadioGroup(context: Context, title: String, private val radioList: List<String>, private val checkedRadio: String,
+                       private val onSelectFinishListener: (String) -> Unit) : BaseDialog(context, title, true)
 {
-    override fun getDialogContentViewResId() = R.layout.dialog_radio_group
+
+    override fun getDialogContentView(): View = layoutInflater.inflate(R.layout.dialog_radio_group, null)
 
     override fun initView()
     {
-        tv_title.text = title
-
         val padding = context.resources.getDimensionPixelOffset(R.dimen.global_content_padding_content) / 2
 
         radioList.forEach {
@@ -33,17 +32,17 @@ class DialogRadioGroup(context: Context, private val title: String, private val 
                 rv_radio_group.check(radioButton.id)
             }
         }
-
-        tv_cancel.setOnClickListener { dismiss() }
-        tv_confirm.setOnClickListener {
-            val checkedRadio = rv_radio_group.findViewById<AppCompatRadioButton>(rv_radio_group.checkedRadioButtonId)
-            if (this.checkedRadio != checkedRadio.text.toString())
-            {
-                onSelectFinishListener.invoke(checkedRadio.text.toString())
-            }
-            dismiss()
-        }
     }
 
     override fun getDialogWidth() = 0
+
+    override fun onConfirmBtnClick(): Boolean
+    {
+        val checkedRadio = rv_radio_group.findViewById<AppCompatRadioButton>(rv_radio_group.checkedRadioButtonId) ?: return true
+        if (this.checkedRadio != checkedRadio.text.toString())
+        {
+            onSelectFinishListener.invoke(checkedRadio.text.toString())
+        }
+        return true
+    }
 }

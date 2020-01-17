@@ -1,6 +1,7 @@
 package com.lizl.mydiary.custom.dialog
 
 import android.content.Context
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.OperationListAdapter
@@ -10,9 +11,9 @@ import kotlinx.android.synthetic.main.dialog_operation_list.*
 /**
  * 用于显示操作列表的Dialog
  */
-class DialogOperationList(context: Context, private var operationList: List<OperationItem>) : BaseDialog(context)
+class DialogOperationList(context: Context, private var operationList: List<OperationItem>) : BaseDialog(context, null)
 {
-    override fun getDialogContentViewResId() = R.layout.dialog_operation_list
+    override fun getDialogContentView(): View = layoutInflater.inflate(R.layout.dialog_operation_list, null)
 
     override fun getDialogWidth() = 0
 
@@ -24,4 +25,6 @@ class DialogOperationList(context: Context, private var operationList: List<Oper
 
         operationListAdapter.setOnOperationItemClickListener { dismiss() }
     }
+
+    override fun onConfirmBtnClick() = true
 }

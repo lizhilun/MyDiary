@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_dialog_bg"
     android:orientation="vertical">
 
     <com.lizl.mydiary.custom.skin.SkinRecyclerView
@@ -28,21 +27,4 @@
         android:maxLines="1"
         app:layout_constraintTop_toBottomOf="@+id/rv_tag_list" />
 
-    <skin.support.widget.SkinCompatTextView
-        android:id="@+id/tv_cancel"
-        style="@style/DialogButtonTextStyle"
-        android:layout_marginEnd="10dp"
-        android:enabled="true"
-        android:text="@string/cancel"
-        app:layout_constraintEnd_toStartOf="@+id/tv_confirm"
-        app:layout_constraintTop_toBottomOf="@+id/et_new_tag" />
-
-    <skin.support.widget.SkinCompatTextView
-        android:id="@+id/tv_confirm"
-        style="@style/DialogButtonTextStyle"
-        android:layout_marginEnd="20dp"
-        android:enabled="false"
-        android:text="@string/confirm"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_new_tag" />
 </skin.support.constraint.SkinCompatConstraintLayout>

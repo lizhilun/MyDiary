@@ -1,4 +1,4 @@
-package com.lizl.mydiary.util
+package com.lizl.mydiary.custom.others
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -8,7 +8,7 @@ import com.bumptech.glide.Priority
 import com.lizl.mydiary.GlideApp
 import com.zhihu.matisse.engine.ImageEngine
 
-class MyGlideEngine : ImageEngine
+class GlideEngine : ImageEngine
 {
     override fun loadImage(context: Context, resizeX: Int, resizeY: Int, imageView: ImageView, uri: Uri)
     {

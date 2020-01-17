@@ -1,16 +1,16 @@
 package com.lizl.mydiary.custom.dialog
 
 import android.content.Context
-import android.widget.EditText
-import com.jungly.gridpasswordview.GridPasswordView
+import android.view.View
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
+import com.lizl.mydiary.custom.function.getEditText
 import com.lizl.mydiary.custom.function.setOnPasswordChangedListener
 import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.dialog_password_confirm.*
 
 class DialogPassword(context: Context, private val passwordOperation: Int, private val password: String? = null,
-                     private val onInputFinishListener: (String) -> Unit) : BaseDialog(context)
+                     private val onInputFinishListener: (String) -> Unit) : BaseDialog(context, null)
 {
 
     private var firstPassword: String? = null
@@ -25,7 +25,7 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
         const val PASSWORD_OPERATION_INPUT = 4
     }
 
-    override fun getDialogContentViewResId() = R.layout.dialog_password_confirm
+    override fun getDialogContentView(): View = layoutInflater.inflate(R.layout.dialog_password_confirm, null)
 
     override fun initView()
     {
@@ -39,22 +39,13 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
             PASSWORD_OPERATION_INPUT  -> turnToOperationState(OperationState.InputPasswordState)
         }
 
-        val editText = gpv_password.getEditText() ?: return
-        gpv_password.post { UiUtil.showInputKeyboard(editText) }
+        showInputKeyboard()
     }
 
-    private fun GridPasswordView.getEditText(): EditText?
+    private fun showInputKeyboard()
     {
-        val viewCount = this.childCount
-        for (i in 0 until viewCount)
-        {
-            val view = gpv_password.getChildAt(i)
-            if (view is EditText)
-            {
-                return view
-            }
-        }
-        return null
+        val editText = gpv_password.getEditText() ?: return
+        gpv_password.post { UiUtil.showInputKeyboard(editText) }
     }
 
     private fun turnToOperationState(operationState: OperationState)
@@ -120,6 +111,8 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
     }
 
     override fun getDialogWidth() = (UiUtil.getScreenWidth() * 0.9).toInt()
+
+    override fun onConfirmBtnClick() = true
 
     enum class OperationState
     {

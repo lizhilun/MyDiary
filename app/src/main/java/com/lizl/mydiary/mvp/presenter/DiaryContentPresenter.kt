@@ -12,7 +12,7 @@ import com.lizl.mydiary.mvp.contract.DiaryContentContract
 import com.lizl.mydiary.util.AppDatabase
 import com.lizl.mydiary.util.DiaryUtil
 import com.lizl.mydiary.util.FileUtil
-import com.lizl.mydiary.util.MyGlideEngine
+import com.lizl.mydiary.custom.others.GlideEngine
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.internal.entity.CaptureStrategy
@@ -89,7 +89,7 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
             .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED) //图像选择和预览活动所需的方向
             .thumbnailScale(0.85f) //缩放比例
             .theme(R.style.MatisseStyle) //主题  暗色主题 R.style.Matisse_Dracula
-            .imageEngine(MyGlideEngine()) //图片加载方式，Glide4需要自定义实现
+            .imageEngine(GlideEngine()) //图片加载方式，Glide4需要自定义实现
             .capture(true) //是否提供拍照功能，兼容7.0系统需要下面的配置
             //参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
             .captureStrategy(CaptureStrategy(true, "com.sendtion.matisse.fileprovider")) //存储到哪里

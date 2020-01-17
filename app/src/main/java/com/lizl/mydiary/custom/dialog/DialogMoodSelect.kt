@@ -1,15 +1,16 @@
 package com.lizl.mydiary.custom.dialog
 
 import android.content.Context
+import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.MoodListAdapter
 import com.lizl.mydiary.util.DiaryUtil
 import kotlinx.android.synthetic.main.dialog_mood_select.*
 
-class DialogMoodSelect(context: Context, private val withAll: Boolean, private val onMoodSelectListener: (mood: Int) -> Unit) : BaseDialog(context)
+class DialogMoodSelect(context: Context, private val withAll: Boolean, private val onMoodSelectListener: (mood: Int) -> Unit) : BaseDialog(context, null)
 {
-    override fun getDialogContentViewResId() = R.layout.dialog_mood_select
+    override fun getDialogContentView(): View = layoutInflater.inflate(R.layout.dialog_mood_select, null)
 
     override fun initView()
     {
@@ -26,4 +27,6 @@ class DialogMoodSelect(context: Context, private val withAll: Boolean, private v
     }
 
     override fun getDialogWidth() = context.resources.getDimensionPixelOffset(R.dimen.dialog_mood_select_width)
+
+    override fun onConfirmBtnClick() = true
 }
