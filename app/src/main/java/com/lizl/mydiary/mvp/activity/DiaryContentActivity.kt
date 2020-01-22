@@ -87,6 +87,13 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         tv_diary_tag.isVisible = AppConfig.getLayoutStyleConfig().isDiaryTagEnable()
         tv_diary_tag.setOnClickListener { if (inEditMode) DialogUtil.showDiaryTagListDialog(this) { tv_diary_tag.text = "#$it#" } }
 
+        et_diary_content.post {
+            if (!tv_diary_tag.isVisible)
+            {
+                et_diary_content.setPadding(0, resources.getDimensionPixelOffset(R.dimen.global_content_padding_edge), 0, 0)
+            }
+        }
+
         showDiaryContent(diaryBean)
         if (inEditMode) showEditView() else showReadView()
     }
