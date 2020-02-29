@@ -21,6 +21,7 @@
         <activity
             android:name=".mvp.activity.LockActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,13 +32,21 @@
 
         <activity android:name=".mvp.activity.ImageBrowserActivity" />
 
-        <activity android:name=".mvp.activity.MainActivity" />
+        <activity
+            android:name=".mvp.activity.MainActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".mvp.activity.SettingActivity" />
+        <activity
+            android:name=".mvp.activity.SettingActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".mvp.activity.DiaryContentActivity" />
+        <activity
+            android:name=".mvp.activity.DiaryContentActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".mvp.activity.DiarySearchActivity" />
+        <activity
+            android:name=".mvp.activity.DiarySearchActivity"
+            android:screenOrientation="portrait" />
 
         <!--知乎图片选择器，适配7.0系统-->
         <provider
