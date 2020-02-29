@@ -1,15 +1,18 @@
 package com.lizl.mydiary.util
 
+import android.content.Intent
 import android.net.Uri
-import com.blankj.utilcode.util.FileIOUtils
-import com.blankj.utilcode.util.FileUtils
-import com.blankj.utilcode.util.PathUtils
-import com.blankj.utilcode.util.UriUtils
+import android.os.Build
+import android.util.Log
+import androidx.core.content.FileProvider
+import com.blankj.utilcode.util.*
 import java.io.File
 import java.util.*
 
 object FileUtil
 {
+    private const val TAG = "FileUtil";
+
     /**
      * 获取系统文件路径
      */
@@ -108,6 +111,32 @@ object FileUtil
             len < 1024 * 1024        -> String.format(Locale.getDefault(), "%.1fKB", len.toDouble() / 1024)
             len < 1024 * 1024 * 1024 -> String.format(Locale.getDefault(), "%.1fMB", len.toDouble() / (1024 * 1024))
             else                     -> String.format(Locale.getDefault(), "%.1fGB", len.toDouble() / (1024 * 1024 * 1024))
+        }
+    }
+
+    /**
+     * 获取文件uri
+     */
+    fun getFileUri(file: File): Uri
+    {
+        return FileProvider.getUriForFile(ActivityUtils.getTopActivity(), "com.lizl.mydiary.fileprovider", file);
+    }
+
+    /**
+     * 分享所有类型的文件
+     */
+    fun shareAllTypeFile(file: File)
+    {
+        try
+        {
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.putExtra(Intent.EXTRA_STREAM, getFileUri(file))
+            shareIntent.type = "*/*"; //此处可发送多种文件
+            ActivityUtils.getTopActivity().startActivity(Intent.createChooser(shareIntent, ""))
+        }
+        catch (e: Exception)
+        {
+            Log.e(TAG, "shareAllTypeFile error:", e)
         }
     }
 }

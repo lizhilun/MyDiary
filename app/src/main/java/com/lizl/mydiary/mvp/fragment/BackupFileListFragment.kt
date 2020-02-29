@@ -2,6 +2,7 @@ package com.lizl.mydiary.mvp.fragment
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.BackupFileListAdapter
@@ -14,6 +15,7 @@ import com.lizl.mydiary.mvp.contract.BackupFileListContract
 import com.lizl.mydiary.mvp.presenter.BackupFileListPresenter
 import com.lizl.mydiary.util.AppConstant
 import com.lizl.mydiary.util.DialogUtil
+import com.lizl.mydiary.util.FileUtil
 import kotlinx.android.synthetic.main.fragment_backup_file_list.*
 import org.greenrobot.eventbus.EventBus
 import java.io.File
@@ -109,6 +111,8 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
                     presenter.renameBackupFile(file, it)
                 }
             })
+
+            add(OperationItem(getString(R.string.share_backup_file)) { FileUtil.shareAllTypeFile(file) })
         }
 
         DialogUtil.showOperationListDialog(activity as Context, operationList)

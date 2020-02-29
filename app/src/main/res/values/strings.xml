@@ -83,6 +83,7 @@
     <string name="import_backup_file">导入备份文件</string>
     <string name="delete_backup_file">删除备份文件</string>
     <string name="rename_backup_file">重命名备份文件</string>
+    <string name="share_backup_file">发送备份文件</string>
     <string name="notify_backup_data">确认备份数据到文件？</string>
     <string name="hint_rename_backup_file">请输入新的文件名</string>
     <string name="in_doing">%s中</string>
