@@ -48,8 +48,15 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
         presenter.getBackupFileList()
     }
 
+    override fun showFileFindingView()
+    {
+        DialogUtil.showLoadingDialog(activity as Context, getString(R.string.in_finding_backup_file))
+    }
+
     override fun showBackupFileList(fileList: List<File>)
     {
+        DialogUtil.dismissDialog()
+
         backupFileListAdapter.clear()
         backupFileListAdapter.addAll(fileList)
     }

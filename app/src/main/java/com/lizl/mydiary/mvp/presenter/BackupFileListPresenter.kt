@@ -16,6 +16,7 @@ class BackupFileListPresenter(private var view: BackupFileListContract.View?) : 
     override fun getBackupFileList()
     {
         GlobalScope.launch {
+            GlobalScope.launch(Dispatchers.Main) { view?.showFileFindingView() }
             val backupFileList = BackupUtil.getBackupFileList()
             GlobalScope.launch(Dispatchers.Main) { view?.showBackupFileList(backupFileList) }
         }
