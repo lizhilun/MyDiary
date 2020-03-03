@@ -8,6 +8,8 @@ class BackupFileListContract
 {
     interface View : BaseView
     {
+        fun showFileFindingView()
+
         fun showBackupFileList(fileList: List<File>)
 
         fun onBackupFileDeleted(file: File)
