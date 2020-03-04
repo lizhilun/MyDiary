@@ -43,13 +43,11 @@ object SkinUtil
     private fun loadDefaultSkin(activity: Activity)
     {
         SkinCompatManager.getInstance().restoreDefaultTheme()
-        BarUtils.setStatusBarColor(activity, ContextCompat.getColor(activity, R.color.colorPrimary))
     }
 
     private fun loadNightSkin(activity: Activity)
     {
         SkinCompatManager.getInstance().loadSkin(SKIN_NIGHT, SkinCompatManager.SKIN_LOADER_STRATEGY_BUILD_IN)
-        BarUtils.setStatusBarColor(activity, ContextCompat.getColor(activity, R.color.colorPrimary_night))
     }
 
     fun getGlobalTextColor(): Int
