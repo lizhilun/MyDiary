@@ -25,9 +25,10 @@
     <color name="color_dialog_button_text_enable_night">@color/colorPrimary_night</color>
     <color name="color_dialog_button_text_disable_night">#cc999999</color>
 
+    <color name="color_lock_activity_bg_night">#000000</color>
     <color name="color_number_key_text_night">@color/colorTextColor_night</color>
     <color name="color_number_key_divide_night">@color/colorDivideLine_night</color>
-    <color name="color_number_key_bg_night">@color/colorWindowBg_night</color>
+    <color name="color_number_key_bg_night">#000000</color>
 
     <color name="color_setting_item_bg_night">#000000</color>
     <color name="color_diary_card_bg_night">#000000</color>
