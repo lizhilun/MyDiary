@@ -3,6 +3,7 @@ package com.lizl.mydiary.mvp.base
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import androidx.appcompat.app.SkinAppCompatDelegateImpl
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.BarUtils
+import com.blankj.utilcode.util.KeyboardUtils
 import com.lizl.mydiary.config.AppConfig
 import com.lizl.mydiary.event.EventConstant
 import com.lizl.mydiary.event.UIEvent
@@ -18,7 +20,6 @@ import com.lizl.mydiary.mvp.activity.LockActivity
 import com.lizl.mydiary.mvp.activity.MainActivity
 import com.lizl.mydiary.util.ActivityUtil
 import com.lizl.mydiary.util.SkinUtil
-import com.lizl.mydiary.util.UiUtil
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -129,22 +130,29 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
      */
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean
     {
-        val view = currentFocus
-        if (view is EditText)
+        if (ev.action == MotionEvent.ACTION_DOWN)
         {
-            val w = currentFocus
-            val location = IntArray(2)
-            w!!.getLocationOnScreen(location)
-            val x = ev.rawX + w.left - location[0]
-            val y = ev.rawY + w.top - location[1]
-
-            if (ev.action == MotionEvent.ACTION_UP && (x < w.left || x >= w.right || y < w.top || y > w.bottom))
+            if (isShouldHideKeyboard(currentFocus, ev))
             {
-                UiUtil.hideInputKeyboard(view)
+                KeyboardUtils.hideSoftInput(this)
             }
         }
-
         return super.dispatchTouchEvent(ev)
+    }
+
+    private fun isShouldHideKeyboard(v: View?, event: MotionEvent): Boolean
+    {
+        if (v is EditText)
+        {
+            val location = IntArray(2)
+            v.getLocationInWindow(location)
+            val left = location[0]
+            val top = location[1]
+            val bottom = top + v.getHeight()
+            val right = left + v.getWidth()
+            return !(event.x > left && event.x < right && event.y > top && event.y < bottom)
+        }
+        return false
     }
 
     override fun getDelegate(): AppCompatDelegate = SkinAppCompatDelegateImpl.get(this, this)
