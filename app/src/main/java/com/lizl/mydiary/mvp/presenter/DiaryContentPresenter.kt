@@ -6,16 +6,17 @@ import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.DiaryBean
+import com.lizl.mydiary.custom.others.GlideEngine
 import com.lizl.mydiary.event.EventConstant
 import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.contract.DiaryContentContract
 import com.lizl.mydiary.util.AppDatabase
 import com.lizl.mydiary.util.DiaryUtil
 import com.lizl.mydiary.util.FileUtil
-import com.lizl.mydiary.custom.others.GlideEngine
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.internal.entity.CaptureStrategy
+import isSameList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -35,7 +36,7 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
             if (diaryBean != null)
             {
                 if (diaryBean.content == content && diaryBean.createTime == createTime && diaryBean.mood == diaryMood
-                    && isSameList(diaryBean.imageList ?: emptyList(), imageList) && diaryBean.tag == diaryTag)
+                    && diaryBean.imageList.isSameList(imageList) && diaryBean.tag == diaryTag)
                 {
                     GlobalScope.launch(Dispatchers.Main) { view?.onDiarySaveSuccess() }
                     return@launch

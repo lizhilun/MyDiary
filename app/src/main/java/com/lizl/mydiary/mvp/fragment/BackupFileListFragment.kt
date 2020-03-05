@@ -3,10 +3,12 @@ package com.lizl.mydiary.mvp.fragment
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
+import com.chad.library.adapter.base.animation.SlideInRightAnimation
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.BackupFileListAdapter
 import com.lizl.mydiary.bean.OperationItem
 import com.lizl.mydiary.bean.TitleBarBtnBean
+import com.lizl.mydiary.custom.others.CustomDiffUtil
 import com.lizl.mydiary.event.EventConstant
 import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.base.BaseFragment
@@ -34,6 +36,12 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
         rv_file_list.layoutManager = LinearLayoutManager(activity)
         rv_file_list.adapter = backupFileListAdapter
 
+        val callback = CustomDiffUtil<File>({ oldItem, newItem -> oldItem.absolutePath == newItem.absolutePath },
+                { oldItem, newItem -> oldItem.absolutePath == newItem.absolutePath })
+
+        backupFileListAdapter.adapterAnimation = SlideInRightAnimation()
+        backupFileListAdapter.setDiffCallback(callback)
+
         backupFileListAdapter.setOnFileItemClickListener { showFileOperationDialog(it) }
 
         val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
@@ -58,7 +66,7 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
     {
         DialogUtil.dismissDialog()
 
-        backupFileListAdapter.addAll(fileList.toMutableList())
+        backupFileListAdapter.setDiffNewData(fileList.toMutableList())
     }
 
     override fun onBackupFileDeleted(file: File)

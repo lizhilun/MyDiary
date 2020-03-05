@@ -3,10 +3,10 @@ package com.lizl.mydiary.custom.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import androidx.core.view.isVisible
+import androidx.core.view.isInvisible
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.blankj.utilcode.util.GsonUtils
+import com.chad.library.adapter.base.animation.SlideInRightAnimation
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.DiaryListAdapter
 import com.lizl.mydiary.bean.DiaryBean
@@ -17,7 +17,7 @@ import com.lizl.mydiary.util.ActivityUtil
 import com.lizl.mydiary.util.AppDatabase
 import com.lizl.mydiary.util.DialogUtil
 import com.lizl.mydiary.util.FileUtil
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
+import isDiarySameContent
 import kotlinx.android.synthetic.main.layout_diary_list.view.*
 import kotlinx.android.synthetic.main.layout_diary_list_herder.view.*
 import kotlinx.coroutines.Dispatchers
@@ -45,6 +45,12 @@ class DiaryListView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
         rv_diary_list.layoutManager = LinearLayoutManager(context)
         rv_diary_list.adapter = diaryListAdapter
 
+        val callback = CustomDiffUtil<DiaryBean>({ oldItem, newItem -> oldItem.uid == newItem.uid },
+                { oldItem, newItem -> oldItem.isDiarySameContent(newItem) })
+
+        diaryListAdapter.adapterAnimation = SlideInRightAnimation()
+        diaryListAdapter.setDiffCallback(callback)
+
         diaryListAdapter.setOnDiaryItemClickListener { ActivityUtil.turnToActivity(DiaryContentActivity::class.java, it) }
 
         diaryListAdapter.setOnDiaryItemLongClickListener { showDiaryOperationListDialog(it) }
@@ -52,8 +58,8 @@ class DiaryListView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
 
     fun showDiaryList(diaryList: List<DiaryBean>)
     {
-        diaryListAdapter.setNewData(diaryList.toMutableList())
-        updateDiaryListHeader()
+        diaryListAdapter.setDiffNewData(diaryList.toMutableList())
+        updateDiaryListHeader(diaryList.size)
     }
 
     fun onDiarySaveSuccess(diaryBean: DiaryBean)
@@ -80,9 +86,14 @@ class DiaryListView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
 
     private fun updateDiaryListHeader()
     {
-        tv_end_footer.isVisible = diaryListAdapter.data.isNotEmpty()
-        layout_diary_header.isVisible = diaryListAdapter.data.isNotEmpty()
-        tv_header_content.text = context.getString(R.string.diary_total_count, diaryListAdapter.data.size)
+        updateDiaryListHeader(diaryListAdapter.data.size)
+    }
+
+    private fun updateDiaryListHeader(dataSize: Int)
+    {
+        tv_end_footer.isInvisible = dataSize == 0
+        layout_diary_header.isInvisible = dataSize == 0
+        tv_header_content.text = context.getString(R.string.diary_total_count, dataSize)
     }
 
     private fun showDiaryOperationListDialog(diaryBean: DiaryBean)
