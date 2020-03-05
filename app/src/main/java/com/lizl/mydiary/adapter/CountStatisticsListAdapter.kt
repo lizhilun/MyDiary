@@ -4,7 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.CountStatisticsBean
 import com.lizl.mydiary.util.DiaryUtil
@@ -12,18 +13,17 @@ import com.lizl.mydiary.util.SkinUtil
 import kotlinx.android.synthetic.main.item_count_statistics.view.*
 import java.util.*
 
-class CountStatisticsListAdapter : RecyclerView.Adapter<CountStatisticsListAdapter.ViewHolder>()
+class CountStatisticsListAdapter : BaseQuickAdapter<CountStatisticsBean.BaseCountStatisticsBean
+        , CountStatisticsListAdapter.ViewHolder>(R.layout.item_count_statistics)
 {
 
-    private val countStatisticsList = mutableListOf<CountStatisticsBean.BaseCountStatisticsBean>()
     private var maxCount = 0
 
     private var onItemClickListener: ((CountStatisticsBean.BaseCountStatisticsBean) -> Unit)? = null
 
     fun setData(countStatisticsList: List<CountStatisticsBean.BaseCountStatisticsBean>)
     {
-        this.countStatisticsList.clear()
-        this.countStatisticsList.addAll(countStatisticsList)
+        setNewData(countStatisticsList.toMutableList())
         maxCount = countStatisticsList.maxBy { it.count }?.count ?: 0
         notifyDataSetChanged()
     }
@@ -33,14 +33,12 @@ class CountStatisticsListAdapter : RecyclerView.Adapter<CountStatisticsListAdapt
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_count_statistics, parent, false))
     }
 
-    override fun getItemCount() = countStatisticsList.size
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int)
+    override fun convert(helper: ViewHolder, item: CountStatisticsBean.BaseCountStatisticsBean)
     {
-        holder.bindViewHolder(countStatisticsList[position])
+        helper.bindViewHolder(item)
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    inner class ViewHolder(itemView: View) : BaseViewHolder(itemView)
     {
         fun bindViewHolder(statisticsBean: CountStatisticsBean.BaseCountStatisticsBean)
         {

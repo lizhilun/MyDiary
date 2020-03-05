@@ -29,7 +29,7 @@ abstract class BaseSettingListFragment<T : BasePresenter<*>> : BaseFragment<T>()
         settingList.clear()
         settingList.add(SettingBean.SettingDivideBean())
         initSettingData()
-        settingAdapter.addAll(settingList)
+        settingAdapter.setNewData(settingList)
     }
 
     abstract fun getSettingName(): String

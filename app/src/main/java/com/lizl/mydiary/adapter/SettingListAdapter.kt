@@ -1,7 +1,9 @@
 package com.lizl.mydiary.adapter
 
 import android.view.View
-import android.view.ViewGroup
+import com.chad.library.adapter.base.BaseDelegateMultiAdapter
+import com.chad.library.adapter.base.delegate.BaseMultiTypeDelegate
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.SettingBean
 import com.lizl.mydiary.util.DialogUtil
@@ -9,7 +11,7 @@ import kotlinx.android.synthetic.main.item_setting_boolean.view.*
 import kotlinx.android.synthetic.main.item_setting_normal.view.*
 import kotlinx.android.synthetic.main.item_setting_value.view.*
 
-class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListAdapter.ViewHolder>()
+class SettingListAdapter : BaseDelegateMultiAdapter<SettingBean.SettingBaseBean, SettingListAdapter.ViewHolder>()
 {
 
     companion object
@@ -21,46 +23,47 @@ class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListA
         const val ITEM_TYPE_LONG_RADIO = 5
     }
 
-    override fun createCustomViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
+    init
     {
-        return ViewHolder(inflateView(when (viewType)
+        setMultiTypeDelegate(object : BaseMultiTypeDelegate<SettingBean.SettingBaseBean>()
         {
-            ITEM_TYPE_BOOLEAN    -> R.layout.item_setting_boolean
-            ITEM_TYPE_DIVIDE     -> R.layout.item_setting_divide
-            ITEM_TYPE_NORMAL     -> R.layout.item_setting_normal
-            ITEM_TYPE_INT_RADIO  -> R.layout.item_setting_value
-            ITEM_TYPE_LONG_RADIO -> R.layout.item_setting_value
-            else                 -> R.layout.item_setting_divide
-        }, parent))
-    }
+            override fun getItemType(data: List<SettingBean.SettingBaseBean>, position: Int): Int
+            {
+                return when (data[position])
+                {
+                    is SettingBean.SettingDivideBean    -> ITEM_TYPE_DIVIDE
+                    is SettingBean.SettingBooleanBean   -> ITEM_TYPE_BOOLEAN
+                    is SettingBean.SettingNormalBean    -> ITEM_TYPE_NORMAL
+                    is SettingBean.SettingIntRadioBean  -> ITEM_TYPE_INT_RADIO
+                    is SettingBean.SettingLongRadioBean -> ITEM_TYPE_LONG_RADIO
+                    else                                -> ITEM_TYPE_DIVIDE
+                }
+            }
+        })
 
-    override fun bindCustomViewHolder(holder: ViewHolder, bean: SettingBean.SettingBaseBean, position: Int)
-    {
-        when (bean)
-        {
-            is SettingBean.SettingBooleanBean   -> holder.bindBooleanViewHolder(bean, position)
-            is SettingBean.SettingNormalBean    -> holder.bindNormalViewHolder(bean)
-            is SettingBean.SettingIntRadioBean  -> holder.bindRadioViewHolder(bean)
-            is SettingBean.SettingLongRadioBean -> holder.bindRadioViewHolder(bean)
+        getMultiTypeDelegate()?.let {
+            it.addItemType(ITEM_TYPE_DIVIDE, R.layout.item_setting_divide)
+            it.addItemType(ITEM_TYPE_BOOLEAN, R.layout.item_setting_boolean)
+            it.addItemType(ITEM_TYPE_NORMAL, R.layout.item_setting_normal)
+            it.addItemType(ITEM_TYPE_INT_RADIO, R.layout.item_setting_value)
+            it.addItemType(ITEM_TYPE_LONG_RADIO, R.layout.item_setting_value)
         }
     }
 
-    override fun getCustomItemViewType(position: Int): Int
+    override fun convert(helper: ViewHolder, item: SettingBean.SettingBaseBean)
     {
-        return when (getItem(position))
+        when (item)
         {
-            is SettingBean.SettingDivideBean    -> ITEM_TYPE_DIVIDE
-            is SettingBean.SettingBooleanBean   -> ITEM_TYPE_BOOLEAN
-            is SettingBean.SettingNormalBean    -> ITEM_TYPE_NORMAL
-            is SettingBean.SettingIntRadioBean  -> ITEM_TYPE_INT_RADIO
-            is SettingBean.SettingLongRadioBean -> ITEM_TYPE_LONG_RADIO
-            else                                -> ITEM_TYPE_DIVIDE
+            is SettingBean.SettingBooleanBean   -> helper.bindBooleanViewHolder(item)
+            is SettingBean.SettingNormalBean    -> helper.bindNormalViewHolder(item)
+            is SettingBean.SettingIntRadioBean  -> helper.bindRadioViewHolder(item)
+            is SettingBean.SettingLongRadioBean -> helper.bindRadioViewHolder(item)
         }
     }
 
     inner class ViewHolder(itemView: View) : BaseViewHolder(itemView)
     {
-        fun bindBooleanViewHolder(settingItem: SettingBean.SettingBooleanBean, position: Int)
+        fun bindBooleanViewHolder(settingItem: SettingBean.SettingBooleanBean)
         {
             val isChecked = settingItem.getValue()
             itemView.tv_boolean_setting_name.text = settingItem.settingName
@@ -70,7 +73,7 @@ class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListA
                 if (settingItem.needSave)
                 {
                     settingItem.saveValue(!isChecked)
-                    notifyItemChanged(position)
+                    setData(getItemPosition(settingItem), settingItem)
                 }
                 settingItem.callback.invoke(!isChecked, settingItem)
             }
@@ -104,7 +107,7 @@ class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListA
                     settingItem.radioMap.forEach {
                         if (it.value == result)
                         {
-                            update(settingItem)
+                            setData(data.indexOf(settingItem), settingItem)
                             if (settingItem is SettingBean.SettingIntRadioBean)
                             {
                                 settingItem.saveValue(it.key as Int)
@@ -121,5 +124,10 @@ class SettingListAdapter : BaseAdapter<SettingBean.SettingBaseBean, SettingListA
                 }
             }
         }
+    }
+
+    fun update(item: SettingBean.SettingBaseBean)
+    {
+        setData(getItemPosition(item), item)
     }
 }

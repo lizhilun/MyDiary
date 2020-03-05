@@ -1,30 +1,23 @@
 package com.lizl.mydiary.adapter
 
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.OperationItem
 import kotlinx.android.synthetic.main.item_operation.view.*
 
-class OperationListAdapter(private var operationList: List<OperationItem>) : RecyclerView.Adapter<OperationListAdapter.ViewHolder>()
+class OperationListAdapter(operationList: List<OperationItem>) :
+        BaseQuickAdapter<OperationItem, OperationListAdapter.ViewHolder>(R.layout.item_operation, operationList.toMutableList())
 {
     private var onOperationItemClickListener: (() -> Unit)? = null
 
-    override fun getItemCount(): Int = operationList.size
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
+    override fun convert(helper: ViewHolder, item: OperationItem)
     {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_operation, parent, false))
+        helper.bindViewHolder(item)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int)
-    {
-        holder.bindViewHolder(operationList[position])
-    }
-
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    inner class ViewHolder(itemView: View) : BaseViewHolder(itemView)
     {
         fun bindViewHolder(operationItem: OperationItem)
         {

@@ -1,38 +1,21 @@
 package com.lizl.mydiary.adapter
 
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.lizl.mydiary.R
 import kotlinx.android.synthetic.main.item_mood.view.*
 
-class MoodListAdapter : RecyclerView.Adapter<MoodListAdapter.ViewHolder>()
+class MoodListAdapter : BaseQuickAdapter<Int, MoodListAdapter.ViewHolder>(R.layout.item_mood)
 {
-    private val moodResList = mutableListOf<Int>()
-
     private var onMoodItemClickListener: ((moodRedId: Int) -> Unit)? = null
 
-    fun setData(moodResList: List<Int>)
+    override fun convert(helper: ViewHolder, item: Int)
     {
-        this.moodResList.clear()
-        this.moodResList.addAll(moodResList)
-        notifyDataSetChanged()
+        helper.bindViewHolder(item)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
-    {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_mood, parent, false))
-    }
-
-    override fun getItemCount() = moodResList.size
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int)
-    {
-        holder.bindViewHolder(moodResList[position])
-    }
-
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    inner class ViewHolder(itemView: View) : BaseViewHolder(itemView)
     {
         fun bindViewHolder(moodResId: Int)
         {

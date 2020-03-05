@@ -98,7 +98,7 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
     {
         AppConfig.getBackupConfig().setAutoBackup(true)
         settingAdapter.update(autoBackupItem)
-        settingAdapter.insert(autoBackupTimeItem, settingAdapter.getPosition(autoBackupItem) + 1)
+        settingAdapter.addData(settingAdapter.getItemPosition(autoBackupItem) + 1, autoBackupTimeItem)
     }
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)

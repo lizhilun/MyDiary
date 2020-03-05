@@ -1,10 +1,10 @@
 package com.lizl.mydiary.adapter
 
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
@@ -14,21 +14,14 @@ import com.lizl.mydiary.util.DiaryUtil
 import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.item_diary_list.view.*
 
-class DiaryListAdapter : BaseAdapter<DiaryBean, DiaryListAdapter.ViewHolder>()
+class DiaryListAdapter() : BaseQuickAdapter<DiaryBean, DiaryListAdapter.ViewHolder>(R.layout.item_diary_list)
 {
-    override fun getCustomItemViewType(position: Int) = 0
-
     private var onDiaryItemClickListener: ((DiaryBean) -> Unit)? = null
     private var onDiaryItemLongClickListener: ((DiaryBean) -> Unit)? = null
 
-    override fun createCustomViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
+    override fun convert(helper: ViewHolder, item: DiaryBean)
     {
-        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_diary_list, parent, false))
-    }
-
-    override fun bindCustomViewHolder(holder: ViewHolder, bean: DiaryBean, position: Int)
-    {
-        holder.bindDiaryViewHolder(bean)
+        helper.bindDiaryViewHolder(item)
     }
 
     inner class ViewHolder(itemView: View) : BaseViewHolder(itemView)
@@ -107,6 +100,6 @@ class DiaryListAdapter : BaseAdapter<DiaryBean, DiaryListAdapter.ViewHolder>()
                 }
             }
         }
-        add(diaryBean, index)
+        addData(index, diaryBean)
     }
 }

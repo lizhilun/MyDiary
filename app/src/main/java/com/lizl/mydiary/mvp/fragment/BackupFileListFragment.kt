@@ -2,7 +2,6 @@ package com.lizl.mydiary.mvp.fragment
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.BackupFileListAdapter
@@ -59,8 +58,7 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
     {
         DialogUtil.dismissDialog()
 
-        backupFileListAdapter.clear()
-        backupFileListAdapter.addAll(fileList)
+        backupFileListAdapter.addAll(fileList.toMutableList())
     }
 
     override fun onBackupFileDeleted(file: File)

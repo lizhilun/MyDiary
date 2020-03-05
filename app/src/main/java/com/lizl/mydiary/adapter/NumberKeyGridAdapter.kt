@@ -1,30 +1,23 @@
 package com.lizl.mydiary.adapter
 
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import kotlinx.android.synthetic.main.item_number_key.view.*
 
-class NumberKeyGridAdapter(private val keyList: List<String>) : RecyclerView.Adapter<NumberKeyGridAdapter.ViewHolder>()
+class NumberKeyGridAdapter(keyList: List<String>) : BaseQuickAdapter<String, NumberKeyGridAdapter.ViewHolder>(R.layout.item_number_key, keyList.toMutableList())
 {
+
     private var onNumberItemClickListener: ((String) -> Unit)? = null
 
-    override fun getItemCount(): Int = keyList.size
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
+    override fun convert(helper: ViewHolder, item: String)
     {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_number_key, parent, false))
+        helper.bindViewHolder(item)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int)
-    {
-        holder.bindViewHolder(keyList[position])
-    }
-
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    inner class ViewHolder(itemView: View) : BaseViewHolder(itemView)
     {
         fun bindViewHolder(keyValue: String)
         {

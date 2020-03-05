@@ -18,7 +18,7 @@ class DialogMoodSelect(context: Context, private val withAll: Boolean, private v
         rv_mood_grid.layoutManager = GridLayoutManager(context, DiaryUtil.getMoodList(withAll).size)
         rv_mood_grid.adapter = moodListAdapter
 
-        moodListAdapter.setData(DiaryUtil.getMoodResList(withAll))
+        moodListAdapter.setNewData(DiaryUtil.getMoodResList(withAll).toMutableList())
 
         moodListAdapter.setOnMoodItemClickListener {
             onMoodSelectListener.invoke(DiaryUtil.getMoodByMoodRes(it))

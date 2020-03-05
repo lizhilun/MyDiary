@@ -1,30 +1,22 @@
 package com.lizl.mydiary.adapter
 
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.lizl.mydiary.R
 import kotlinx.android.synthetic.main.item_diary_tag.view.*
 
-class DiaryTagAdapter(private val tagList: List<String>) : RecyclerView.Adapter<DiaryTagAdapter.ViewHolder>()
+class DiaryTagAdapter(tagList: List<String>) : BaseQuickAdapter<String, DiaryTagAdapter.ViewHolder>(R.layout.item_diary_tag, tagList.toMutableList())
 {
 
     private var onTagItemClickListener: ((String) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
+    override fun convert(helper: ViewHolder, item: String)
     {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_diary_tag, parent, false))
+        helper.bindViewHolder(item)
     }
 
-    override fun getItemCount() = tagList.size
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int)
-    {
-        holder.bindViewHolder(tagList[position])
-    }
-
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    inner class ViewHolder(itemView: View) : BaseViewHolder(itemView)
     {
         fun bindViewHolder(tag: String)
         {

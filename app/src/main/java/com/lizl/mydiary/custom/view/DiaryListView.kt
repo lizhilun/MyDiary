@@ -6,15 +6,18 @@ import android.view.LayoutInflater
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.blankj.utilcode.util.GsonUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.DiaryListAdapter
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.OperationItem
+import com.lizl.mydiary.custom.others.CustomDiffUtil
 import com.lizl.mydiary.mvp.activity.DiaryContentActivity
 import com.lizl.mydiary.util.ActivityUtil
 import com.lizl.mydiary.util.AppDatabase
 import com.lizl.mydiary.util.DialogUtil
 import com.lizl.mydiary.util.FileUtil
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import kotlinx.android.synthetic.main.layout_diary_list.view.*
 import kotlinx.android.synthetic.main.layout_diary_list_herder.view.*
 import kotlinx.coroutines.Dispatchers
@@ -49,14 +52,13 @@ class DiaryListView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
 
     fun showDiaryList(diaryList: List<DiaryBean>)
     {
-        diaryListAdapter.clear()
-        diaryListAdapter.addAll(diaryList)
+        diaryListAdapter.setNewData(diaryList.toMutableList())
         updateDiaryListHeader()
     }
 
     fun onDiarySaveSuccess(diaryBean: DiaryBean)
     {
-        val findDiaryBean = diaryListAdapter.getData().find { it.uid == diaryBean.uid }
+        val findDiaryBean = diaryListAdapter.data.find { it.uid == diaryBean.uid }
         if (findDiaryBean != null)
         {
             onDiaryDelete(findDiaryBean)
@@ -78,9 +80,9 @@ class DiaryListView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
 
     private fun updateDiaryListHeader()
     {
-        tv_end_footer.isVisible = diaryListAdapter.getData().isNotEmpty()
-        layout_diary_header.isVisible = diaryListAdapter.getData().isNotEmpty()
-        tv_header_content.text = context.getString(R.string.diary_total_count, diaryListAdapter.getData().size)
+        tv_end_footer.isVisible = diaryListAdapter.data.isNotEmpty()
+        layout_diary_header.isVisible = diaryListAdapter.data.isNotEmpty()
+        tv_header_content.text = context.getString(R.string.diary_total_count, diaryListAdapter.data.size)
     }
 
     private fun showDiaryOperationListDialog(diaryBean: DiaryBean)

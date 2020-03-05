@@ -1,15 +1,16 @@
 package com.lizl.mydiary.adapter
 
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseDelegateMultiAdapter
+import com.chad.library.adapter.base.delegate.BaseMultiTypeDelegate
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.TitleBarBtnBean
 import kotlinx.android.synthetic.main.item_title_bar_image_btn.view.*
 import kotlinx.android.synthetic.main.item_title_bar_text_btn.view.*
 
-class TitleBarBtnListAdapter(private val btnList: List<TitleBarBtnBean.BaseBtnBean>) : RecyclerView.Adapter<TitleBarBtnListAdapter.ViewHolder>()
+class TitleBarBtnListAdapter(btnList: List<TitleBarBtnBean.BaseBtnBean>) :
+        BaseDelegateMultiAdapter<TitleBarBtnBean.BaseBtnBean, TitleBarBtnListAdapter.ViewHolder>(btnList.toMutableList())
 {
 
     companion object
@@ -18,41 +19,36 @@ class TitleBarBtnListAdapter(private val btnList: List<TitleBarBtnBean.BaseBtnBe
         const val ITEM_TYPE_TEXT = 2
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
+    init
     {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(when (viewType)
+        setMultiTypeDelegate(object : BaseMultiTypeDelegate<TitleBarBtnBean.BaseBtnBean>()
         {
-            ITEM_TYPE_IMAGE -> R.layout.item_title_bar_image_btn
-            else            -> R.layout.item_title_bar_text_btn
-        }, parent, false))
-    }
+            override fun getItemType(data: List<TitleBarBtnBean.BaseBtnBean>, position: Int): Int
+            {
+                return when (data[position])
+                {
+                    is TitleBarBtnBean.ImageBtnBean -> ITEM_TYPE_IMAGE
+                    else                            -> ITEM_TYPE_TEXT
+                }
+            }
+        })
 
-    override fun getItemCount() = btnList.size
-
-    override fun getItemViewType(position: Int): Int
-    {
-        if (position >= itemCount)
-        {
-            return -1
-        }
-        return when
-        {
-            btnList[position] is TitleBarBtnBean.ImageBtnBean -> ITEM_TYPE_IMAGE
-            btnList[position] is TitleBarBtnBean.TextBtnBean  -> ITEM_TYPE_TEXT
-            else                                              -> -1
+        getMultiTypeDelegate()?.let {
+            it.addItemType(ITEM_TYPE_IMAGE, R.layout.item_title_bar_image_btn)
+            it.addItemType(ITEM_TYPE_TEXT, R.layout.item_title_bar_text_btn)
         }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int)
+    override fun convert(helper: ViewHolder, item: TitleBarBtnBean.BaseBtnBean)
     {
-        when (getItemViewType(position))
+        when (helper.itemViewType)
         {
-            ITEM_TYPE_IMAGE -> holder.bindImageHolder(btnList[position] as TitleBarBtnBean.ImageBtnBean)
-            ITEM_TYPE_TEXT  -> holder.bindTextHolder(btnList[position] as TitleBarBtnBean.TextBtnBean)
+            ITEM_TYPE_IMAGE -> helper.bindImageHolder(item as TitleBarBtnBean.ImageBtnBean)
+            ITEM_TYPE_TEXT  -> helper.bindTextHolder(item as TitleBarBtnBean.TextBtnBean)
         }
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    inner class ViewHolder(itemView: View) : BaseViewHolder(itemView)
     {
         fun bindImageHolder(imageBtnItem: TitleBarBtnBean.ImageBtnBean)
         {

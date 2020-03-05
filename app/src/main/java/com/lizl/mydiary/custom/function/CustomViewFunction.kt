@@ -1,6 +1,8 @@
 package com.lizl.mydiary.custom.function
 
 import android.widget.EditText
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jungly.gridpasswordview.GridPasswordView
 
 fun GridPasswordView.getEditText(): EditText?

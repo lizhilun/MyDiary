@@ -40,13 +40,13 @@ class SecuritySettingFragment : BaseSettingListFragment<EmptyPresenter>()
                     AppConfig.getSecurityConfig().setAppLockPassword(it)
                     AppConfig.getSecurityConfig().setAppLockOn(true)
                     settingAdapter.update(bean)
-                    var insertPosition = settingAdapter.getPosition(bean)
+                    var insertPosition = settingAdapter.getItemPosition(bean)
                     if (BiometricAuthenticationUtil.isFingerprintSupport())
                     {
-                        settingAdapter.insert(fingerprintItem, ++insertPosition)
+                        settingAdapter.addData(++insertPosition, fingerprintItem)
                     }
-                    settingAdapter.insert(modifyPasswordItem, ++insertPosition)
-                    settingAdapter.insert(lockTimeItem, ++insertPosition)
+                    settingAdapter.addData(++insertPosition, modifyPasswordItem)
+                    settingAdapter.addData(++insertPosition, lockTimeItem)
                 }
 
                 if (AppConfig.getSecurityConfig().getAppLockPassword().isBlank())
