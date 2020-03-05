@@ -6,10 +6,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/transparent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/colorWindowBg_night</item>
+        <item name="android:windowBackground">@color/black</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="GlobalTextStyle">
@@ -24,7 +25,8 @@
 
     <style name="ToolbarLayoutStyle">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/global_toolbar_height</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="titleBarHeight">@dimen/global_toolbar_height</item>
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:paddingStart">@dimen/toolbar_content_padding_edge</item>
         <item name="android:translationZ">6dp</item>
