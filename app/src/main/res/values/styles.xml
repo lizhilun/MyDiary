@@ -32,12 +32,6 @@
         <item name="android:translationZ">6dp</item>
     </style>
 
-    <style name="ToolbarLayoutStyleStyleWithoutStartPadding">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/global_toolbar_height</item>
-        <item name="android:background">@color/colorPrimary</item>
-    </style>
-
     <style name="ToolbarLayoutBackIconStyle">
         <item name="android:layout_width">@dimen/toolbar_back_icon_size</item>
         <item name="android:layout_height">match_parent</item>

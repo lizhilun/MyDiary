@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.CountStatisticsBean
 import com.lizl.mydiary.util.DiaryUtil
+import com.lizl.mydiary.util.SkinUtil
 import kotlinx.android.synthetic.main.item_count_statistics.view.*
 import java.util.*
 
@@ -49,7 +50,9 @@ class CountStatisticsListAdapter : RecyclerView.Adapter<CountStatisticsListAdapt
                 {
                     itemView.iv_statistics.isVisible = true
                     itemView.tv_statistics.isVisible = false
-                    itemView.iv_statistics.setImageResource(DiaryUtil.getMoodResByMood(statisticsBean.mood))
+                    val moodDrawable = itemView.context.getDrawable(DiaryUtil.getMoodResByMood(statisticsBean.mood))
+                    moodDrawable?.setTint(SkinUtil.getGlobalTextColor())
+                    itemView.iv_statistics.setImageDrawable(moodDrawable)
                 }
                 is CountStatisticsBean.TimeStatisticsBean ->
                 {
