@@ -58,8 +58,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
 
         EventBus.getDefault().register(this)
 
-        BarUtils.addMarginTopEqualStatusBarHeight(findViewById<ViewGroup>(android.R.id.content).getChildAt(0))
-
         SkinUtil.loadSkin(this)
 
         presenter = initPresenter()

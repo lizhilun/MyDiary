@@ -25,6 +25,7 @@
     <color name="color_dialog_button_text_enable">@color/colorPrimary</color>
     <color name="color_dialog_button_text_disable">#cc999999</color>
 
+    <color name="color_lock_activity_bg">#FFFFFF</color>
     <color name="color_number_key_text">@color/colorTextColor</color>
     <color name="color_number_key_divide">@color/colorDivideLine</color>
     <color name="color_number_key_bg">#FFFFFF</color>

@@ -3,6 +3,7 @@
     <declare-styleable name="CustomTitleBar">
         <attr name="backBtnVisible" format="boolean" />
         <attr name="titleText" format="string|reference" />
+        <attr name="titleBarHeight" format="dimension" />
     </declare-styleable>
 
 </resources>

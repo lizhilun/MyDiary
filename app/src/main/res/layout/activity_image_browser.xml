@@ -5,13 +5,19 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
+    <com.lizl.mydiary.custom.view.StatusBarPlaceholder
+        android:id="@+id/layout_status_bar_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_back"
         style="@style/ToolbarLayoutBackIconStyle"
         android:layout_height="@dimen/global_toolbar_height"
         android:layout_marginStart="@dimen/toolbar_content_padding_edge"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_status_bar_placeholder" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_cur_image"
