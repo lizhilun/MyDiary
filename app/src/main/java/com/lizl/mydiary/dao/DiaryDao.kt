@@ -13,10 +13,10 @@ interface DiaryDao : BaseDao<DiaryBean>
     @Query("select count (*) from diaries")
     fun getDiaryCount(): Int
 
-    @Query("select * from diaries where content like '%' || :keyWord || '%'")
+    @Query("select * from diaries where content like '%' || :keyWord || '%' order by createTime desc")
     fun searchDiary(keyWord: String): MutableList<DiaryBean>
 
-    @Query("select * from diaries where tag = :keyWord")
+    @Query("select * from diaries where tag = :keyWord  order by createTime desc")
     fun searchDiaryByTag(keyWord: String): MutableList<DiaryBean>
 
     @Query("select * from diaries where uid == :uid")
