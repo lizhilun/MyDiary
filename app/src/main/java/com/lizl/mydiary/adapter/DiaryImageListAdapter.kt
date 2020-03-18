@@ -10,10 +10,13 @@ import com.lizl.mydiary.util.GlideUtil
 import kotlinx.android.synthetic.main.item_diary_image.view.*
 
 class DiaryImageListAdapter(private var editable: Boolean, private val maxImageCount: Int, private val showAll: Boolean) :
-        RecyclerView.Adapter<DiaryImageListAdapter.ViewHolder>()
+    RecyclerView.Adapter<DiaryImageListAdapter.ViewHolder>()
 {
-    private val VIEW_TYPE_ADD_BTN = 1
-    private val VIEW_TYPE_IMAGE = 2
+    companion object
+    {
+        private const val VIEW_TYPE_ADD_BTN = 1
+        private const val VIEW_TYPE_IMAGE = 2
+    }
 
     private lateinit var context: Context
 

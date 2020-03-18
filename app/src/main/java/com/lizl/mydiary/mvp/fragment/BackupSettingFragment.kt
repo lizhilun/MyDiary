@@ -1,6 +1,5 @@
 package com.lizl.mydiary.mvp.fragment
 
-import android.Manifest
 import android.content.Context
 import com.blankj.utilcode.util.ToastUtils
 import com.lizl.mydiary.R
@@ -10,20 +9,9 @@ import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.mvp.contract.BackupSettingContract
 import com.lizl.mydiary.mvp.presenter.BackupSettingPresenter
 import com.lizl.mydiary.util.DialogUtil
-import com.lizl.mydiary.util.UiUtil
-import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.OnNeverAskAgain
-import permissions.dispatcher.OnPermissionDenied
-import permissions.dispatcher.RuntimePermissions
 
-@RuntimePermissions
 class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(), BackupSettingContract.View
 {
-
-    private var curWritePermissionsCode = 0
-    private val REQUEST_AUTOBACKUP = 1
-    private val REQUEST_BACKUPDIARYDATA = 2
-    private val REQUEST_RESTOREDIARYDATA = 3
 
     private lateinit var autoBackupItem: SettingBean.SettingBooleanBean
     private lateinit var autoBackupTimeItem: SettingBean.SettingLongRadioBean
@@ -41,9 +29,9 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
         autoBackupTimeItem = SettingBean.SettingLongRadioBean(getString(R.string.setting_auto_backup_interval), ConfigConstant.APP_AUTO_BACKUP_PERIOD,
                 ConfigConstant.DEFAULT_APP_AUTO_BACKUP_PERIOD, timeMap) {}
 
-        settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_backup)) { backupDiaryDataWithPermissionCheck() })
+        settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_backup)) { backupDiaryData() })
 
-        settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_restore)) { restoreDiaryDataWithPermissionCheck() })
+        settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_restore)) { turnToFragment(R.id.backupFileListFragment) })
 
         settingList.add(SettingBean.SettingDivideBean())
 
@@ -51,7 +39,7 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
                 defaultValue = ConfigConstant.DEFAULT_IS_AUTO_BACKUP_ON, needSave = false) { result, bean ->
             if (result)
             {
-                autoBackupWithPermissionCheck()
+                autoBackup()
             }
             else
             {
@@ -93,26 +81,18 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
         })
     }
 
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    fun autoBackup()
+    private fun autoBackup()
     {
         AppConfig.getBackupConfig().setAutoBackup(true)
         settingAdapter.update(autoBackupItem)
         settingAdapter.addData(settingAdapter.getItemPosition(autoBackupItem) + 1, autoBackupTimeItem)
     }
 
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    fun backupDiaryData()
+    private fun backupDiaryData()
     {
         DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.setting_backup), getString(R.string.notify_backup_data)) {
             presenter.backupData()
         }
-    }
-
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    fun restoreDiaryData()
-    {
-        turnToFragment(R.id.backupFileListFragment)
     }
 
     override fun onStartBackup()
@@ -124,34 +104,5 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
     {
         DialogUtil.dismissDialog()
         ToastUtils.showShort(getString(R.string.backup_data) + getString(if (result) R.string.success else R.string.failed))
-    }
-
-    @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    fun onPermissionDenied()
-    {
-        DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify_failed_to_get_permission),
-                getString(R.string.notify_permission_be_refused)) {
-            when (curWritePermissionsCode)
-            {
-                REQUEST_AUTOBACKUP       -> autoBackupWithPermissionCheck()
-                REQUEST_BACKUPDIARYDATA  -> backupDiaryDataWithPermissionCheck()
-                REQUEST_RESTOREDIARYDATA -> restoreDiaryDataWithPermissionCheck()
-            }
-        }
-    }
-
-    @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    fun onPermissionNeverAskAgain()
-    {
-        DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify_failed_to_get_permission),
-                getString(R.string.notify_permission_be_refused_and_never_ask_again)) { UiUtil.goToAppDetailPage() }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray)
-    {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        // NOTE: delegate the permission handling to generated function
-        curWritePermissionsCode = requestCode
-        onRequestPermissionsResult(requestCode, grantResults)
     }
 }

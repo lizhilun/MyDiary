@@ -16,11 +16,11 @@ class SettingListAdapter : BaseDelegateMultiAdapter<SettingBean.SettingBaseBean,
 
     companion object
     {
-        const val ITEM_TYPE_DIVIDE = 1
-        const val ITEM_TYPE_BOOLEAN = 2
-        const val ITEM_TYPE_NORMAL = 3
-        const val ITEM_TYPE_INT_RADIO = 4
-        const val ITEM_TYPE_LONG_RADIO = 5
+        private const val ITEM_TYPE_DIVIDE = 1
+        private const val ITEM_TYPE_BOOLEAN = 2
+        private const val ITEM_TYPE_NORMAL = 3
+        private const val ITEM_TYPE_INT_RADIO = 4
+        private const val ITEM_TYPE_LONG_RADIO = 5
     }
 
     init
@@ -112,8 +112,7 @@ class SettingListAdapter : BaseDelegateMultiAdapter<SettingBean.SettingBaseBean,
                             {
                                 settingItem.saveValue(it.key as Int)
                                 settingItem.callback.invoke(settingItem)
-                            }
-                            else if (settingItem is SettingBean.SettingLongRadioBean)
+                            } else if (settingItem is SettingBean.SettingLongRadioBean)
                             {
                                 settingItem.saveValue(it.key as Long)
                                 settingItem.callback.invoke(settingItem)
