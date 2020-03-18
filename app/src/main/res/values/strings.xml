@@ -27,7 +27,6 @@
     <string name="notify_permission_be_refused">权限获取被拒绝，请重新授权</string>
     <string name="notify_permission_be_refused_and_never_ask_again">权限获取被拒绝，请在设置界面中开启</string>
     <string name="notify_diary_has_not_save_sure_to_quit">编辑的内容还没有保存，确认退出？</string>
-    <string name="notify_empty_diary_cannot_save">内容为空，无法保存，是否退出？</string>
 
     <string name="setting_security">安全设置</string>
     <string name="setting_app_lock">密码保护</string>
@@ -49,7 +48,6 @@
 
     <string name="setting_layout_style">样式布局</string>
     <string name="setting_paragraph_head_indent">段首缩进</string>
-    <string name="setting_font_size">段首缩进</string>
     <string name="setting_diary_tag">日记TAG</string>
     <string name="setting_font">字体设置</string>
     <string name="font_setting_sample_title">预览字体效果</string>
@@ -103,5 +101,4 @@
 
     <string name="new_add">新建</string>
 
-    <string name="ignore">忽略</string>
 </resources>

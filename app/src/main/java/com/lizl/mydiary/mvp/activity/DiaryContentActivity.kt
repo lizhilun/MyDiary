@@ -120,13 +120,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
 
     private fun onFinishBtnClick()
     {
-        if (isEmptyDiary())
-        {
-            DialogUtil.showOperationConfirmDialog(this, getString(R.string.notify), getString(R.string.notify_empty_diary_cannot_save)) {
-                super.onBackPressed()
-            }
-            return
-        }
+        if (isEmptyDiary()) return
 
         val tagText = tv_diary_tag.text.toString()
         val tag = tagText.substring(1, tagText.length - 1)

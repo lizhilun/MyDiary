@@ -5,21 +5,18 @@ import android.content.DialogInterface
 import android.hardware.biometrics.BiometricManager
 import android.hardware.biometrics.BiometricPrompt
 import android.os.CancellationSignal
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 
 object BiometricAuthenticationUtil
 {
-    private const val TAG = "BiometricAuthenticationUtil"
-
     private val mBiometricPrompt: BiometricPrompt by lazy {
         BiometricPrompt.Builder(UiApplication.instance).setTitle(UiApplication.instance.getString(R.string.fingerprint_authentication_dialog_title))
             .setDescription(UiApplication.instance.getString(R.string.fingerprint_authentication_dialog_description))
             .setNegativeButton(UiApplication.instance.getString(R.string.cancel),
                 ContextCompat.getMainExecutor(UiApplication.instance),
-                DialogInterface.OnClickListener { _, _ -> Log.d(TAG, "cancel button click") }).build()
+                DialogInterface.OnClickListener { _, _ -> }).build()
     }
 
     private val mBiometricManager: BiometricManager by lazy { UiApplication.instance.getSystemService(Context.BIOMETRIC_SERVICE) as BiometricManager }
@@ -29,8 +26,5 @@ object BiometricAuthenticationUtil
         mBiometricPrompt.authenticate(CancellationSignal(), ContextCompat.getMainExecutor(UiApplication.instance), authenticateCallback)
     }
 
-    fun isFingerprintSupport(): Boolean
-    {
-        return mBiometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS
-    }
+    fun isFingerprintSupport() = mBiometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS
 }
