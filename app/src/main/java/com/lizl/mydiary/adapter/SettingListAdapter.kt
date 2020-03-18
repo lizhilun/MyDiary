@@ -73,9 +73,9 @@ class SettingListAdapter : BaseDelegateMultiAdapter<SettingBean.SettingBaseBean,
                 if (settingItem.needSave)
                 {
                     settingItem.saveValue(!isChecked)
-                    setData(getItemPosition(settingItem), settingItem)
+                    update(settingItem)
                 }
-                settingItem.callback.invoke(!isChecked, settingItem)
+                settingItem.callback?.invoke(!isChecked, settingItem)
             }
         }
 
@@ -111,11 +111,12 @@ class SettingListAdapter : BaseDelegateMultiAdapter<SettingBean.SettingBaseBean,
                             if (settingItem is SettingBean.SettingIntRadioBean)
                             {
                                 settingItem.saveValue(it.key as Int)
-                                settingItem.callback.invoke(settingItem)
-                            } else if (settingItem is SettingBean.SettingLongRadioBean)
+                                settingItem.callback?.invoke(settingItem)
+                            }
+                            else if (settingItem is SettingBean.SettingLongRadioBean)
                             {
                                 settingItem.saveValue(it.key as Long)
-                                settingItem.callback.invoke(settingItem)
+                                settingItem.callback?.invoke(settingItem)
                             }
                             return@showRadioGroupDialog
                         }

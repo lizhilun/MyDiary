@@ -29,26 +29,27 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
         autoBackupTimeItem = SettingBean.SettingLongRadioBean(getString(R.string.setting_auto_backup_interval), ConfigConstant.APP_AUTO_BACKUP_PERIOD,
                 ConfigConstant.DEFAULT_APP_AUTO_BACKUP_PERIOD, timeMap) {}
 
-        settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_backup)) { backupDiaryData() })
+        settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_backup)) {
+            DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.setting_backup), getString(R.string.notify_backup_data)) {
+                presenter.backupData()
+            }
+        })
 
         settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_restore)) { turnToFragment(R.id.backupFileListFragment) })
 
         settingList.add(SettingBean.SettingDivideBean())
 
-        autoBackupItem = SettingBean.SettingBooleanBean(settingName = getString(R.string.setting_auto_backup), settingKey = ConfigConstant.IS_AUTO_BACKUP_ON,
-                defaultValue = ConfigConstant.DEFAULT_IS_AUTO_BACKUP_ON, needSave = false) { result, bean ->
+        settingList.add(SettingBean.SettingBooleanBean(settingName = getString(R.string.setting_auto_backup), settingKey = ConfigConstant.IS_AUTO_BACKUP_ON,
+                defaultValue = ConfigConstant.DEFAULT_IS_AUTO_BACKUP_ON, needSave = true) { result, bean ->
             if (result)
             {
-                autoBackup()
+                settingAdapter.addData(settingAdapter.getItemPosition(bean) + 1, autoBackupTimeItem)
             }
             else
             {
-                bean.saveValue(false)
-                settingAdapter.update(bean)
                 settingAdapter.remove(autoBackupTimeItem)
             }
-        }
-        settingList.add(autoBackupItem)
+        })
 
         if (AppConfig.getBackupConfig().isAutoBackup())
         {
@@ -79,20 +80,6 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
                 settingAdapter.update(bean)
             }
         })
-    }
-
-    private fun autoBackup()
-    {
-        AppConfig.getBackupConfig().setAutoBackup(true)
-        settingAdapter.update(autoBackupItem)
-        settingAdapter.addData(settingAdapter.getItemPosition(autoBackupItem) + 1, autoBackupTimeItem)
-    }
-
-    private fun backupDiaryData()
-    {
-        DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.setting_backup), getString(R.string.notify_backup_data)) {
-            presenter.backupData()
-        }
     }
 
     override fun onStartBackup()
