@@ -22,9 +22,8 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
 
             if (diaryBean != null)
             {
-                if (diaryBean.content == content && diaryBean.createTime == createTime && diaryBean.mood == diaryMood && diaryBean.imageList.isSameList(
-                        imageList
-                    ) && diaryBean.tag == diaryTag
+                if (diaryBean.content == content && diaryBean.createTime == createTime && diaryBean.mood == diaryMood
+                    && diaryBean.imageList.isSameList(imageList) && diaryBean.tag == diaryTag
                 )
                 {
                     GlobalScope.launch(Dispatchers.Main) { view?.onDiarySaveSuccess() }

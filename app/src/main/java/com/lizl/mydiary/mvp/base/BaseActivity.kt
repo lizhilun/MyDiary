@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -74,9 +73,8 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         }
 
         // 密码保护打开并且应用超时的情况
-        if (AppConfig.getSecurityConfig().isAppLockOn() && AppConfig.getSecurityConfig().getAppLockPassword()
-                    .isNotBlank() && System.currentTimeMillis() - AppConfig.getSecurityConfig().getAppLastStopTime() >= AppConfig.getSecurityConfig()
-                .getAppTimeoutInterval())
+        if (AppConfig.getSecurityConfig().isAppLockOn() && AppConfig.getSecurityConfig().getAppLockPassword().isNotBlank()
+            && System.currentTimeMillis() - AppConfig.getSecurityConfig().getAppLastStopTime() >= AppConfig.getSecurityConfig().getAppTimeoutInterval())
         {
             ActivityUtil.turnToActivity(LockActivity::class.java)
         }

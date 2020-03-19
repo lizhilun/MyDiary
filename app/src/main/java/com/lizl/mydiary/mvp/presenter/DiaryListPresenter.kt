@@ -10,13 +10,21 @@ import com.lizl.mydiary.util.BackupUtil
 
 class DiaryListPresenter(private var view: DiaryListContract.View?) : DiaryListContract.Presenter
 {
+    private var isFirstGetData = true
+
     override fun queryAllDiary(owner: LifecycleOwner)
     {
         AppDatabase.instance.getDiaryDao().getAllDiaryLiveData().observe(owner, Observer {
             view?.onDiariesQueryFinish(it ?: emptyList())
 
-            if (AppConfig.getBackupConfig().isAutoBackup() && AppConfig.getBackupConfig().getAppAutoBackupInterval()
-                == ConfigConstant.APP_AUTO_BACKUP_PERIOD_RIGHT_NOW)
+            if (isFirstGetData)
+            {
+                isFirstGetData = false
+                return@Observer
+            }
+
+            if (AppConfig.getBackupConfig().isAutoBackup() && AppConfig.getBackupConfig()
+                        .getAppAutoBackupInterval() == ConfigConstant.APP_AUTO_BACKUP_PERIOD_RIGHT_NOW)
             {
                 BackupUtil.autoBackup()
             }
