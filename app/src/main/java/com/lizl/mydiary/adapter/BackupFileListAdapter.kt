@@ -34,11 +34,6 @@ class BackupFileListAdapter : BaseQuickAdapter<File, BackupFileListAdapter.ViewH
         }
     }
 
-    fun addAll(fileList: List<File>)
-    {
-        setNewData(fileList.sortedByDescending { it.lastModified() }.toMutableList())
-    }
-
     fun setOnFileItemClickListener(onFileItemClickListener: (File) -> Unit)
     {
         this.onFileItemClickListener = onFileItemClickListener

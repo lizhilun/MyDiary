@@ -173,7 +173,7 @@ object BackupUtil
         }
         cursor?.close()
 
-        return fileList
+        return fileList.sortedByDescending { it.lastModified() }
     }
 
     class BackupJob(val backupFileName: String, val callback: (result: Boolean) -> Unit)

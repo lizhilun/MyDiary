@@ -17,7 +17,7 @@ class SecuritySettingFragment : BaseSettingListFragment<EmptyPresenter>()
     override fun initSettingData()
     {
         val fingerprintItem = SettingBean.SettingBooleanBean(getString(R.string.setting_fingerprint), ConfigConstant.IS_FINGERPRINT_LOCK_ON,
-                ConfigConstant.DEFAULT_IS_FINGERPRINT_LOCK_ON, true) { _, _ -> }
+                ConfigConstant.DEFAULT_IS_FINGERPRINT_LOCK_ON, true)
 
         val modifyPasswordItem = SettingBean.SettingNormalBean(getString(R.string.setting_modify_password)) {
             DialogUtil.showModifyPasswordDialog(context!!, AppConfig.getSecurityConfig().getAppLockPassword()) {

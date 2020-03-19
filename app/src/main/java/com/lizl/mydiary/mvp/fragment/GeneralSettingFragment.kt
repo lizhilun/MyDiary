@@ -8,6 +8,7 @@ import com.lizl.mydiary.event.EventConstant
 import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.presenter.EmptyPresenter
 import com.lizl.mydiary.util.DialogUtil
+import com.lizl.mydiary.util.SkinUtil
 import com.lizl.mydiary.util.UiUtil
 import org.greenrobot.eventbus.EventBus
 import permissions.dispatcher.NeedsPermission
@@ -36,9 +37,7 @@ class GeneralSettingFragment : BaseSettingListFragment<EmptyPresenter>()
         val nightModeMap = mapOf(ConfigConstant.APP_NIGHT_MODE_ON to getString(R.string.on), ConfigConstant.APP_NIGHT_MODE_OFF to getString(R.string.off),
                 ConfigConstant.APP_NIGHT_MODE_FOLLOW_SYSTEM to getString(R.string.follow_system))
         settingList.add(SettingBean.SettingIntRadioBean(settingName = getString(R.string.setting_night_mode), settingKey = ConfigConstant.APP_NIGHT_MODE,
-                defaultValue = ConfigConstant.DEFAULT_APP_NIGHT_MODE, radioMap = nightModeMap) {
-            EventBus.getDefault().post(UIEvent(EventConstant.UI_EVENT_NIGHT_MODE_CHANGE))
-        })
+                defaultValue = ConfigConstant.DEFAULT_APP_NIGHT_MODE, radioMap = nightModeMap) { SkinUtil.loadSkin() })
 
         settingList.add(SettingBean.SettingDivideBean())
 

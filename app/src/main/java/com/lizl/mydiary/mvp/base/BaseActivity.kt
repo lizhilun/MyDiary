@@ -58,7 +58,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
 
         EventBus.getDefault().register(this)
 
-        SkinUtil.loadSkin(this)
+        SkinUtil.loadSkin()
 
         presenter = initPresenter()
 
@@ -82,8 +82,9 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         }
 
         // 密码保护打开并且应用超时的情况
-        if (AppConfig.getSecurityConfig().isAppLockOn() && AppConfig.getSecurityConfig().getAppLockPassword().isNotBlank()
-            && System.currentTimeMillis() - AppConfig.getSecurityConfig().getAppLastStopTime() >= AppConfig.getSecurityConfig().getAppTimeoutInterval())
+        if (AppConfig.getSecurityConfig().isAppLockOn() && AppConfig.getSecurityConfig().getAppLockPassword()
+                    .isNotBlank() && System.currentTimeMillis() - AppConfig.getSecurityConfig().getAppLastStopTime() >= AppConfig.getSecurityConfig()
+                .getAppTimeoutInterval())
         {
             ActivityUtil.turnToActivity(LockActivity::class.java)
         }
@@ -158,10 +159,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUiEvent(uiEvent: UIEvent)
     {
-        when (uiEvent.event)
-        {
-            EventConstant.UI_EVENT_NIGHT_MODE_CHANGE -> SkinUtil.loadSkin(this)
-            else                                     -> presenter.handleUIEvent(uiEvent)
-        }
+        presenter.handleUIEvent(uiEvent)
     }
 }

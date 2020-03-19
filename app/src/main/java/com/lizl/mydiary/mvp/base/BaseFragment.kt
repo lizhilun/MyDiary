@@ -125,10 +125,6 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUiEvent(uiEvent: UIEvent)
     {
-        when (uiEvent.event)
-        {
-            EventConstant.UI_EVENT_NIGHT_MODE_CHANGE -> {}
-            else                                     -> presenter.handleUIEvent(uiEvent)
-        }
+        presenter.handleUIEvent(uiEvent)
     }
 }

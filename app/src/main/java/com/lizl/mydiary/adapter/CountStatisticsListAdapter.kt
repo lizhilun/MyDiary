@@ -1,8 +1,6 @@
 package com.lizl.mydiary.adapter
 
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -23,14 +21,8 @@ class CountStatisticsListAdapter : BaseQuickAdapter<CountStatisticsBean.BaseCoun
 
     fun setData(countStatisticsList: List<CountStatisticsBean.BaseCountStatisticsBean>)
     {
-        setNewData(countStatisticsList.toMutableList())
         maxCount = countStatisticsList.maxBy { it.count }?.count ?: 0
-        notifyDataSetChanged()
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
-    {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_count_statistics, parent, false))
+        setNewData(countStatisticsList.toMutableList())
     }
 
     override fun convert(helper: ViewHolder, item: CountStatisticsBean.BaseCountStatisticsBean)

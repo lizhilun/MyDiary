@@ -53,7 +53,7 @@ class UsageStatisticsFragment : BaseFragment<UsageStatisticsPresenter>(), UsageS
         tagStatisticsListAdapter.setOnItemClickListener {
             if (it is CountStatisticsBean.TagStatisticsBean)
             {
-                ActivityUtil.turnToActivity(DiarySearchActivity::class.java, "#${it.tag}#")
+                ActivityUtil.turnToActivity(DiarySearchActivity::class.java, getString(R.string.diary_tag, it.tag))
             }
         }
     }

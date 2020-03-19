@@ -28,26 +28,16 @@ object SkinUtil
             .setSkinWindowBackgroundEnable(false)
     }
 
-    fun loadSkin(activity: Activity)
+    fun loadSkin()
     {
         if (isNightModeOn())
         {
-            loadNightSkin(activity)
+            SkinCompatManager.getInstance().loadSkin(SKIN_NIGHT, SkinCompatManager.SKIN_LOADER_STRATEGY_BUILD_IN)
         }
         else
         {
-            loadDefaultSkin(activity)
+            SkinCompatManager.getInstance().restoreDefaultTheme()
         }
-    }
-
-    private fun loadDefaultSkin(activity: Activity)
-    {
-        SkinCompatManager.getInstance().restoreDefaultTheme()
-    }
-
-    private fun loadNightSkin(activity: Activity)
-    {
-        SkinCompatManager.getInstance().loadSkin(SKIN_NIGHT, SkinCompatManager.SKIN_LOADER_STRATEGY_BUILD_IN)
     }
 
     fun getGlobalTextColor(): Int

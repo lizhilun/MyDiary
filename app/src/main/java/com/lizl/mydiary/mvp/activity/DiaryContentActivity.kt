@@ -62,7 +62,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
 
         ctb_title.setOnBackBtnClickListener { if (inEditMode) onFinishBtnClick() else super.onBackPressed() }
 
-        dateBean = DateBean(if (diaryBean != null) diaryBean!!.createTime else System.currentTimeMillis())
+        dateBean = DateBean(diaryBean?.createTime ?: System.currentTimeMillis())
         ctb_title.setTitleText("${dateBean.year}/${dateBean.month}/${dateBean.day} ${dateBean.getHourAndMinute()}")
 
         val diaryTag = diaryBean?.tag ?: getString(R.string.diary)

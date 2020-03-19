@@ -1,6 +1,7 @@
 package com.lizl.mydiary.adapter
 
 import android.view.View
+import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.lizl.mydiary.R
@@ -23,15 +24,16 @@ class NumberKeyGridAdapter(keyList: List<String>) : BaseQuickAdapter<String, Num
         {
             if (keyValue == "#")
             {
-                itemView.tv_key.visibility = View.GONE
-                itemView.iv_key.visibility = View.VISIBLE
+                itemView.tv_key.isVisible = false
+                itemView.iv_key.isVisible = true
 
                 itemView.iv_key.setImageResource(R.drawable.ic_backspace)
             }
             else
             {
-                itemView.tv_key.visibility = View.VISIBLE
-                itemView.iv_key.visibility = View.GONE
+                itemView.tv_key.isVisible = true
+                itemView.iv_key.isVisible = false
+
                 itemView.tv_key.text = if (keyValue == "*") UiApplication.instance.getText(R.string.exit) else keyValue
             }
 

@@ -8,10 +8,7 @@ import com.github.chrisbanes.photoview.PhotoView
 
 class ImageViewPagerAdapter(private val imageList: List<String>) : PagerAdapter()
 {
-    override fun isViewFromObject(view: View, obj: Any): Boolean
-    {
-        return view == obj
-    }
+    override fun isViewFromObject(view: View, obj: Any) = view == obj
 
     override fun getCount() = imageList.size
 
