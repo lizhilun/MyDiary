@@ -123,20 +123,6 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
         }
     }
 
-    override fun handleUIEvent(uiEvent: UIEvent)
-    {
-        when (uiEvent.event)
-        {
-            EventConstant.UI_EVENT_DELETE_DIARY_IMAGE ->
-            {
-                if (uiEvent.value is String)
-                {
-                    view?.onImageDelete(uiEvent.value)
-                }
-            }
-        }
-    }
-
     override fun onDestroy()
     {
         view = null

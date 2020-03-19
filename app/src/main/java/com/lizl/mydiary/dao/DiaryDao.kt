@@ -1,5 +1,6 @@
 package com.lizl.mydiary.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import com.lizl.mydiary.bean.DiaryBean
@@ -7,6 +8,9 @@ import com.lizl.mydiary.bean.DiaryBean
 @Dao
 interface DiaryDao : BaseDao<DiaryBean>
 {
+    @Query("select * from diaries order by createTime desc")
+    fun getAllDiaryLiveData(): LiveData<MutableList<DiaryBean>>
+
     @Query("select * from diaries order by createTime desc")
     fun getAllDiary(): MutableList<DiaryBean>
 

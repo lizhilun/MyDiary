@@ -15,12 +15,16 @@ import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.TitleBarBtnBean
 import com.lizl.mydiary.config.AppConfig
 import com.lizl.mydiary.custom.others.IndentTextWatcher
+import com.lizl.mydiary.event.EventConstant
+import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.DiaryContentContract
 import com.lizl.mydiary.mvp.presenter.DiaryContentPresenter
 import com.lizl.mydiary.util.*
 import kotlinx.android.synthetic.main.activity_diary_content.*
 import kotlinx.android.synthetic.main.activity_main.ctb_title
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
@@ -264,4 +268,20 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
             diaryBean.content != et_diary_content.text.toString() || diaryBean.imageList != diaryImageListAdapter.getImageList()
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUiEvent(uiEvent: UIEvent)
+    {
+        when (uiEvent.event)
+        {
+            EventConstant.UI_EVENT_DELETE_DIARY_IMAGE ->
+            {
+                if (uiEvent.value is String)
+                {
+                    onImageDelete(uiEvent.value)
+                }
+            }
+        }
+    }
+
 }

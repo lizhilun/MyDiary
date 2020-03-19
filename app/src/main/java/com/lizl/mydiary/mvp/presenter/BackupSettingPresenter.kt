@@ -1,6 +1,5 @@
 package com.lizl.mydiary.mvp.presenter
 
-import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.contract.BackupSettingContract
 import com.lizl.mydiary.util.BackupUtil
 import kotlinx.coroutines.Dispatchers
@@ -21,11 +20,6 @@ class BackupSettingPresenter(private var view: BackupSettingContract.View?) : Ba
                 }
             }
         }
-    }
-
-    override fun handleUIEvent(uiEvent: UIEvent)
-    {
-
     }
 
     override fun onDestroy()

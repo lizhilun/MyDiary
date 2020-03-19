@@ -1,7 +1,6 @@
 package com.lizl.mydiary.mvp.presenter
 
 import com.lizl.mydiary.bean.DiaryBean
-import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.contract.DiarySearchContract
 import com.lizl.mydiary.util.AppConstant
 import com.lizl.mydiary.util.AppDatabase
@@ -35,11 +34,6 @@ class DiarySearchPresenter(private var view: DiarySearchContract.View?) : DiaryS
 
             GlobalScope.launch(Dispatchers.Main) { view?.showDiaryResult(searchResult) }
         }
-    }
-
-    override fun handleUIEvent(uiEvent: UIEvent)
-    {
-
     }
 
     override fun onDestroy()

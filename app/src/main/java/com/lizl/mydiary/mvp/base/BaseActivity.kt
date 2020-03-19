@@ -56,8 +56,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
 
         setContentView(getLayoutResId())
 
-        EventBus.getDefault().register(this)
-
         SkinUtil.loadSkin()
 
         presenter = initPresenter()
@@ -119,8 +117,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         Log.d(TAG, "onDestroy")
         super.onDestroy()
 
-        EventBus.getDefault().unregister(this)
-
         presenter.onDestroy()
     }
 
@@ -155,10 +151,4 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
     }
 
     override fun getDelegate(): AppCompatDelegate = SkinAppCompatDelegateImpl.get(this, this)
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onUiEvent(uiEvent: UIEvent)
-    {
-        presenter.handleUIEvent(uiEvent)
-    }
 }

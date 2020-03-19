@@ -2,9 +2,7 @@ package com.lizl.mydiary.mvp.presenter
 
 import android.hardware.biometrics.BiometricPrompt
 import android.util.Log
-import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.config.AppConfig
-import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.contract.LockContract
 import com.lizl.mydiary.util.BiometricAuthenticationUtil
 
@@ -50,11 +48,6 @@ class LockPresenter(private var view: LockContract.View?) : LockContract.Present
         {
             view?.onUnlockSuccess()
         }
-    }
-
-    override fun handleUIEvent(uiEvent: UIEvent)
-    {
-
     }
 
     override fun onDestroy()

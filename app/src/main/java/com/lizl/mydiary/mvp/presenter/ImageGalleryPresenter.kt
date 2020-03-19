@@ -1,7 +1,6 @@
 package com.lizl.mydiary.mvp.presenter
 
 import com.blankj.utilcode.util.ImageUtils
-import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.contract.ImageGalleryContract
 import com.lizl.mydiary.util.FileUtil
 import kotlinx.coroutines.Dispatchers
@@ -38,11 +37,6 @@ class ImageGalleryPresenter(private var view: ImageGalleryContract.View?) : Imag
         {
             this.lastModified()
         }
-    }
-
-    override fun handleUIEvent(uiEvent: UIEvent)
-    {
-
     }
 
     override fun onDestroy()

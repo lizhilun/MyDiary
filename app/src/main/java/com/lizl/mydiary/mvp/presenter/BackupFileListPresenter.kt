@@ -1,6 +1,5 @@
 package com.lizl.mydiary.mvp.presenter
 
-import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.contract.BackupFileListContract
 import com.lizl.mydiary.util.BackupUtil
 import com.lizl.mydiary.util.FileUtil
@@ -72,11 +71,6 @@ class BackupFileListPresenter(private var view: BackupFileListContract.View?) : 
             backupFileList.forEach { if (latestFile != it) FileUtil.deleteFile(it) }
             GlobalScope.launch(Dispatchers.Main) { view?.showBackupFileList(listOf(latestFile)) }
         }
-    }
-
-    override fun handleUIEvent(uiEvent: UIEvent)
-    {
-
     }
 
     override fun onDestroy()

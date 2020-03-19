@@ -20,14 +20,11 @@ import com.lizl.mydiary.util.FileUtil
 import isDiarySameContent
 import kotlinx.android.synthetic.main.layout_diary_list.view.*
 import kotlinx.android.synthetic.main.layout_diary_list_herder.view.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class DiaryListView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : NestedScrollView(context, attrs, defStyleAttr)
 {
-    private val TAG = "DiaryListView"
-
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -45,8 +42,8 @@ class DiaryListView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
         rv_diary_list.layoutManager = LinearLayoutManager(context)
         rv_diary_list.adapter = diaryListAdapter
 
-        val callback = CustomDiffUtil<DiaryBean>({ oldItem, newItem -> oldItem.uid == newItem.uid },
-                { oldItem, newItem -> oldItem.isDiarySameContent(newItem) })
+        val callback =
+            CustomDiffUtil<DiaryBean>({ oldItem, newItem -> oldItem.uid == newItem.uid }, { oldItem, newItem -> oldItem.isDiarySameContent(newItem) })
 
         diaryListAdapter.adapterAnimation = SlideInRightAnimation()
         diaryListAdapter.setDiffCallback(callback)
@@ -60,33 +57,6 @@ class DiaryListView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
     {
         diaryListAdapter.setDiffNewData(diaryList.toMutableList())
         updateDiaryListHeader(diaryList.size)
-    }
-
-    fun onDiarySaveSuccess(diaryBean: DiaryBean)
-    {
-        val findDiaryBean = diaryListAdapter.data.find { it.uid == diaryBean.uid }
-        if (findDiaryBean != null)
-        {
-            onDiaryDelete(findDiaryBean)
-        }
-        onDiaryInsert(diaryBean)
-    }
-
-    private fun onDiaryInsert(diaryBean: DiaryBean)
-    {
-        diaryListAdapter.insertDiary(diaryBean)
-        updateDiaryListHeader()
-    }
-
-    private fun onDiaryDelete(diaryBean: DiaryBean)
-    {
-        diaryListAdapter.remove(diaryBean)
-        updateDiaryListHeader()
-    }
-
-    private fun updateDiaryListHeader()
-    {
-        updateDiaryListHeader(diaryListAdapter.data.size)
     }
 
     private fun updateDiaryListHeader(dataSize: Int)
@@ -108,8 +78,6 @@ class DiaryListView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
         GlobalScope.launch {
             diaryBean.imageList?.forEach { FileUtil.deleteFile(it) }
             AppDatabase.instance.getDiaryDao().delete(diaryBean)
-
-            GlobalScope.launch(Dispatchers.Main) { onDiaryDelete(diaryBean) }
         }
     }
 }

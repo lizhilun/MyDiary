@@ -26,16 +26,11 @@ class MainActivity : BaseActivity<DiaryListPresenter>(), DiaryListContract.View
 
         fab_add_diary.setOnClickListener { ActivityUtil.turnToActivity(DiaryContentActivity::class.java) }
 
-        presenter.queryAllDiary()
+        presenter.queryAllDiary(this)
     }
 
     override fun onDiariesQueryFinish(diaryList: List<DiaryBean>)
     {
         view_diary_list.showDiaryList(diaryList)
-    }
-
-    override fun onDiarySaveSuccess(diaryBean: DiaryBean)
-    {
-        view_diary_list.onDiarySaveSuccess(diaryBean)
     }
 }

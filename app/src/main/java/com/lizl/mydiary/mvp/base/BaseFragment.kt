@@ -25,8 +25,6 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
     {
         Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-
-        if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
@@ -81,8 +79,6 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
     {
         Log.d(TAG, "onDestroy")
         super.onDestroy()
-
-        EventBus.getDefault().unregister(this)
     }
 
     abstract fun getLayoutResId(): Int
@@ -120,11 +116,5 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
         {
             Log.e(TAG, e.toString())
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onUiEvent(uiEvent: UIEvent)
-    {
-        presenter.handleUIEvent(uiEvent)
     }
 }

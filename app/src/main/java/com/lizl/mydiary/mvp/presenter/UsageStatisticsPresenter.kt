@@ -5,7 +5,6 @@ import com.lizl.mydiary.bean.CountStatisticsBean
 import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.config.AppConfig
-import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.contract.UsageStatisticsContract
 import com.lizl.mydiary.util.AppDatabase
 import com.lizl.mydiary.util.DiaryUtil
@@ -82,11 +81,6 @@ class UsageStatisticsPresenter(private var view: UsageStatisticsContract.View?) 
         statisticsList.sortByDescending { it.count }
 
         return statisticsList
-    }
-
-    override fun handleUIEvent(uiEvent: UIEvent)
-    {
-
     }
 
     override fun onDestroy()
