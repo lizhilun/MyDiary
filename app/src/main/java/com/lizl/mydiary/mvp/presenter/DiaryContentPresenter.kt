@@ -77,8 +77,6 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
             AppDatabase.instance.getDiaryDao().insert(saveDiaryBean)
 
             GlobalScope.launch(Dispatchers.Main) { view?.onDiarySaveSuccess() }
-
-            EventBus.getDefault().post(UIEvent(EventConstant.UI_EVENT_DIARY_SAVE_SUCCESS, saveDiaryBean))
         }
     }
 

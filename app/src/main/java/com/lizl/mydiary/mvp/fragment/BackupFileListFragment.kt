@@ -86,24 +86,17 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
 
     override fun onRestoreDataFinish(result: Boolean, backupFile: File, failedReason: String)
     {
-        if (result)
+        when (failedReason)
         {
-            EventBus.getDefault().post(UIEvent(EventConstant.UI_EVENT_IMPORT_DIARY_DATA))
-        }
-        else
-        {
-            when (failedReason)
+            AppConstant.RESTORE_DATA_FAILED_WRONG_PASSWORD ->
             {
-                AppConstant.RESTORE_DATA_FAILED_WRONG_PASSWORD ->
-                {
-                    DialogUtil.showOperationConfirmDialog(activity as Context, "${getString(R.string.restore_data)}${getString(R.string.failed)}",
-                            getString(R.string.notify_restore_data_failed_wrong_password)) {
-                        DialogUtil.showInputPasswordDialog(activity as Context) {
-                            presenter.restoreData(backupFile, it)
-                        }
+                DialogUtil.showOperationConfirmDialog(activity as Context, "${getString(R.string.restore_data)}${getString(R.string.failed)}",
+                        getString(R.string.notify_restore_data_failed_wrong_password)) {
+                    DialogUtil.showInputPasswordDialog(activity as Context) {
+                        presenter.restoreData(backupFile, it)
                     }
-                    return
                 }
+                return
             }
         }
         ToastUtils.showShort("${getString(R.string.restore_data)}${getString(if (result) R.string.success else R.string.failed)}")
