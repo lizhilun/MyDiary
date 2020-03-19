@@ -1,7 +1,6 @@
 package com.lizl.mydiary.mvp.contract
 
-import android.app.Activity
-import android.content.Intent
+import android.net.Uri
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.mvp.base.BasePresenter
 import com.lizl.mydiary.mvp.base.BaseView
@@ -12,8 +11,6 @@ class DiaryContentContract
     {
         fun onImageSelectedFinish(picList: List<String>)
 
-        fun onImageDelete(imagePath: String)
-
         fun onDiarySaving()
 
         fun onDiarySaveSuccess()
@@ -21,10 +18,8 @@ class DiaryContentContract
 
     interface Presenter : BasePresenter<View>
     {
-        fun selectImage(context: Activity, maxCount: Int)
+        fun handleImageSelectSuccess(imageList: List<Uri>)
 
-        fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
-
-        fun saveDiary(diaryBean: DiaryBean?, content: String, imageList: List<String>, createTime: Long, diaryMood : Int, diaryTag : String)
+        fun saveDiary(diaryBean: DiaryBean?, content: String, imageList: List<String>, createTime: Long, diaryMood: Int, diaryTag: String)
     }
 }

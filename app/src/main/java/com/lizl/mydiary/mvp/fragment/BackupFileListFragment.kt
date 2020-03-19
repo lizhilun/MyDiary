@@ -9,8 +9,6 @@ import com.lizl.mydiary.adapter.BackupFileListAdapter
 import com.lizl.mydiary.bean.OperationItem
 import com.lizl.mydiary.bean.TitleBarBtnBean
 import com.lizl.mydiary.custom.others.CustomDiffUtil
-import com.lizl.mydiary.event.EventConstant
-import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.contract.BackupFileListContract
 import com.lizl.mydiary.mvp.presenter.BackupFileListPresenter
@@ -18,7 +16,6 @@ import com.lizl.mydiary.util.AppConstant
 import com.lizl.mydiary.util.DialogUtil
 import com.lizl.mydiary.util.FileUtil
 import kotlinx.android.synthetic.main.fragment_backup_file_list.*
-import org.greenrobot.eventbus.EventBus
 import java.io.File
 
 class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFileListContract.View

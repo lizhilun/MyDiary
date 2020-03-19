@@ -1,7 +1,9 @@
 package com.lizl.mydiary.mvp.activity
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.util.TypedValue
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
@@ -14,17 +16,17 @@ import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.TitleBarBtnBean
 import com.lizl.mydiary.config.AppConfig
+import com.lizl.mydiary.custom.others.GlideEngine
 import com.lizl.mydiary.custom.others.IndentTextWatcher
-import com.lizl.mydiary.event.EventConstant
-import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.DiaryContentContract
 import com.lizl.mydiary.mvp.presenter.DiaryContentPresenter
 import com.lizl.mydiary.util.*
+import com.zhihu.matisse.Matisse
+import com.zhihu.matisse.MimeType
+import com.zhihu.matisse.internal.entity.CaptureStrategy
 import kotlinx.android.synthetic.main.activity_diary_content.*
 import kotlinx.android.synthetic.main.activity_main.ctb_title
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
@@ -35,6 +37,11 @@ import java.util.*
 @RuntimePermissions
 class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContentContract.View
 {
+    companion object
+    {
+        const val REQUEST_CODE_SELECT_IMAGE = 23
+        const val REQUEST_CODE_TO_IMAGE_BROWSER_ACTIVITY = 516
+    }
 
     private lateinit var diaryImageListAdapter: DiaryImageListAdapter
     private var diaryBean: DiaryBean? = null
@@ -58,10 +65,11 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         rv_image_list.layoutManager = GridLayoutManager(this, 3)
         rv_image_list.adapter = diaryImageListAdapter
 
-        diaryImageListAdapter.setOnAddImageBtnClickListener { selectImageWithPermissionCheck() }
+        diaryImageListAdapter.setOnAddImageBtnClickListener { turnToImageSelectActivityWithPermissionCheck() }
 
         diaryImageListAdapter.setOnImageClickListener {
-            ActivityUtil.turnToActivity(ImageBrowserActivity::class.java, diaryImageListAdapter.getImageList(), it, inEditMode)
+            ActivityUtil.turnActivityForResult(ImageBrowserActivity::class.java, REQUEST_CODE_TO_IMAGE_BROWSER_ACTIVITY, diaryImageListAdapter.getImageList(),
+                    it, inEditMode)
         }
 
         ctb_title.setOnBackBtnClickListener { if (inEditMode) onFinishBtnClick() else super.onBackPressed() }
@@ -171,20 +179,31 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
         super.onActivityResult(requestCode, resultCode, data)
-        presenter.handleActivityResult(requestCode, resultCode, data)
-    }
 
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-    fun selectImage()
-    {
-        presenter.selectImage(this, AppConfig.getLayoutStyleConfig().getDiaryImageMaxCount() - diaryImageListAdapter.getImageList().size)
+        if (resultCode != Activity.RESULT_OK) return
+
+        when (requestCode)
+        {
+            REQUEST_CODE_SELECT_IMAGE              ->
+            {
+                val selectImageList = Matisse.obtainResult(data) ?: emptyList()
+                presenter.handleImageSelectSuccess(selectImageList.toList())
+            }
+            REQUEST_CODE_TO_IMAGE_BROWSER_ACTIVITY ->
+            {
+                val imageList = data?.getStringArrayListExtra(AppConstant.BUNDLE_DATA_STRING_ARRAY) ?: ArrayList()
+                diaryImageListAdapter.getImageList().filterNot { imageList.contains(it) }.forEach {
+                    diaryImageListAdapter.deleteImage(it)
+                }
+            }
+        }
     }
 
     @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
     fun onPermissionDenied()
     {
         DialogUtil.showOperationConfirmDialog(this, getString(R.string.notify_failed_to_get_permission),
-                getString(R.string.notify_permission_be_refused)) { selectImageWithPermissionCheck() }
+                getString(R.string.notify_permission_be_refused)) { turnToImageSelectActivityWithPermissionCheck() }
     }
 
     @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
@@ -199,11 +218,6 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         // NOTE: delegate the permission handling to generated function
         onRequestPermissionsResult(requestCode, grantResults)
-    }
-
-    override fun onImageDelete(imagePath: String)
-    {
-        diaryImageListAdapter.deleteImage(imagePath)
     }
 
     override fun onDiarySaving()
@@ -269,19 +283,19 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onUiEvent(uiEvent: UIEvent)
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+    fun turnToImageSelectActivity()
     {
-        when (uiEvent.event)
-        {
-            EventConstant.UI_EVENT_DELETE_DIARY_IMAGE ->
-            {
-                if (uiEvent.value is String)
-                {
-                    onImageDelete(uiEvent.value)
-                }
-            }
-        }
+        Matisse.from(this).choose(MimeType.ofImage()) //照片视频全部显示MimeType.allOf()
+            .countable(true) //true:选中后显示数字;false:选中后显示对号
+            .maxSelectable(AppConfig.getLayoutStyleConfig().getDiaryImageMaxCount() - diaryImageListAdapter.getImageList().size) //最大选择数量
+            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED) //图像选择和预览活动所需的方向
+            .thumbnailScale(0.85f) //缩放比例
+            .theme(R.style.MatisseStyle) //主题  暗色主题 R.style.Matisse_Dracula
+            .imageEngine(GlideEngine()) //图片加载方式，Glide4需要自定义实现
+            .capture(true) //是否提供拍照功能，兼容7.0系统需要下面的配置
+            //参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
+            .captureStrategy(CaptureStrategy(true, "com.sendtion.matisse.fileprovider")) //存储到哪里
+            .forResult(REQUEST_CODE_SELECT_IMAGE) //请求码
     }
-
 }

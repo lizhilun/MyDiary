@@ -9,11 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.lizl.mydiary.R
-import com.lizl.mydiary.event.EventConstant
-import com.lizl.mydiary.event.UIEvent
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 abstract class BaseFragment<T : BasePresenter<*>> : Fragment()
 {

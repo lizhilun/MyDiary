@@ -14,7 +14,7 @@ import com.lizl.mydiary.util.DiaryUtil
 import com.lizl.mydiary.util.UiUtil
 import kotlinx.android.synthetic.main.item_diary_list.view.*
 
-class DiaryListAdapter() : BaseQuickAdapter<DiaryBean, DiaryListAdapter.ViewHolder>(R.layout.item_diary_list)
+class DiaryListAdapter : BaseQuickAdapter<DiaryBean, DiaryListAdapter.ViewHolder>(R.layout.item_diary_list)
 {
     private var onDiaryItemClickListener: ((DiaryBean) -> Unit)? = null
     private var onDiaryItemLongClickListener: ((DiaryBean) -> Unit)? = null
@@ -80,26 +80,5 @@ class DiaryListAdapter() : BaseQuickAdapter<DiaryBean, DiaryListAdapter.ViewHold
     fun setOnDiaryItemLongClickListener(onDiaryItemLongClickListener: (DiaryBean) -> Unit)
     {
         this.onDiaryItemLongClickListener = onDiaryItemLongClickListener
-    }
-
-    fun insertDiary(diaryBean: DiaryBean)
-    {
-        var index = 0
-        if (itemCount > 0)
-        {
-            if (diaryBean.createTime <= getItem(itemCount - 1).createTime)
-            {
-                index = itemCount
-            }
-            else for (i in 0 until itemCount - 1)
-            {
-                if (getItem(i).createTime >= diaryBean.createTime && getItem(i + 1).createTime <= diaryBean.createTime)
-                {
-                    index = i + 1
-                    break
-                }
-            }
-        }
-        addData(index, diaryBean)
     }
 }

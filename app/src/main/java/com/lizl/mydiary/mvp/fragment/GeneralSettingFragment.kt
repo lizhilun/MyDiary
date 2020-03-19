@@ -4,13 +4,10 @@ import android.Manifest
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.SettingBean
 import com.lizl.mydiary.config.ConfigConstant
-import com.lizl.mydiary.event.EventConstant
-import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.presenter.EmptyPresenter
 import com.lizl.mydiary.util.DialogUtil
 import com.lizl.mydiary.util.SkinUtil
 import com.lizl.mydiary.util.UiUtil
-import org.greenrobot.eventbus.EventBus
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied

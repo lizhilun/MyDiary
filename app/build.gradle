@@ -63,7 +63,6 @@ dependencies {
     kapt "org.permissionsdispatcher:permissionsdispatcher-processor:${pd_version}"
     implementation 'com.jungly:gridPasswordView:0.3'
     implementation 'com.blankj:utilcodex:1.25.9'
-    implementation 'org.greenrobot:eventbus:3.1.1'
     def skin_version = '4.0.4'
     implementation "skin.support:skin-support:${skin_version}"                   // skin-support
     implementation "skin.support:skin-support-appcompat:${skin_version}"         // skin-support 基础控件支持

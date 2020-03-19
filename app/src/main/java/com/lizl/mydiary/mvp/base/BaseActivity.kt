@@ -11,18 +11,12 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.SkinAppCompatDelegateImpl
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.AppUtils
-import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.KeyboardUtils
 import com.lizl.mydiary.config.AppConfig
-import com.lizl.mydiary.event.EventConstant
-import com.lizl.mydiary.event.UIEvent
 import com.lizl.mydiary.mvp.activity.LockActivity
 import com.lizl.mydiary.mvp.activity.MainActivity
 import com.lizl.mydiary.util.ActivityUtil
 import com.lizl.mydiary.util.SkinUtil
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
 {
