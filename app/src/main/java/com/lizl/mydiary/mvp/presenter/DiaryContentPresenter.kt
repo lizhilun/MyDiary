@@ -1,6 +1,5 @@
 package com.lizl.mydiary.mvp.presenter
 
-import android.net.Uri
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.mvp.contract.DiaryContentContract
 import com.lizl.mydiary.util.AppDatabase
@@ -23,8 +22,7 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
             if (diaryBean != null)
             {
                 if (diaryBean.content == content && diaryBean.createTime == createTime && diaryBean.mood == diaryMood
-                    && diaryBean.imageList.isSameList(imageList) && diaryBean.tag == diaryTag
-                )
+                    && diaryBean.imageList.isSameList(imageList) && diaryBean.tag == diaryTag)
                 {
                     GlobalScope.launch(Dispatchers.Main) { view?.onDiarySaveSuccess() }
                     return@launch
@@ -44,7 +42,7 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
             saveDiaryBean.mood = diaryMood
             saveDiaryBean.tag = diaryTag
 
-            val deleteImageList = saveDiaryBean.imageList?.filter { !imageList.contains(it) }
+            val deleteImageList = saveDiaryBean.imageList?.filterNot { imageList.contains(it) }
             deleteImageList?.forEach { FileUtil.deleteFile(it) }
 
             val saveImageList = mutableListOf<String>()
@@ -54,7 +52,8 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
                 if (it.contains(systemFileDir))
                 {
                     saveImageList.add(it)
-                } else
+                }
+                else
                 {
                     saveImageList.add(DiaryUtil.saveDiaryImage(it))
                 }
@@ -64,18 +63,6 @@ class DiaryContentPresenter(private var view: DiaryContentContract.View?) : Diar
             AppDatabase.instance.getDiaryDao().insert(saveDiaryBean)
 
             GlobalScope.launch(Dispatchers.Main) { view?.onDiarySaveSuccess() }
-        }
-    }
-
-    override fun handleImageSelectSuccess(imageList: List<Uri>)
-    {
-        GlobalScope.launch {
-
-            val saveImageList = mutableListOf<String>()
-
-            imageList.forEach { saveImageList.add(FileUtil.getFilePathFromUri(it)!!) }
-
-            GlobalScope.launch(Dispatchers.Main) { view?.onImageSelectedFinish(saveImageList) }
         }
     }
 

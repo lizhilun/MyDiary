@@ -186,8 +186,13 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         {
             REQUEST_CODE_SELECT_IMAGE              ->
             {
-                val selectImageList = Matisse.obtainResult(data) ?: emptyList()
-                presenter.handleImageSelectSuccess(selectImageList.toList())
+                val selectImageUriList = Matisse.obtainResult(data) ?: emptyList()
+                val selectImagePathList = mutableListOf<String>()
+                selectImageUriList.forEach {
+                    val imagePath = FileUtil.getFilePathFromUri(it) ?: return@forEach
+                    selectImagePathList.add(imagePath)
+                }
+                diaryImageListAdapter.addImageList(selectImagePathList)
             }
             REQUEST_CODE_TO_IMAGE_BROWSER_ACTIVITY ->
             {
@@ -229,11 +234,6 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
     {
         DialogUtil.dismissDialog()
         if (diaryBean == null) super.onBackPressed() else showReadView()
-    }
-
-    override fun onImageSelectedFinish(picList: List<String>)
-    {
-        diaryImageListAdapter.addImageList(picList)
     }
 
     private fun showEditView()
