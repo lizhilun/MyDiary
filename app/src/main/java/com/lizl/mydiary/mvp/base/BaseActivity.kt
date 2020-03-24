@@ -15,7 +15,6 @@ import com.lizl.mydiary.config.AppConfig
 import com.lizl.mydiary.mvp.activity.LockActivity
 import com.lizl.mydiary.mvp.activity.MainActivity
 import com.lizl.mydiary.util.ActivityUtil
-import com.lizl.mydiary.util.SkinUtil
 
 abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
 {
@@ -48,8 +47,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity()
         }
 
         setContentView(getLayoutResId())
-
-        SkinUtil.loadSkin()
 
         presenter = initPresenter()
 

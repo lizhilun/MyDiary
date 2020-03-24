@@ -1,10 +1,8 @@
 package com.lizl.mydiary.util
 
-import android.app.Activity
 import android.app.Application
 import android.content.res.Configuration
 import androidx.core.content.ContextCompat
-import com.blankj.utilcode.util.BarUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.config.AppConfig
@@ -17,7 +15,7 @@ import skin.support.design.app.SkinMaterialViewInflater
 object SkinUtil
 {
 
-    private val SKIN_NIGHT = "night"
+    private const val SKIN_NIGHT = "night"
 
     fun init(application: Application)
     {
@@ -25,7 +23,8 @@ object SkinUtil
             .addInflater(SkinMaterialViewInflater())            // material design 控件换肤初始化[可选]
             .addInflater(SkinConstraintViewInflater())          // ConstraintLayout 控件换肤初始化[可选]
             .addInflater(SkinCardViewInflater())                // CardView v7 控件换肤初始化[可选]
-            .setSkinWindowBackgroundEnable(false)
+            .setSkinWindowBackgroundEnable(false)               // windowBg换肤
+        loadSkin()
     }
 
     fun loadSkin()
