@@ -22,7 +22,7 @@ class DiarySearchActivity : BaseActivity<DiarySearchPresenter>(), DiarySearchCon
     override fun initView()
     {
         val keyWord = intent?.getStringExtra(AppConstant.BUNDLE_DATA_STRING).orEmpty()
-        val mood = intent?.getIntExtra(AppConstant.BUNDLE_DATA_INT, -AppConstant.MOOD_ALL) ?: AppConstant.MOOD_ALL
+        val mood = intent?.getIntExtra(AppConstant.BUNDLE_DATA_INT, AppConstant.MOOD_ALL) ?: AppConstant.MOOD_ALL
 
         ctb_title.startSearchMode(keyWord, true) { presenter.searchDiary(it, curDiaryMood) }
         ctb_title.setOnBackBtnClickListener { super.onBackPressed() }
