@@ -72,6 +72,14 @@ object DiaryUtil
         SPUtils.getInstance().put(DIARY_TAG_LIST, diaryTagSet)
     }
 
+    fun addDiaryTagList(tagList: List<String>)
+    {
+        if (tagList.isEmpty()) return
+        val diaryTagSet = SPUtils.getInstance().getStringSet(DIARY_TAG_LIST, emptySet()).toMutableSet()
+        tagList.forEach { if (!diaryTagSet.contains(it)) diaryTagSet.add(it) }
+        SPUtils.getInstance().put(DIARY_TAG_LIST, diaryTagSet)
+    }
+
     fun setDiaryFontSizeLevel(level: Int) = SPUtils.getInstance().put(DIARY_TEXT_SIZE_LEVEL, level)
 
     fun getDiaryFontSizeLevel() = SPUtils.getInstance().getInt(DIARY_TEXT_SIZE_LEVEL, 1)

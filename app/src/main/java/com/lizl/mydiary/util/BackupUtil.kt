@@ -141,6 +141,14 @@ object BackupUtil
                 FileUtil.copyDir(backupTempImageFilePath, FileUtil.getImageFileSavePath())
                 val diaryList = GsonUtils.fromJson<Array<DiaryBean>>(diaryTxt, Array<DiaryBean>::class.java)
                 val saveDiaryList = diaryList.filter { AppDatabase.instance.getDiaryDao().getDiaryByUid(it.uid) == null }
+
+                val diaryTagList = mutableListOf<String>()
+                saveDiaryList.forEach {
+                    if (it.tag.isNullOrBlank()) return@forEach
+                    if (!diaryTagList.contains(it.tag)) diaryTagList.add(it.tag.orEmpty())
+                }
+                DiaryUtil.addDiaryTagList(diaryTagList)
+
                 AppDatabase.instance.getDiaryDao().insertList(saveDiaryList as MutableList<DiaryBean>)
                 FileUtil.deleteFile(backupTempFilePath)
                 callback.invoke(true, "")
