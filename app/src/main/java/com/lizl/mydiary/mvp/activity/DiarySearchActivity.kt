@@ -21,13 +21,13 @@ class DiarySearchActivity : BaseActivity<DiarySearchPresenter>(), DiarySearchCon
 
     override fun initView()
     {
-        val keyWord = intent?.getStringExtra(AppConstant.BUNDLE_DATA_STRING) ?: ""
-        val mood = intent?.getIntExtra(AppConstant.BUNDLE_DATA_INT, -1) ?: -1
+        val keyWord = intent?.getStringExtra(AppConstant.BUNDLE_DATA_STRING).orEmpty()
+        val mood = intent?.getIntExtra(AppConstant.BUNDLE_DATA_INT, -AppConstant.MOOD_ALL) ?: AppConstant.MOOD_ALL
 
         ctb_title.startSearchMode(keyWord, true) { presenter.searchDiary(it, curDiaryMood) }
         ctb_title.setOnBackBtnClickListener { super.onBackPressed() }
 
-        showDiaryMood(if (mood == -1) AppConstant.MOOD_ALL else mood)
+        showDiaryMood(mood)
 
         presenter.searchDiary(keyWord, mood)
     }
