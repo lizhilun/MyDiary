@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.lizl.mydiary.bean.converter.StringToObjectConverter
-import com.lizl.mydiary.util.AppConstant
+import com.lizl.mydiary.constant.AppConstant
 import java.io.Serializable
 
 @Entity(tableName = "diaries")

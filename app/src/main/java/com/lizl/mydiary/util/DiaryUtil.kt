@@ -6,11 +6,13 @@ import com.blankj.utilcode.util.SPUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.config.AppConfig
+import com.lizl.mydiary.constant.AppConstant
 
 object DiaryUtil
 {
 
-    private val moodResMap = hashMapOf(AppConstant.MOOD_ALL to R.drawable.ic_mood_all, AppConstant.MOOD_HAPPY to R.drawable.ic_mood_happy,
+    private val moodResMap = hashMapOf(
+            AppConstant.MOOD_ALL to R.drawable.ic_mood_all, AppConstant.MOOD_HAPPY to R.drawable.ic_mood_happy,
             AppConstant.MOOD_NORMAL to R.drawable.ic_mood_normal, AppConstant.MOOD_UNHAPPY to R.drawable.ic_mood_unhappy)
 
     private const val DIARY_TAG_LIST = "DIARY_TAG_LIST"

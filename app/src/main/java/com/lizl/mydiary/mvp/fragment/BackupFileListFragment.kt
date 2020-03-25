@@ -12,7 +12,7 @@ import com.lizl.mydiary.custom.others.CustomDiffUtil
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.contract.BackupFileListContract
 import com.lizl.mydiary.mvp.presenter.BackupFileListPresenter
-import com.lizl.mydiary.util.AppConstant
+import com.lizl.mydiary.constant.AppConstant
 import com.lizl.mydiary.util.DialogUtil
 import com.lizl.mydiary.util.FileUtil
 import kotlinx.android.synthetic.main.fragment_backup_file_list.*

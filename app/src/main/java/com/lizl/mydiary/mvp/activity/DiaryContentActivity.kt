@@ -16,6 +16,7 @@ import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.TitleBarBtnBean
 import com.lizl.mydiary.config.AppConfig
+import com.lizl.mydiary.constant.AppConstant
 import com.lizl.mydiary.custom.others.GlideEngine
 import com.lizl.mydiary.custom.others.IndentTextWatcher
 import com.lizl.mydiary.mvp.base.BaseActivity

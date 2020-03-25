@@ -1,4 +1,4 @@
-package com.lizl.mydiary.util
+package com.lizl.mydiary.constant
 
 object AppConstant
 {

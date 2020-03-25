@@ -9,6 +9,7 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.config.AppConfig
+import com.lizl.mydiary.constant.AppConstant
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -145,7 +146,7 @@ object BackupUtil
                 val diaryTagList = mutableListOf<String>()
                 saveDiaryList.forEach {
                     if (it.tag.isNullOrBlank()) return@forEach
-                    if (!diaryTagList.contains(it.tag)) diaryTagList.add(it.tag.orEmpty())
+                    if (!diaryTagList.contains(it.tag.orEmpty())) diaryTagList.add(it.tag.orEmpty())
                 }
                 DiaryUtil.addDiaryTagList(diaryTagList)
 

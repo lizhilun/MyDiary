@@ -6,7 +6,7 @@ import com.lizl.mydiary.bean.TitleBarBtnBean
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.DiarySearchContract
 import com.lizl.mydiary.mvp.presenter.DiarySearchPresenter
-import com.lizl.mydiary.util.AppConstant
+import com.lizl.mydiary.constant.AppConstant
 import com.lizl.mydiary.util.DialogUtil
 import com.lizl.mydiary.util.DiaryUtil
 import kotlinx.android.synthetic.main.activity_diary_search.*
@@ -22,7 +22,8 @@ class DiarySearchActivity : BaseActivity<DiarySearchPresenter>(), DiarySearchCon
     override fun initView()
     {
         val keyWord = intent?.getStringExtra(AppConstant.BUNDLE_DATA_STRING).orEmpty()
-        val mood = intent?.getIntExtra(AppConstant.BUNDLE_DATA_INT, AppConstant.MOOD_ALL) ?: AppConstant.MOOD_ALL
+        val mood = intent?.getIntExtra(
+                AppConstant.BUNDLE_DATA_INT, AppConstant.MOOD_ALL) ?: AppConstant.MOOD_ALL
 
         ctb_title.startSearchMode(keyWord, true) { presenter.searchDiary(it, curDiaryMood) }
         ctb_title.setOnBackBtnClickListener { super.onBackPressed() }

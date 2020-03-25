@@ -8,7 +8,7 @@ import com.lizl.mydiary.adapter.ImageViewPagerAdapter
 import com.lizl.mydiary.custom.function.addOnPageChangeListener
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.presenter.EmptyPresenter
-import com.lizl.mydiary.util.AppConstant
+import com.lizl.mydiary.constant.AppConstant
 import kotlinx.android.synthetic.main.activity_image_browser.*
 
 class ImageBrowserActivity : BaseActivity<EmptyPresenter>()

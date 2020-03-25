@@ -7,7 +7,7 @@ import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.DiaryListContract
 import com.lizl.mydiary.mvp.presenter.DiaryListPresenter
 import com.lizl.mydiary.util.ActivityUtil
-import com.lizl.mydiary.util.AppConstant
+import com.lizl.mydiary.constant.AppConstant
 import kotlinx.android.synthetic.main.activity_main.*
 
 

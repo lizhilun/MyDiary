@@ -2,7 +2,7 @@ package com.lizl.mydiary.mvp.presenter
 
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.mvp.contract.DiarySearchContract
-import com.lizl.mydiary.util.AppConstant
+import com.lizl.mydiary.constant.AppConstant
 import com.lizl.mydiary.util.AppDatabase
 import com.lizl.mydiary.util.DiaryUtil
 import kotlinx.coroutines.Dispatchers
