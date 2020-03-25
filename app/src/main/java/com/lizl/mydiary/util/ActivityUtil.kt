@@ -10,11 +10,6 @@ object ActivityUtil
 {
     fun turnToActivity(cls: Class<out Activity>, vararg extraList: Any)
     {
-        turnActivityForResult(cls, -1, extraList)
-    }
-
-    fun turnActivityForResult(cls: Class<out Activity>, resultCode: Int, vararg extraList: Any)
-    {
         ActivityUtils.finishActivity(cls)
         val topActivity = ActivityUtils.getTopActivity() ?: return
         val intent = Intent(topActivity, cls)
@@ -30,7 +25,6 @@ object ActivityUtil
             }
         }
 
-        if (resultCode > 0) topActivity.startActivityForResult(intent, resultCode)
-        else topActivity.startActivity(intent)
+        topActivity.startActivity(intent)
     }
 }

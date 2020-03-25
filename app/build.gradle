@@ -74,4 +74,5 @@ dependencies {
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
     implementation group: 'net.lingala.zip4j', name: 'zip4j', version: '2.2.7'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.1'
+    implementation 'com.jeremyliao:live-event-bus-x:1.5.7'
 }

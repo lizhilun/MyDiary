@@ -6,10 +6,12 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.util.TypedValue
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.TimeUtils
+import com.jeremyliao.liveeventbus.LiveEventBus
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.DiaryImageListAdapter
 import com.lizl.mydiary.bean.DateBean
@@ -17,6 +19,7 @@ import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.bean.TitleBarBtnBean
 import com.lizl.mydiary.config.AppConfig
 import com.lizl.mydiary.constant.AppConstant
+import com.lizl.mydiary.constant.EventConstant
 import com.lizl.mydiary.custom.others.GlideEngine
 import com.lizl.mydiary.custom.others.IndentTextWatcher
 import com.lizl.mydiary.mvp.base.BaseActivity
@@ -41,7 +44,6 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
     companion object
     {
         const val REQUEST_CODE_SELECT_IMAGE = 23
-        const val REQUEST_CODE_TO_IMAGE_BROWSER_ACTIVITY = 516
     }
 
     private lateinit var diaryImageListAdapter: DiaryImageListAdapter
@@ -69,8 +71,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         diaryImageListAdapter.setOnAddImageBtnClickListener { turnToImageSelectActivityWithPermissionCheck() }
 
         diaryImageListAdapter.setOnImageClickListener {
-            ActivityUtil.turnActivityForResult(ImageBrowserActivity::class.java, REQUEST_CODE_TO_IMAGE_BROWSER_ACTIVITY, diaryImageListAdapter.getImageList(),
-                    it, inEditMode)
+            ActivityUtil.turnToActivity(ImageBrowserActivity::class.java, diaryImageListAdapter.getImageList(), it, inEditMode)
         }
 
         ctb_title.setOnBackBtnClickListener { if (inEditMode) onFinishBtnClick() else super.onBackPressed() }
@@ -106,6 +107,10 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
                 et_diary_content.setPadding(0, resources.getDimensionPixelOffset(R.dimen.global_content_padding_edge), 0, 0)
             }
         }
+
+        LiveEventBus.get(EventConstant.EVENT_DELETE_IMAGE, String::class.java).observe(this, Observer {
+            diaryImageListAdapter.deleteImage(it)
+        })
 
         showDiaryContent(diaryBean)
         if (inEditMode) showEditView() else showReadView()
@@ -194,13 +199,6 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
                     selectImagePathList.add(imagePath)
                 }
                 diaryImageListAdapter.addImageList(selectImagePathList)
-            }
-            REQUEST_CODE_TO_IMAGE_BROWSER_ACTIVITY ->
-            {
-                val imageList = data?.getStringArrayListExtra(AppConstant.BUNDLE_DATA_STRING_ARRAY) ?: ArrayList()
-                diaryImageListAdapter.getImageList().filterNot { imageList.contains(it) }.forEach {
-                    diaryImageListAdapter.deleteImage(it)
-                }
             }
         }
     }
@@ -300,3 +298,5 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
             .forResult(REQUEST_CODE_SELECT_IMAGE) //请求码
     }
 }
+
+

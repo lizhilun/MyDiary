@@ -1,14 +1,14 @@
 package com.lizl.mydiary.mvp.activity
 
-import android.app.Activity
-import android.content.Intent
 import androidx.core.view.isVisible
+import com.jeremyliao.liveeventbus.LiveEventBus
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.ImageViewPagerAdapter
+import com.lizl.mydiary.constant.AppConstant
+import com.lizl.mydiary.constant.EventConstant
 import com.lizl.mydiary.custom.function.addOnPageChangeListener
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.presenter.EmptyPresenter
-import com.lizl.mydiary.constant.AppConstant
 import kotlinx.android.synthetic.main.activity_image_browser.*
 
 class ImageBrowserActivity : BaseActivity<EmptyPresenter>()
@@ -45,8 +45,10 @@ class ImageBrowserActivity : BaseActivity<EmptyPresenter>()
         tv_delete.setOnClickListener {
 
             val currentIndex = vp_image_list.currentItem
-            imageList.removeAt(currentIndex)
+            val deleteImagePath = imageList.removeAt(currentIndex)
             imageViewPagerAdapter.notifyDataSetChanged()
+
+            LiveEventBus.get(EventConstant.EVENT_DELETE_IMAGE).post(deleteImagePath)
 
             when (imageList.size)
             {
@@ -61,13 +63,5 @@ class ImageBrowserActivity : BaseActivity<EmptyPresenter>()
     {
         tv_cur_image.text = "$imagePosition/${imageList.size}"
         tv_cur_image.isVisible = imageList.size > 1
-    }
-
-    override fun onBackPressed()
-    {
-        val intent = Intent()
-        intent.putExtra(AppConstant.BUNDLE_DATA_STRING_ARRAY, imageList)
-        setResult(Activity.RESULT_OK, intent)
-        super.onBackPressed()
     }
 }
