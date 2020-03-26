@@ -1,8 +1,8 @@
 package com.lizl.mydiary.mvp.presenter
 
 import com.lizl.mydiary.bean.DiaryBean
-import com.lizl.mydiary.mvp.contract.DiarySearchContract
 import com.lizl.mydiary.constant.AppConstant
+import com.lizl.mydiary.mvp.contract.DiarySearchContract
 import com.lizl.mydiary.util.AppDatabase
 import com.lizl.mydiary.util.DiaryUtil
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +16,7 @@ class DiarySearchPresenter(private var view: DiarySearchContract.View?) : DiaryS
         GlobalScope.launch {
 
             val isKeywordValid = keyword.isNotBlank()
-            val isMoodValid = DiaryUtil.getMoodList(true).contains(mood)
+            val isMoodValid = DiaryUtil.getMoodList(false).contains(mood)
             val tagKeyWord = if (keyword.startsWith("#") && keyword.endsWith("#") && keyword.length > 2)
             {
                 keyword.substring(1, keyword.length - 1)

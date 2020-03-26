@@ -62,4 +62,9 @@ class TitleBarBtnListAdapter(btnList: List<TitleBarBtnBean.BaseBtnBean>) :
             itemView.setOnClickListener { textBtnItem.onBtnClickListener.invoke() }
         }
     }
+
+    fun update(item: TitleBarBtnBean.BaseBtnBean)
+    {
+        setData(getItemPosition(item), item)
+    }
 }

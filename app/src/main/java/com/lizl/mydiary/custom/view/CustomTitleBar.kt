@@ -75,6 +75,7 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.resources.getDimension(R.dimen.toolbar_title_text_size))
         searchEditText.setTextColor(ContextCompat.getColor(context, R.color.color_toolbar_text))
         searchEditText.gravity = Gravity.CENTER_VERTICAL
+        searchEditText.filters = arrayOf(UiUtil.getNoWrapOrSpaceFilter())
         searchEditText.setLines(1)
         searchEditText.background = null
         addView(searchEditText)
@@ -149,6 +150,12 @@ class CustomTitleBar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
     {
         btnListView.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, true)
         btnListView.adapter = TitleBarBtnListAdapter(btnList)
+    }
+
+    fun updateBtn(btnBean: TitleBarBtnBean.BaseBtnBean)
+    {
+        if (btnListView.adapter !is TitleBarBtnListAdapter) return
+        (btnListView.adapter as TitleBarBtnListAdapter).update(btnBean)
     }
 
     fun setBackBtnRedId(redId: Int)

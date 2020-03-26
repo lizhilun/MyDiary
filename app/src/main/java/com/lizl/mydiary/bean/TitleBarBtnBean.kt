@@ -4,7 +4,7 @@ open class TitleBarBtnBean
 {
     open class BaseBtnBean
 
-    class ImageBtnBean(val imageRedId: Int, val onBtnClickListener: () -> Unit) : BaseBtnBean()
+    class ImageBtnBean(var imageRedId: Int, val onBtnClickListener: () -> Unit) : BaseBtnBean()
 
-    class TextBtnBean(val text: String, val onBtnClickListener: () -> Unit) : BaseBtnBean()
+    class TextBtnBean(var text: String, val onBtnClickListener: () -> Unit) : BaseBtnBean()
 }

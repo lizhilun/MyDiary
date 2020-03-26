@@ -7,7 +7,6 @@ import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.DiaryListContract
 import com.lizl.mydiary.mvp.presenter.DiaryListPresenter
 import com.lizl.mydiary.util.ActivityUtil
-import com.lizl.mydiary.constant.AppConstant
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -22,7 +21,7 @@ class MainActivity : BaseActivity<DiaryListPresenter>(), DiaryListContract.View
     {
         ctb_title.setBtnList(mutableListOf<TitleBarBtnBean.BaseBtnBean>().apply {
             add(TitleBarBtnBean.ImageBtnBean(R.drawable.ic_setting) { ActivityUtil.turnToActivity(SettingActivity::class.java) })
-            add(TitleBarBtnBean.ImageBtnBean(R.drawable.ic_search) { ActivityUtil.turnToActivity(DiarySearchActivity::class.java, AppConstant.MOOD_ALL) })
+            add(TitleBarBtnBean.ImageBtnBean(R.drawable.ic_search) { ActivityUtil.turnToActivity(DiarySearchActivity::class.java) })
         })
 
         fab_add_diary.setOnClickListener { ActivityUtil.turnToActivity(DiaryContentActivity::class.java) }
