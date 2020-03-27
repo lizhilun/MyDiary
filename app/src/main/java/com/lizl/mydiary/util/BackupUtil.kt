@@ -29,7 +29,7 @@ object BackupUtil
 
     private val channel = Channel<BackupJob>()
 
-    init
+    fun init()
     {
         GlobalScope.launch {
             while (true)
@@ -37,6 +37,13 @@ object BackupUtil
                 val job = channel.receive()
                 backupData(job.backupFileName, job.callback)
             }
+        }
+
+        val autoBackupPeriod = AppConfig.getBackupConfig().getAppAutoBackupInterval()
+        if (AppConfig.getBackupConfig().isAutoBackup() && autoBackupPeriod > 0
+            && System.currentTimeMillis() - AppConfig.getBackupConfig().getLastAutoBackupTime() > autoBackupPeriod)
+        {
+            autoBackup()
         }
     }
 
