@@ -7,7 +7,6 @@ import com.lizl.mydiary.config.AppConfig
 import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.mvp.contract.BackupSettingContract
 import com.lizl.mydiary.mvp.presenter.BackupSettingPresenter
-import com.lizl.mydiary.util.DialogUtil
 import com.lizl.mydiary.util.PopupUtil
 
 class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(), BackupSettingContract.View
@@ -76,7 +75,7 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
 
     override fun onBackupFinish(result: Boolean)
     {
-        DialogUtil.dismissDialog()
+        PopupUtil.dismissAll()
         ToastUtils.showShort(getString(R.string.backup_data) + getString(if (result) R.string.success else R.string.failed))
     }
 }

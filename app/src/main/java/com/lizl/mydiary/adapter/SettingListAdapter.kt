@@ -6,7 +6,7 @@ import com.chad.library.adapter.base.delegate.BaseMultiTypeDelegate
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.SettingBean
-import com.lizl.mydiary.util.DialogUtil
+import com.lizl.mydiary.util.PopupUtil
 import kotlinx.android.synthetic.main.item_setting_boolean.view.*
 import kotlinx.android.synthetic.main.item_setting_normal.view.*
 import kotlinx.android.synthetic.main.item_setting_value.view.*
@@ -103,7 +103,7 @@ class SettingListAdapter : BaseDelegateMultiAdapter<SettingBean.SettingBaseBean,
             settingItem.radioMap.forEach { radioList.add(it.value) }
 
             itemView.setOnClickListener {
-                DialogUtil.showRadioGroupDialog(context, settingItem.settingName, radioList, showValue) { result ->
+                PopupUtil.showRadioGroupPopup(settingItem.settingName, radioList, showValue) { result ->
                     settingItem.radioMap.forEach {
                         if (it.value == result)
                         {
@@ -118,7 +118,7 @@ class SettingListAdapter : BaseDelegateMultiAdapter<SettingBean.SettingBaseBean,
                                 settingItem.saveValue(it.key as Long)
                                 settingItem.callback?.invoke(settingItem)
                             }
-                            return@showRadioGroupDialog
+                            return@showRadioGroupPopup
                         }
                     }
                 }

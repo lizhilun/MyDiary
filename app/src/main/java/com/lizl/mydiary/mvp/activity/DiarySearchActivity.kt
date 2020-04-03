@@ -7,8 +7,8 @@ import com.lizl.mydiary.constant.AppConstant
 import com.lizl.mydiary.mvp.base.BaseActivity
 import com.lizl.mydiary.mvp.contract.DiarySearchContract
 import com.lizl.mydiary.mvp.presenter.DiarySearchPresenter
-import com.lizl.mydiary.util.DialogUtil
 import com.lizl.mydiary.util.DiaryUtil
+import com.lizl.mydiary.util.PopupUtil
 import kotlinx.android.synthetic.main.activity_diary_search.*
 
 class DiarySearchActivity : BaseActivity<DiarySearchPresenter>(), DiarySearchContract.View
@@ -29,7 +29,7 @@ class DiarySearchActivity : BaseActivity<DiarySearchPresenter>(), DiarySearchCon
         ctb_title.setOnBackBtnClickListener { super.onBackPressed() }
 
         moodTitleBtn = TitleBarBtnBean.ImageBtnBean(DiaryUtil.getMoodResByMood(mood)) {
-            DialogUtil.showMoodSelectDialog(this@DiarySearchActivity, true) {
+            PopupUtil.showMoodSelectPopup(true) {
                 moodTitleBtn.imageRedId = DiaryUtil.getMoodResByMood(it)
                 ctb_title.updateBtn(moodTitleBtn)
                 presenter.searchDiary(ctb_title.getSearchText(), it)

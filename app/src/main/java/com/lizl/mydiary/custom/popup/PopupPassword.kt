@@ -1,16 +1,16 @@
-package com.lizl.mydiary.custom.dialog
+package com.lizl.mydiary.custom.popup
 
 import android.content.Context
-import android.view.View
 import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.custom.function.getEditText
 import com.lizl.mydiary.custom.function.setOnPasswordChangedListener
 import com.lizl.mydiary.util.UiUtil
-import kotlinx.android.synthetic.main.dialog_password_confirm.*
+import com.lxj.xpopup.core.CenterPopupView
+import kotlinx.android.synthetic.main.popup_password_confirm.view.*
 
-class DialogPassword(context: Context, private val passwordOperation: Int, private val password: String? = null,
-                     private val onInputFinishListener: (String) -> Unit) : BaseDialog(context, null)
+class PopupPassword(context: Context, private val passwordOperation: Int, private val password: String? = null,
+                    private val onInputFinishListener: (String) -> Unit) : CenterPopupView(context)
 {
 
     private var firstPassword: String? = null
@@ -25,9 +25,9 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
         const val PASSWORD_OPERATION_INPUT = 4
     }
 
-    override fun getDialogContentView(): View = layoutInflater.inflate(R.layout.dialog_password_confirm, null)
+    override fun getImplLayoutId() = R.layout.popup_password_confirm
 
-    override fun initView()
+    override fun onCreate()
     {
         gpv_password.setOnPasswordChangedListener { onPasswordInputFinish(it) }
 
@@ -109,10 +109,6 @@ class DialogPassword(context: Context, private val passwordOperation: Int, priva
     {
         gpv_password.postDelayed({ gpv_password.clearPassword() }, if (needDelay) 100L else 0)
     }
-
-    override fun getDialogWidth() = (UiUtil.getScreenWidth() * 0.9).toInt()
-
-    override fun onConfirmBtnClick() = true
 
     enum class OperationState
     {

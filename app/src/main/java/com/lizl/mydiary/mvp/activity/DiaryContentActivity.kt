@@ -99,7 +99,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         }
 
         tv_diary_tag.isVisible = AppConfig.getLayoutStyleConfig().isDiaryTagEnable()
-        tv_diary_tag.setOnClickListener { if (inEditMode) DialogUtil.showDiaryTagListDialog(this) { tv_diary_tag.text = "#$it#" } }
+        tv_diary_tag.setOnClickListener { if (inEditMode) PopupUtil.showDiaryTagListPopup { tv_diary_tag.text = "#$it#" } }
 
         et_diary_content.post {
             if (!tv_diary_tag.isVisible)
@@ -121,7 +121,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
         curDiaryMood = mood
         val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
         titleBtnList.add(TitleBarBtnBean.ImageBtnBean(DiaryUtil.getMoodResByMood(mood)) {
-            if (inEditMode) DialogUtil.showMoodSelectDialog(this, false) { showDiaryMood(it) }
+            if (inEditMode) PopupUtil.showMoodSelectPopup(false) { showDiaryMood(it) }
         })
         ctb_title.setBtnList(titleBtnList)
     }
@@ -147,9 +147,9 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
 
     private fun showDatePickerDialog()
     {
-        DialogUtil.showDatePickerDialog(this, dateBean.year, dateBean.month - 1, dateBean.day) { _, year, month, dayOfMonth ->
+        PopupUtil.showDatePickerDialog(dateBean.year, dateBean.month - 1, dateBean.day) { _, year, month, dayOfMonth ->
             run {
-                DialogUtil.showTimePickerDialog(this, dateBean.hour, dateBean.minute) { _, hourOfDay, minute ->
+                PopupUtil.showTimePickerDialog(dateBean.hour, dateBean.minute) { _, hourOfDay, minute ->
                     run {
                         val simpleDateFormat = SimpleDateFormat("yyyy MM dd HH mm", Locale.getDefault())
                         val date = simpleDateFormat.parse("$year ${month + 1} $dayOfMonth $hourOfDay $minute")
@@ -231,7 +231,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
 
     override fun onDiarySaveSuccess()
     {
-        DialogUtil.dismissDialog()
+        PopupUtil.dismissAll()
         if (diaryBean == null) super.onBackPressed() else showReadView()
     }
 

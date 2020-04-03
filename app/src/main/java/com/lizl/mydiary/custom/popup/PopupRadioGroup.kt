@@ -1,4 +1,4 @@
-package com.lizl.mydiary.custom.dialog
+package com.lizl.mydiary.custom.popup
 
 import android.content.Context
 import android.view.View
@@ -6,17 +6,20 @@ import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatRadioButton
 import com.lizl.mydiary.R
 import com.lizl.mydiary.util.SkinUtil
-import kotlinx.android.synthetic.main.dialog_radio_group.*
+import com.lxj.xpopup.core.CenterPopupView
+import kotlinx.android.synthetic.main.popup_radio_group.view.*
 import skin.support.widget.SkinCompatRadioButton
 
-class DialogRadioGroup(context: Context, title: String, private val radioList: List<String>, private val checkedRadio: String,
-                       private val onSelectFinishListener: (String) -> Unit) : BaseDialog(context, title, true)
+class PopupRadioGroup(context: Context, private val title: String, private val radioList: List<String>, private val checkedRadio: String,
+                      private val onSelectFinishListener: (String) -> Unit) : CenterPopupView(context)
 {
 
-    override fun getDialogContentView(): View = layoutInflater.inflate(R.layout.dialog_radio_group, null)
+    override fun getImplLayoutId() = R.layout.popup_radio_group
 
-    override fun initView()
+    override fun onCreate()
     {
+        tv_title.text = title
+
         val padding = context.resources.getDimensionPixelOffset(R.dimen.global_content_padding_content) / 2
 
         radioList.forEach {
@@ -32,17 +35,15 @@ class DialogRadioGroup(context: Context, title: String, private val radioList: L
                 rv_radio_group.check(radioButton.id)
             }
         }
-    }
 
-    override fun getDialogWidth() = 0
+        tv_cancel.setOnClickListener { dismiss() }
 
-    override fun onConfirmBtnClick(): Boolean
-    {
-        val checkedRadio = rv_radio_group.findViewById<AppCompatRadioButton>(rv_radio_group.checkedRadioButtonId) ?: return true
-        if (this.checkedRadio != checkedRadio.text.toString())
-        {
-            onSelectFinishListener.invoke(checkedRadio.text.toString())
+        tv_confirm.setOnClickListener {
+            val checkedRadio = rv_radio_group.findViewById<AppCompatRadioButton>(rv_radio_group.checkedRadioButtonId) ?: return@setOnClickListener
+            if (this.checkedRadio != checkedRadio.text.toString())
+            {
+                onSelectFinishListener.invoke(checkedRadio.text.toString())
+            }
         }
-        return true
     }
 }

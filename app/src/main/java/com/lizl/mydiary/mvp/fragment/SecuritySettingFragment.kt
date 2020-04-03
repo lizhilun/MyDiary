@@ -6,7 +6,7 @@ import com.lizl.mydiary.config.AppConfig
 import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.mvp.presenter.EmptyPresenter
 import com.lizl.mydiary.util.BiometricAuthenticationUtil
-import com.lizl.mydiary.util.DialogUtil
+import com.lizl.mydiary.util.PopupUtil
 
 class SecuritySettingFragment : BaseSettingListFragment<EmptyPresenter>()
 {
@@ -20,7 +20,7 @@ class SecuritySettingFragment : BaseSettingListFragment<EmptyPresenter>()
                 ConfigConstant.DEFAULT_IS_FINGERPRINT_LOCK_ON, true)
 
         val modifyPasswordItem = SettingBean.SettingNormalBean(getString(R.string.setting_modify_password)) {
-            DialogUtil.showModifyPasswordDialog(context!!, AppConfig.getSecurityConfig().getAppLockPassword()) {
+            PopupUtil.showModifyPasswordPopup(AppConfig.getSecurityConfig().getAppLockPassword()) {
                 AppConfig.getSecurityConfig().setAppLockPassword(it)
             }
         }
@@ -51,16 +51,16 @@ class SecuritySettingFragment : BaseSettingListFragment<EmptyPresenter>()
 
                 if (AppConfig.getSecurityConfig().getAppLockPassword().isBlank())
                 {
-                    DialogUtil.showSetPasswordDialog(context!!, onInputFinishListener)
+                    PopupUtil.showSetPasswordPopup(onInputFinishListener)
                 }
                 else
                 {
-                    DialogUtil.showPasswordConfirmDialog(context!!, AppConfig.getSecurityConfig().getAppLockPassword(), onInputFinishListener)
+                    PopupUtil.showPasswordConfirmPopup(AppConfig.getSecurityConfig().getAppLockPassword(), onInputFinishListener)
                 }
             }
             else
             {
-                DialogUtil.showPasswordConfirmDialog(context!!, AppConfig.getSecurityConfig().getAppLockPassword()) {
+                PopupUtil.showPasswordConfirmPopup(AppConfig.getSecurityConfig().getAppLockPassword()) {
                     AppConfig.getSecurityConfig().setAppLockOn(false)
                     settingAdapter.update(bean)
                     settingAdapter.remove(fingerprintItem)

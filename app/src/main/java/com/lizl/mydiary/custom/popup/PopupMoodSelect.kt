@@ -1,18 +1,19 @@
-package com.lizl.mydiary.custom.dialog
+package com.lizl.mydiary.custom.popup
 
 import android.content.Context
-import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.MoodListAdapter
 import com.lizl.mydiary.util.DiaryUtil
-import kotlinx.android.synthetic.main.dialog_mood_select.*
+import com.lxj.xpopup.core.CenterPopupView
+import kotlinx.android.synthetic.main.popup_mood_select.view.*
 
-class DialogMoodSelect(context: Context, private val withAll: Boolean, private val onMoodSelectListener: (mood: Int) -> Unit) : BaseDialog(context, null)
+class PopupMoodSelect(context: Context, private val withAll: Boolean, private val onMoodSelectListener: (mood: Int) -> Unit) : CenterPopupView(context)
 {
-    override fun getDialogContentView(): View = layoutInflater.inflate(R.layout.dialog_mood_select, null)
 
-    override fun initView()
+    override fun getImplLayoutId() = R.layout.popup_mood_select
+
+    override fun onCreate()
     {
         val moodListAdapter = MoodListAdapter()
         rv_mood_grid.layoutManager = GridLayoutManager(context, DiaryUtil.getMoodList(withAll).size)
@@ -25,8 +26,4 @@ class DialogMoodSelect(context: Context, private val withAll: Boolean, private v
             dismiss()
         }
     }
-
-    override fun getDialogWidth() = context.resources.getDimensionPixelOffset(R.dimen.dialog_mood_select_width)
-
-    override fun onConfirmBtnClick() = true
 }

@@ -1,6 +1,5 @@
 package com.lizl.mydiary.mvp.fragment
 
-import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.chad.library.adapter.base.animation.SlideInRightAnimation
@@ -13,7 +12,6 @@ import com.lizl.mydiary.custom.others.CustomDiffUtil
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.contract.BackupFileListContract
 import com.lizl.mydiary.mvp.presenter.BackupFileListPresenter
-import com.lizl.mydiary.util.DialogUtil
 import com.lizl.mydiary.util.FileUtil
 import com.lizl.mydiary.util.PopupUtil
 import kotlinx.android.synthetic.main.fragment_backup_file_list.*
@@ -62,7 +60,7 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
 
     override fun showBackupFileList(fileList: List<File>)
     {
-        DialogUtil.dismissDialog()
+        PopupUtil.dismissAll()
 
         backupFileListAdapter.setDiffNewData(fileList.toMutableList())
     }
@@ -90,7 +88,7 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
             {
                 PopupUtil.showOperationConfirmPopup("${getString(R.string.restore_data)}${getString(R.string.failed)}",
                         getString(R.string.notify_restore_data_failed_wrong_password)) {
-                    DialogUtil.showInputPasswordDialog(activity as Context) {
+                    PopupUtil.showInputPasswordPopup() {
                         presenter.restoreData(backupFile, it)
                     }
                 }
@@ -98,7 +96,7 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
             }
         }
         ToastUtils.showShort("${getString(R.string.restore_data)}${getString(if (result) R.string.success else R.string.failed)}")
-        DialogUtil.dismissDialog()
+        PopupUtil.dismissAll()
     }
 
     private fun showFileOperationDialog(file: File)
@@ -110,8 +108,7 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
             add(OperationItem(getString(R.string.delete_backup_file)) { presenter.deleteBackupFile(file) })
 
             add(OperationItem(getString(R.string.rename_backup_file)) {
-                DialogUtil.showInputDialog(activity as Context, getString(R.string.rename_backup_file), file.nameWithoutExtension,
-                        getString(R.string.hint_rename_backup_file)) {
+                PopupUtil.showInputPopup(getString(R.string.rename_backup_file), file.nameWithoutExtension, getString(R.string.hint_rename_backup_file)) {
                     presenter.renameBackupFile(file, it)
                 }
             })
