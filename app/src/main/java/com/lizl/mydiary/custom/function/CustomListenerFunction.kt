@@ -1,23 +1,15 @@
 package com.lizl.mydiary.custom.function
 
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.jungly.gridpasswordview.GridPasswordView
 import com.warkiz.widget.IndicatorSeekBar
 import com.warkiz.widget.OnSeekChangeListener
 import com.warkiz.widget.SeekParams
 
-fun ViewPager.addOnPageChangeListener(onPageSelectedListener: (position: Int) -> Unit)
+fun ViewPager2.registerOnPageChangeCallback(onPageSelectedListener: (position: Int) -> Unit)
 {
-    this.addOnPageChangeListener(object : ViewPager.OnPageChangeListener
+    this.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback()
     {
-        override fun onPageScrollStateChanged(p0: Int)
-        {
-        }
-
-        override fun onPageScrolled(p0: Int, p1: Float, p2: Int)
-        {
-        }
-
         override fun onPageSelected(position: Int)
         {
             onPageSelectedListener.invoke(position)
