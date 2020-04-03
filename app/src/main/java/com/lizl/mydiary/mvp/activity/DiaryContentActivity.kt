@@ -190,7 +190,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
 
         when (requestCode)
         {
-            REQUEST_CODE_SELECT_IMAGE              ->
+            REQUEST_CODE_SELECT_IMAGE ->
             {
                 val selectImageUriList = Matisse.obtainResult(data) ?: emptyList()
                 val selectImagePathList = mutableListOf<String>()
@@ -206,14 +206,14 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
     @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
     fun onPermissionDenied()
     {
-        DialogUtil.showOperationConfirmDialog(this, getString(R.string.notify_failed_to_get_permission),
+        PopupUtil.showOperationConfirmPopup(getString(R.string.notify_failed_to_get_permission),
                 getString(R.string.notify_permission_be_refused)) { turnToImageSelectActivityWithPermissionCheck() }
     }
 
     @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
     fun onPermissionNeverAskAgain()
     {
-        DialogUtil.showOperationConfirmDialog(this, getString(R.string.notify_failed_to_get_permission),
+        PopupUtil.showOperationConfirmPopup(getString(R.string.notify_failed_to_get_permission),
                 getString(R.string.notify_permission_be_refused_and_never_ask_again)) { UiUtil.goToAppDetailPage() }
     }
 
@@ -226,7 +226,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
 
     override fun onDiarySaving()
     {
-        DialogUtil.showLoadingDialog(this, getString(R.string.in_save))
+        PopupUtil.showLoadingPopup(getString(R.string.in_save))
     }
 
     override fun onDiarySaveSuccess()
@@ -260,7 +260,7 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
     {
         if (inEditMode && isDiaryModified(diaryBean))
         {
-            DialogUtil.showOperationConfirmDialog(this, getString(R.string.notify), getString(R.string.notify_diary_has_not_save_sure_to_quit)) {
+            PopupUtil.showOperationConfirmPopup(getString(R.string.notify), getString(R.string.notify_diary_has_not_save_sure_to_quit)) {
                 super.onBackPressed()
             }
             return

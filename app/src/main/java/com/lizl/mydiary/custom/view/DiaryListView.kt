@@ -15,8 +15,8 @@ import com.lizl.mydiary.custom.others.CustomDiffUtil
 import com.lizl.mydiary.mvp.activity.DiaryContentActivity
 import com.lizl.mydiary.util.ActivityUtil
 import com.lizl.mydiary.util.AppDatabase
-import com.lizl.mydiary.util.DialogUtil
 import com.lizl.mydiary.util.FileUtil
+import com.lizl.mydiary.util.PopupUtil
 import isDiarySameContent
 import kotlinx.android.synthetic.main.layout_diary_list.view.*
 import kotlinx.android.synthetic.main.layout_diary_list_herder.view.*
@@ -70,7 +70,7 @@ class DiaryListView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
     {
         val operationList = mutableListOf<OperationItem>()
         operationList.add(OperationItem(context.getString(R.string.delete)) { deleteDiary(diaryBean) })
-        DialogUtil.showOperationListDialog(context, operationList)
+        PopupUtil.showOperationListPopup(operationList)
     }
 
     private fun deleteDiary(diaryBean: DiaryBean)

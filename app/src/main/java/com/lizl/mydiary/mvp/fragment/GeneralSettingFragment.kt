@@ -5,7 +5,7 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.SettingBean
 import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.mvp.presenter.EmptyPresenter
-import com.lizl.mydiary.util.DialogUtil
+import com.lizl.mydiary.util.PopupUtil
 import com.lizl.mydiary.util.SkinUtil
 import com.lizl.mydiary.util.UiUtil
 import permissions.dispatcher.NeedsPermission
@@ -50,14 +50,14 @@ class GeneralSettingFragment : BaseSettingListFragment<EmptyPresenter>()
     @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun onPermissionDenied()
     {
-        DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify_failed_to_get_permission),
+        PopupUtil.showOperationConfirmPopup(getString(R.string.notify_failed_to_get_permission),
                 getString(R.string.notify_permission_be_refused)) { turnToBackupFragment() }
     }
 
     @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun onPermissionNeverAskAgain()
     {
-        DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.notify_failed_to_get_permission),
+        PopupUtil.showOperationConfirmPopup(getString(R.string.notify_failed_to_get_permission),
                 getString(R.string.notify_permission_be_refused_and_never_ask_again)) { UiUtil.goToAppDetailPage() }
     }
 

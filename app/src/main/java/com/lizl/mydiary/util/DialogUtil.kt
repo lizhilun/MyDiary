@@ -6,33 +6,11 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.widget.DatePicker
 import android.widget.TimePicker
-import com.lizl.mydiary.bean.OperationItem
 import com.lizl.mydiary.custom.dialog.*
 
 object DialogUtil
 {
     private var dialog: Dialog? = null
-
-    fun showLoadingDialog(context: Context, loadingText: String)
-    {
-        dialog?.dismiss()
-        dialog = DialogLoading(context, loadingText)
-        dialog?.show()
-    }
-
-    fun showOperationConfirmDialog(context: Context, title: String, notify: String, onConfirmBtnClickListener: () -> Unit)
-    {
-        dialog?.dismiss()
-        dialog = DialogOperationConfirm(context, title, notify, onConfirmBtnClickListener)
-        dialog?.show()
-    }
-
-    fun showOperationListDialog(context: Context, operationList: List<OperationItem>)
-    {
-        dialog?.dismiss()
-        dialog = DialogOperationList(context, operationList)
-        dialog?.show()
-    }
 
     fun showPasswordConfirmDialog(context: Context, password: String, onInputFinishListener: (String) -> Unit)
     {

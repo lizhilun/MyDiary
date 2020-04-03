@@ -8,13 +8,14 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.BackupFileListAdapter
 import com.lizl.mydiary.bean.OperationItem
 import com.lizl.mydiary.bean.TitleBarBtnBean
+import com.lizl.mydiary.constant.AppConstant
 import com.lizl.mydiary.custom.others.CustomDiffUtil
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.contract.BackupFileListContract
 import com.lizl.mydiary.mvp.presenter.BackupFileListPresenter
-import com.lizl.mydiary.constant.AppConstant
 import com.lizl.mydiary.util.DialogUtil
 import com.lizl.mydiary.util.FileUtil
+import com.lizl.mydiary.util.PopupUtil
 import kotlinx.android.synthetic.main.fragment_backup_file_list.*
 import java.io.File
 
@@ -43,7 +44,7 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
 
         val titleBtnList = mutableListOf<TitleBarBtnBean.BaseBtnBean>()
         titleBtnList.add(TitleBarBtnBean.ImageBtnBean(R.drawable.ic_clear) {
-            DialogUtil.showOperationConfirmDialog(activity as Context, getString(R.string.clear_backup_data), getString(R.string.notify_clear_backup_data)) {
+            PopupUtil.showOperationConfirmPopup(getString(R.string.clear_backup_data), getString(R.string.notify_clear_backup_data)) {
                 presenter.clearBackupFiles()
             }
         })
@@ -56,7 +57,7 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
 
     override fun showFileFindingView()
     {
-        DialogUtil.showLoadingDialog(activity as Context, getString(R.string.in_finding_backup_file))
+        PopupUtil.showLoadingPopup(getString(R.string.in_finding_backup_file))
     }
 
     override fun showBackupFileList(fileList: List<File>)
@@ -78,7 +79,7 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
 
     override fun showRestoringDataView()
     {
-        DialogUtil.showLoadingDialog(activity as Context, getString(R.string.in_doing, getString(R.string.restore_data)))
+        PopupUtil.showLoadingPopup(getString(R.string.in_doing, getString(R.string.restore_data)))
     }
 
     override fun onRestoreDataFinish(result: Boolean, backupFile: File, failedReason: String)
@@ -87,7 +88,7 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
         {
             AppConstant.RESTORE_DATA_FAILED_WRONG_PASSWORD ->
             {
-                DialogUtil.showOperationConfirmDialog(activity as Context, "${getString(R.string.restore_data)}${getString(R.string.failed)}",
+                PopupUtil.showOperationConfirmPopup("${getString(R.string.restore_data)}${getString(R.string.failed)}",
                         getString(R.string.notify_restore_data_failed_wrong_password)) {
                     DialogUtil.showInputPasswordDialog(activity as Context) {
                         presenter.restoreData(backupFile, it)
@@ -118,6 +119,6 @@ class BackupFileListFragment : BaseFragment<BackupFileListPresenter>(), BackupFi
             add(OperationItem(getString(R.string.share_backup_file)) { FileUtil.shareAllTypeFile(file) })
         }
 
-        DialogUtil.showOperationListDialog(activity as Context, operationList)
+        PopupUtil.showOperationListPopup(operationList)
     }
 }

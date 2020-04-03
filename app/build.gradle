@@ -70,9 +70,9 @@ dependencies {
     implementation "skin.support:skin-support-cardview:${skin_version}"          // skin-support-cardview CardView 控件支持[可选]
     implementation "skin.support:skin-support-constraint-layout:${skin_version}" // skin-support-constraint-layout ConstraintLayout 控件支持[可选]
     implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
-    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
     implementation group: 'net.lingala.zip4j', name: 'zip4j', version: '2.5.1'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.1'
     implementation 'com.jeremyliao:live-event-bus-x:1.5.7'
+    implementation 'com.lxj:xpopup:1.8.13'
 }

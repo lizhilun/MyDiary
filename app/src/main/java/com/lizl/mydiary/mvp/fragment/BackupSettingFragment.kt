@@ -1,6 +1,5 @@
 package com.lizl.mydiary.mvp.fragment
 
-import android.content.Context
 import com.blankj.utilcode.util.ToastUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.SettingBean
@@ -9,6 +8,7 @@ import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.mvp.contract.BackupSettingContract
 import com.lizl.mydiary.mvp.presenter.BackupSettingPresenter
 import com.lizl.mydiary.util.DialogUtil
+import com.lizl.mydiary.util.PopupUtil
 
 class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(), BackupSettingContract.View
 {
@@ -27,7 +27,7 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
                 ConfigConstant.DEFAULT_APP_AUTO_BACKUP_PERIOD, timeMap)
 
         settingList.add(SettingBean.SettingNormalBean(getString(R.string.setting_backup)) {
-            DialogUtil.showOperationConfirmDialog(context!!, getString(R.string.setting_backup), getString(R.string.notify_backup_data)) {
+            PopupUtil.showOperationConfirmPopup(getString(R.string.setting_backup), getString(R.string.notify_backup_data)) {
                 presenter.backupData()
             }
         })
@@ -60,7 +60,7 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
                 needSave = false) { result, bean ->
             if (result && AppConfig.getSecurityConfig().getAppLockPassword().isEmpty())
             {
-                DialogUtil.showOperationConfirmDialog(activity as Context, getString(R.string.setting_backup_file_encryption),
+                PopupUtil.showOperationConfirmPopup(getString(R.string.setting_backup_file_encryption),
                         getString(R.string.notify_set_lock_password_before_encryption)) { turnToFragment(R.id.securitySettingFragment) }
                 return@SettingBooleanBean
             }
@@ -71,7 +71,7 @@ class BackupSettingFragment : BaseSettingListFragment<BackupSettingPresenter>(),
 
     override fun onStartBackup()
     {
-        DialogUtil.showLoadingDialog(context!!, getString(R.string.in_doing, getString(R.string.backup_data)))
+        PopupUtil.showLoadingPopup(getString(R.string.in_doing, getString(R.string.backup_data)))
     }
 
     override fun onBackupFinish(result: Boolean)
