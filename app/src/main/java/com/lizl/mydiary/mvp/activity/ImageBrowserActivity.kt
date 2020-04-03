@@ -32,15 +32,14 @@ class ImageBrowserActivity : BaseActivity<EmptyPresenter>()
         vp_image_list.setCurrentItem(imagePosition, false)
         vp_image_list.offscreenPageLimit = 3
 
+        imageViewPagerAdapter.setOnImageItemClickListener { finish() }
+
         tv_delete.isVisible = editable
 
         vp_image_list.registerOnPageChangeCallback { updateImagePositionMark() }
 
         tv_cur_image.bringToFront()
-        iv_back.bringToFront()
         tv_delete.bringToFront()
-
-        iv_back.setOnClickListener { finish() }
 
         tv_delete.setOnClickListener {
 

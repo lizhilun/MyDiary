@@ -8,8 +8,10 @@ import com.lizl.mydiary.util.GlideUtil
 import kotlinx.android.synthetic.main.item_photo_view.view.*
 
 class ImageViewPagerAdapter(imageList: List<String>) :
-    BaseQuickAdapter<String, ImageViewPagerAdapter.ViewHolder>(R.layout.item_photo_view, imageList.toMutableList())
+        BaseQuickAdapter<String, ImageViewPagerAdapter.ViewHolder>(R.layout.item_photo_view, imageList.toMutableList())
 {
+
+    private var onImageItemClickListener: (() -> Unit)? = null
 
     override fun convert(helper: ViewHolder, item: String)
     {
@@ -20,7 +22,14 @@ class ImageViewPagerAdapter(imageList: List<String>) :
     {
         fun bindViewHolder(imagePath: String)
         {
-            GlideUtil.displayOriImage(context, imagePath, itemView.photo_view)
+            GlideUtil.displayOriImage(itemView.photo_view, imagePath)
+
+            itemView.photo_view.setOnClickListener { onImageItemClickListener?.invoke() }
         }
+    }
+
+    fun setOnImageItemClickListener(onImageItemClickListener: () -> Unit)
+    {
+        this.onImageItemClickListener = onImageItemClickListener
     }
 }

@@ -5,52 +5,36 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
-    <com.lizl.mydiary.custom.view.StatusBarPlaceholder
-        android:id="@+id/layout_status_bar_placeholder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_back"
-        style="@style/ToolbarLayoutBackIconStyle"
-        android:layout_height="@dimen/global_toolbar_height"
-        android:layout_marginStart="@dimen/toolbar_content_padding_edge"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_status_bar_placeholder" />
-
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_cur_image"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="@dimen/toolbar_content_padding_edge"
         android:shadowColor="#747474"
         android:shadowDx="5"
         android:shadowDy="5"
         android:shadowRadius="10"
         android:textColor="#dedede"
-        android:textSize="@dimen/global_text_size_bigger"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_back"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/iv_back" />
+        android:textSize="@dimen/global_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_delete"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingStart="@dimen/toolbar_content_padding_edge"
-        android:paddingEnd="@dimen/toolbar_content_padding_edge"
+        android:padding="@dimen/toolbar_content_padding_edge"
         android:text="@string/delete"
         android:textColor="@color/white"
         android:textSize="@dimen/global_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_back"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/iv_back" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_image_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
