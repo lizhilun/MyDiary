@@ -8,8 +8,8 @@ import android.widget.TimePicker
 import com.blankj.utilcode.util.ActivityUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.OperationItem
-import com.lizl.mydiary.custom.dialog.DialogDiaryTagList
-import com.lizl.mydiary.custom.dialog.DialogInput
+import com.lizl.mydiary.custom.popup.PopupDiaryTagList
+import com.lizl.mydiary.custom.popup.PopupInput
 import com.lizl.mydiary.custom.popup.*
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
@@ -96,7 +96,8 @@ object PopupUtil
     {
         val context = ActivityUtils.getTopActivity() ?: return
         dismissAll()
-        popup = XPopup.Builder(context).asCustom(DialogInput(context, title, defaultValue, editHint, inputCompletedCallback))
+        popup = XPopup.Builder(context).asCustom(
+                PopupInput(context, title, defaultValue, editHint, inputCompletedCallback))
         popup?.show()
     }
 
@@ -104,7 +105,7 @@ object PopupUtil
     {
         val context = ActivityUtils.getTopActivity() ?: return
         dismissAll()
-        popup = XPopup.Builder(context).asCustom(DialogDiaryTagList(context, onTagSelectFinishListener))
+        popup = XPopup.Builder(context).asCustom(PopupDiaryTagList(context, onTagSelectFinishListener))
         popup?.show()
     }
 

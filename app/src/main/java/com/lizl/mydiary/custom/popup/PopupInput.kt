@@ -1,4 +1,4 @@
-package com.lizl.mydiary.custom.dialog
+package com.lizl.mydiary.custom.popup
 
 import android.content.Context
 import androidx.core.widget.addTextChangedListener
@@ -10,8 +10,8 @@ import kotlinx.android.synthetic.main.popup_input.view.*
 /**
  * 用于输入信息的Dialog
  */
-class DialogInput(context: Context, private var title: String, private var defaultValue: String?, private var editHint: String,
-                  private var inputCompletedCallback: (String) -> Unit) : CenterPopupView(context)
+class PopupInput(context: Context, private var title: String, private var defaultValue: String?, private var editHint: String,
+                 private var inputCompletedCallback: (String) -> Unit) : CenterPopupView(context)
 {
 
     override fun getImplLayoutId() = R.layout.popup_input
@@ -24,6 +24,8 @@ class DialogInput(context: Context, private var title: String, private var defau
         et_input.addTextChangedListener { tv_confirm.isEnabled = !it.isNullOrEmpty() }
 
         UiUtil.showInputKeyboard(et_input)
+
+        tv_title.text = title
 
         tv_cancel.setOnClickListener { dismiss() }
 

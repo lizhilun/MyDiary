@@ -1,4 +1,4 @@
-package com.lizl.mydiary.custom.dialog
+package com.lizl.mydiary.custom.popup
 
 import android.content.Context
 import android.text.InputFilter
@@ -11,7 +11,7 @@ import com.lizl.mydiary.util.UiUtil
 import com.lxj.xpopup.core.CenterPopupView
 import kotlinx.android.synthetic.main.popup_diary_tag_list.view.*
 
-class DialogDiaryTagList(context: Context, private val onTagSelectFinishListener: (String) -> Unit) : CenterPopupView(context)
+class PopupDiaryTagList(context: Context, private val onTagSelectFinishListener: (String) -> Unit) : CenterPopupView(context)
 {
 
     override fun getImplLayoutId() = R.layout.popup_diary_tag_list
