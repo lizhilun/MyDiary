@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lizl.mydiary.R
 import com.lizl.mydiary.util.GlideUtil
+import com.lizl.mydiary.util.PopupUtil
 import kotlinx.android.synthetic.main.item_diary_image.view.*
 
 class DiaryImageListAdapter(private var editable: Boolean, private val maxImageCount: Int, private val showAll: Boolean) :
@@ -66,7 +67,7 @@ class DiaryImageListAdapter(private var editable: Boolean, private val maxImageC
             GlideUtil.displayImage(itemView.iv_image, imageUrl)
 
             itemView.setOnClickListener {
-                onImageClickListener?.invoke(imageUrl)
+                PopupUtil.showImageViewerPopup(itemView.iv_image, imageUrl, imageList)
             }
         }
 

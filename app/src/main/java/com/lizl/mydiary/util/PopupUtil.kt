@@ -4,12 +4,11 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.widget.DatePicker
+import android.widget.ImageView
 import android.widget.TimePicker
 import com.blankj.utilcode.util.ActivityUtils
 import com.lizl.mydiary.R
 import com.lizl.mydiary.bean.OperationItem
-import com.lizl.mydiary.custom.popup.PopupDiaryTagList
-import com.lizl.mydiary.custom.popup.PopupInput
 import com.lizl.mydiary.custom.popup.*
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
@@ -96,8 +95,7 @@ object PopupUtil
     {
         val context = ActivityUtils.getTopActivity() ?: return
         dismissAll()
-        popup = XPopup.Builder(context).asCustom(
-                PopupInput(context, title, defaultValue, editHint, inputCompletedCallback))
+        popup = XPopup.Builder(context).asCustom(PopupInput(context, title, defaultValue, editHint, inputCompletedCallback))
         popup?.show()
     }
 
@@ -123,6 +121,17 @@ object PopupUtil
         dismissAll()
         dialog = TimePickerDialog(context, timeSetListener, hour, minute, true)
         dialog?.show()
+    }
+
+    fun showImageViewerPopup(imageView: ImageView, showImage: String, imageList: List<String>)
+    {
+        val context = ActivityUtils.getTopActivity() ?: return
+        dismissAll()
+        popup = XPopup.Builder(context).asCustom(PopupImageViewer(context).apply {
+            setSrcView(imageView, imageList.indexOf(showImage))
+            setImageUrls(imageList.toMutableList())
+        })
+        popup?.show()
     }
 
     fun dismissAll()
