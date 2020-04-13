@@ -44,6 +44,7 @@ class PopupRadioGroup(context: Context, private val title: String, private val r
             {
                 onSelectFinishListener.invoke(checkedRadio.text.toString())
             }
+            dismiss()
         }
     }
 }
