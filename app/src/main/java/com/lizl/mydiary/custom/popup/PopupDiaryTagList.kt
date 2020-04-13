@@ -27,14 +27,21 @@ class PopupDiaryTagList(context: Context, private val onTagSelectFinishListener:
             dismiss()
         }
 
-        et_new_tag.addTextChangedListener { tv_confirm.isEnabled = it.toString().isNotBlank() }
+        tv_confirm.isEnabled = false
+
+        et_new_tag.addTextChangedListener {
+            tv_confirm.isEnabled = it.toString().isNotBlank()
+        }
 
         et_new_tag.filters = arrayOf(InputFilter.LengthFilter(4), UiUtil.getNoWrapOrSpaceFilter())
+
+        tv_cancel.setOnClickListener { dismiss() }
 
         tv_confirm.setOnClickListener {
             val tagTest = et_new_tag.text.toString()
             DiaryUtil.addDiaryTag(tagTest)
             onTagSelectFinishListener.invoke(tagTest)
+            dismiss()
         }
     }
 

@@ -18,7 +18,7 @@ import kotlinx.coroutines.*
 object PopupUtil
 {
     private var curPopup: BasePopupView? = null
-    private var dialog: Dialog? = null
+    private var curDialog: Dialog? = null
     private var showPopupJob: Job? = null
 
     fun showLoadingPopup(loadingText: String)
@@ -48,7 +48,7 @@ object PopupUtil
     fun showSetPasswordPopup(onInputFinishListener: (String) -> Unit)
     {
         val context = ActivityUtils.getTopActivity() ?: return
-        showPopup(XPopup.Builder(context).asCustom(PopupPassword(context, PopupPassword.PASSWORD_OPERATION_NEW, onInputFinishListener = onInputFinishListener)))
+        showPopup(XPopup.Builder(context).asCustom(PopupPassword(context, PopupPassword.PASSWORD_OPERATION_NEW, null, onInputFinishListener)))
     }
 
     fun showModifyPasswordPopup(oldPassword: String, onInputFinishListener: (String) -> Unit)
@@ -60,8 +60,7 @@ object PopupUtil
     fun showInputPasswordPopup(onInputFinishListener: (String) -> Unit)
     {
         val context = ActivityUtils.getTopActivity() ?: return
-        showPopup(
-                XPopup.Builder(context).asCustom(PopupPassword(context, PopupPassword.PASSWORD_OPERATION_INPUT, onInputFinishListener = onInputFinishListener)))
+        showPopup(XPopup.Builder(context).asCustom(PopupPassword(context, PopupPassword.PASSWORD_OPERATION_INPUT, null, onInputFinishListener)))
     }
 
     fun showRadioGroupPopup(title: String, radioList: List<String>, checkedRadio: String, onSelectFinishListener: (result: String) -> Unit)
@@ -91,17 +90,13 @@ object PopupUtil
     fun showDatePickerDialog(year: Int, month: Int, day: Int, dateSetListener: (View: DatePicker, Int, Int, Int) -> Unit)
     {
         val context = ActivityUtils.getTopActivity() ?: return
-        dismissAll()
-        dialog = DatePickerDialog(context, dateSetListener, year, month, day)
-        dialog?.show()
+        showDialog(DatePickerDialog(context, dateSetListener, year, month, day))
     }
 
     fun showTimePickerDialog(hour: Int, minute: Int, timeSetListener: (View: TimePicker, Int, Int) -> Unit)
     {
         val context = ActivityUtils.getTopActivity() ?: return
-        dismissAll()
-        dialog = TimePickerDialog(context, timeSetListener, hour, minute, true)
-        dialog?.show()
+        showDialog(TimePickerDialog(context, timeSetListener, hour, minute, true))
     }
 
     fun showImageViewerPopup(imageView: ImageView, showImage: String, imageList: List<String>)
@@ -118,14 +113,14 @@ object PopupUtil
         GlobalScope.launch(Dispatchers.Main) {
             showPopupJob?.cancel()
             curPopup?.dismiss()
-            dialog?.dismiss()
+            curDialog?.dismiss()
         }
     }
 
     private fun showPopup(popup: BasePopupView)
     {
         GlobalScope.launch(Dispatchers.Main) {
-            dialog?.dismiss()
+            curDialog?.dismiss()
             showPopupJob?.cancel()
             showPopupJob = GlobalScope.launch(Dispatchers.Main) {
                 if (curPopup?.isShow == true)
@@ -136,6 +131,18 @@ object PopupUtil
                 curPopup = popup
                 curPopup?.show()
             }
+        }
+    }
+
+    private fun showDialog(dialog: Dialog)
+    {
+        GlobalScope.launch(Dispatchers.Main) {
+            showPopupJob?.cancel()
+            curPopup?.dismiss()
+            curDialog?.dismiss()
+
+            curDialog = dialog
+            curDialog?.show()
         }
     }
 }
