@@ -2,7 +2,6 @@ package com.lizl.mydiary.mvp.presenter
 
 import com.blankj.utilcode.util.ImageUtils
 import com.lizl.mydiary.bean.CountStatisticsBean
-import com.lizl.mydiary.bean.DateBean
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.config.AppConfig
 import com.lizl.mydiary.mvp.contract.UsageStatisticsContract
@@ -34,9 +33,6 @@ class UsageStatisticsPresenter(private var view: UsageStatisticsContract.View?) 
             val moodStatisticsResult = getMoodStatistics(diaryList)
             GlobalScope.launch(Dispatchers.Main) { view?.showMoodStatistics(moodStatisticsResult) }
 
-            val timeStatisticsResult = getTimeStatistics(diaryList)
-            GlobalScope.launch(Dispatchers.Main) { view?.showTimeStatistics(timeStatisticsResult) }
-
             if (AppConfig.getLayoutStyleConfig().isDiaryTagEnable())
             {
                 val tagStatisticsResult = getTagStatistics(diaryList)
@@ -48,12 +44,6 @@ class UsageStatisticsPresenter(private var view: UsageStatisticsContract.View?) 
     private fun getMoodStatistics(diaryList: List<DiaryBean>): List<CountStatisticsBean.MoodStatisticsBean>
     {
         return getStatistics(diaryList, { it.mood.toString() }, { CountStatisticsBean.MoodStatisticsBean(it.mood, 0) })
-    }
-
-    private fun getTimeStatistics(diaryList: List<DiaryBean>): List<CountStatisticsBean.TimeStatisticsBean>
-    {
-        return getStatistics(diaryList, { DateBean(it.createTime).hour.toString() },
-                { CountStatisticsBean.TimeStatisticsBean(DateBean(it.createTime).hour, 0) })
     }
 
     private fun getTagStatistics(diaryList: List<DiaryBean>): List<CountStatisticsBean.TagStatisticsBean>

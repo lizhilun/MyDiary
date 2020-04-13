@@ -9,7 +9,6 @@ import com.lizl.mydiary.bean.CountStatisticsBean
 import com.lizl.mydiary.util.DiaryUtil
 import com.lizl.mydiary.util.SkinUtil
 import kotlinx.android.synthetic.main.item_count_statistics.view.*
-import java.util.*
 
 class CountStatisticsListAdapter : BaseQuickAdapter<CountStatisticsBean.BaseCountStatisticsBean
         , CountStatisticsListAdapter.ViewHolder>(R.layout.item_count_statistics)
@@ -43,13 +42,6 @@ class CountStatisticsListAdapter : BaseQuickAdapter<CountStatisticsBean.BaseCoun
                     val moodDrawable = itemView.context.getDrawable(DiaryUtil.getMoodResByMood(statisticsBean.mood))
                     moodDrawable?.setTint(SkinUtil.getGlobalTextColor())
                     itemView.iv_statistics.setImageDrawable(moodDrawable)
-                }
-                is CountStatisticsBean.TimeStatisticsBean ->
-                {
-                    itemView.iv_statistics.isVisible = false
-                    itemView.tv_statistics.isVisible = true
-                    itemView.tv_statistics.text = String.format(Locale.getDefault(), "%02d:00\n%02d:00", statisticsBean.startTime,
-                            if (statisticsBean.startTime == 23) 0 else statisticsBean.startTime + 1)
                 }
                 is CountStatisticsBean.TagStatisticsBean  ->
                 {

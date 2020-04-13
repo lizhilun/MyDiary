@@ -16,8 +16,6 @@ class UsageStatisticsContract
 
         fun showMoodStatistics(moodStatisticsList: List<CountStatisticsBean.MoodStatisticsBean>)
 
-        fun showTimeStatistics(timeStatisticsList: List<CountStatisticsBean.TimeStatisticsBean>)
-
         fun showTagStatistics(tagStatisticsList: List<CountStatisticsBean.TagStatisticsBean>)
     }
 

@@ -16,7 +16,6 @@ class UsageStatisticsFragment : BaseFragment<UsageStatisticsPresenter>(), UsageS
 {
 
     private lateinit var countStatisticsListAdapter: CountStatisticsListAdapter
-    private lateinit var timeStatisticsListAdapter: CountStatisticsListAdapter
     private lateinit var tagStatisticsListAdapter: CountStatisticsListAdapter
 
     override fun getLayoutResId() = R.layout.fragment_usage_statistics
@@ -28,10 +27,6 @@ class UsageStatisticsFragment : BaseFragment<UsageStatisticsPresenter>(), UsageS
         countStatisticsListAdapter = CountStatisticsListAdapter()
         rv_mood_statistics.layoutManager = LinearLayoutManager(activity)
         rv_mood_statistics.adapter = countStatisticsListAdapter
-
-        timeStatisticsListAdapter = CountStatisticsListAdapter()
-        rv_time_statistics.layoutManager = LinearLayoutManager(activity)
-        rv_time_statistics.adapter = timeStatisticsListAdapter
 
         tagStatisticsListAdapter = CountStatisticsListAdapter()
         rv_tag_statistics.layoutManager = LinearLayoutManager(activity)
@@ -53,7 +48,7 @@ class UsageStatisticsFragment : BaseFragment<UsageStatisticsPresenter>(), UsageS
         tagStatisticsListAdapter.setOnItemClickListener {
             if (it is CountStatisticsBean.TagStatisticsBean)
             {
-                ActivityUtil.turnToActivity(DiarySearchActivity::class.java,  "#${it.tag}#")
+                ActivityUtil.turnToActivity(DiarySearchActivity::class.java, "#${it.tag}#")
             }
         }
     }
@@ -76,11 +71,6 @@ class UsageStatisticsFragment : BaseFragment<UsageStatisticsPresenter>(), UsageS
     override fun showMoodStatistics(moodStatisticsList: List<CountStatisticsBean.MoodStatisticsBean>)
     {
         countStatisticsListAdapter.setData(moodStatisticsList)
-    }
-
-    override fun showTimeStatistics(timeStatisticsList: List<CountStatisticsBean.TimeStatisticsBean>)
-    {
-        timeStatisticsListAdapter.setData(timeStatisticsList)
     }
 
     override fun showTagStatistics(tagStatisticsList: List<CountStatisticsBean.TagStatisticsBean>)
