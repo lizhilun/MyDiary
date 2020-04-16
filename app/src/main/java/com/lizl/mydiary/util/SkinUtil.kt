@@ -51,7 +51,7 @@ object SkinUtil
         }
     }
 
-    private fun isNightModeOn(): Boolean
+    fun isNightModeOn(): Boolean
     {
         return when (AppConfig.getGeneralConfig().getAppNightMode())
         {
