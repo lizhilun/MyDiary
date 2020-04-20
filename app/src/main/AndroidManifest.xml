@@ -31,8 +31,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".mvp.activity.ImageBrowserActivity" />
-
         <activity
             android:name=".mvp.activity.MainActivity"
             android:screenOrientation="portrait" />

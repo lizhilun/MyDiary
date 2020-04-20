@@ -24,7 +24,6 @@ class DiaryImageListAdapter(private var editable: Boolean, private val maxImageC
     private val imageList = mutableListOf<String>()
 
     private var onAddImageBtnClickListener: (() -> Unit)? = null
-    private var onImageClickListener: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
     {
@@ -66,9 +65,7 @@ class DiaryImageListAdapter(private var editable: Boolean, private val maxImageC
         {
             GlideUtil.displayImage(itemView.iv_image, imageUrl)
 
-            itemView.setOnClickListener {
-                PopupUtil.showImageViewerPopup(itemView.iv_image, imageUrl, imageList)
-            }
+            itemView.setOnClickListener { PopupUtil.showImageViewerPopup(imageUrl, imageList, editable) }
         }
 
         fun bindAddBtnViewHolder()
@@ -82,11 +79,6 @@ class DiaryImageListAdapter(private var editable: Boolean, private val maxImageC
     fun setOnAddImageBtnClickListener(onAddImageBtnClickListener: () -> Unit)
     {
         this.onAddImageBtnClickListener = onAddImageBtnClickListener
-    }
-
-    fun setOnImageClickListener(onImageClickListener: (String) -> Unit)
-    {
-        this.onImageClickListener = onImageClickListener
     }
 
     fun addImageList(imageList: List<String>)

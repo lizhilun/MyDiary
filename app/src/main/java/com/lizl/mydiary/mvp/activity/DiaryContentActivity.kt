@@ -70,10 +70,6 @@ class DiaryContentActivity : BaseActivity<DiaryContentPresenter>(), DiaryContent
 
         diaryImageListAdapter.setOnAddImageBtnClickListener { turnToImageSelectActivityWithPermissionCheck() }
 
-        diaryImageListAdapter.setOnImageClickListener {
-            ActivityUtil.turnToActivity(ImageBrowserActivity::class.java, diaryImageListAdapter.getImageList(), it, inEditMode)
-        }
-
         ctb_title.setOnBackBtnClickListener { if (inEditMode) onFinishBtnClick() else super.onBackPressed() }
 
         dateBean = DateBean(diaryBean?.createTime ?: System.currentTimeMillis())

@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.widget.DatePicker
-import android.widget.ImageView
 import android.widget.TimePicker
 import com.blankj.utilcode.util.ActivityUtils
 import com.lizl.mydiary.R
@@ -99,13 +98,10 @@ object PopupUtil
         showDialog(TimePickerDialog(context, timeSetListener, hour, minute, true))
     }
 
-    fun showImageViewerPopup(imageView: ImageView, showImage: String, imageList: List<String>)
+    fun showImageViewerPopup(showImage: String, imageList: MutableList<String>, showDeleteBtn: Boolean)
     {
         val context = ActivityUtils.getTopActivity() ?: return
-        showPopup(XPopup.Builder(context).asCustom(PopupImageViewer(context).apply {
-            setSrcView(imageView, imageList.indexOf(showImage))
-            setImageUrls(imageList.toMutableList())
-        }))
+        showPopup(XPopup.Builder(context).asCustom(PopupImageViewer(context, imageList, imageList.indexOf(showImage), showDeleteBtn)))
     }
 
     fun dismissAll()

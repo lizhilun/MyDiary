@@ -3,11 +3,9 @@ package com.lizl.mydiary.mvp.fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lizl.mydiary.R
 import com.lizl.mydiary.adapter.DiaryImageListAdapter
-import com.lizl.mydiary.mvp.activity.ImageBrowserActivity
 import com.lizl.mydiary.mvp.base.BaseFragment
 import com.lizl.mydiary.mvp.contract.ImageGalleryContract
 import com.lizl.mydiary.mvp.presenter.ImageGalleryPresenter
-import com.lizl.mydiary.util.ActivityUtil
 import kotlinx.android.synthetic.main.fragment_image_gallery.*
 
 class ImageGalleryFragment : BaseFragment<ImageGalleryPresenter>(), ImageGalleryContract.View
@@ -24,10 +22,6 @@ class ImageGalleryFragment : BaseFragment<ImageGalleryPresenter>(), ImageGallery
         diaryImageListAdapter = DiaryImageListAdapter(false, Int.MAX_VALUE, true)
         rv_image_list.layoutManager = GridLayoutManager(activity, 3)
         rv_image_list.adapter = diaryImageListAdapter
-
-        diaryImageListAdapter.setOnImageClickListener {
-            ActivityUtil.turnToActivity(ImageBrowserActivity::class.java, ArrayList(diaryImageListAdapter.getImageList()), it, false)
-        }
 
         ctb_title.setOnBackBtnClickListener { backToPreFragment() }
 
