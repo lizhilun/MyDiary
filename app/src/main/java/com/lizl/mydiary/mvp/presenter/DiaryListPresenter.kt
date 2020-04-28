@@ -2,32 +2,16 @@ package com.lizl.mydiary.mvp.presenter
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import com.lizl.mydiary.config.AppConfig
-import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.mvp.contract.DiaryListContract
-import com.lizl.mydiary.util.AppDatabase
-import com.lizl.mydiary.util.BackupUtil
+import com.lizl.mydiary.util.DiaryUtil
 
 class DiaryListPresenter(private var view: DiaryListContract.View?) : DiaryListContract.Presenter
 {
-    private var isFirstGetData = true
 
     override fun queryAllDiary(owner: LifecycleOwner)
     {
-        AppDatabase.instance.getDiaryDao().getAllDiaryLiveData().observe(owner, Observer {
+        DiaryUtil.diaryLiveData.observe(owner, Observer {
             view?.onDiariesQueryFinish(it ?: emptyList())
-
-            if (isFirstGetData)
-            {
-                isFirstGetData = false
-                return@Observer
-            }
-
-            if (AppConfig.getBackupConfig().isAutoBackup() && AppConfig.getBackupConfig()
-                        .getAppAutoBackupInterval() == ConfigConstant.APP_AUTO_BACKUP_PERIOD_RIGHT_NOW)
-            {
-                BackupUtil.autoBackup()
-            }
         })
     }
 

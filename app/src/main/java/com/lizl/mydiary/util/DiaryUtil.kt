@@ -11,13 +11,14 @@ import com.lizl.mydiary.constant.AppConstant
 object DiaryUtil
 {
 
-    private val moodResMap = hashMapOf(
-            AppConstant.MOOD_ALL to R.drawable.ic_mood_all, AppConstant.MOOD_HAPPY to R.drawable.ic_mood_happy,
+    private val moodResMap = hashMapOf(AppConstant.MOOD_ALL to R.drawable.ic_mood_all, AppConstant.MOOD_HAPPY to R.drawable.ic_mood_happy,
             AppConstant.MOOD_NORMAL to R.drawable.ic_mood_normal, AppConstant.MOOD_UNHAPPY to R.drawable.ic_mood_unhappy)
 
     private const val DIARY_TAG_LIST = "DIARY_TAG_LIST"
     private const val DIARY_TEXT_SIZE_LEVEL = "DIARY_TEXT_SIZE_LEVEL"
     private const val DIARY_TEXT_LINE_SPACE_LEVEL = "DIARY_TEXT_LINE_SPACE_LEVEL"
+
+    val diaryLiveData by lazy { AppDatabase.instance.getDiaryDao().getAllDiaryLiveData() }
 
     /**
      * 统计字数

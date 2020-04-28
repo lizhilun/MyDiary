@@ -1,6 +1,7 @@
 package com.lizl.mydiary.util
 
 import android.provider.MediaStore
+import android.util.Log
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.PathUtils
@@ -9,6 +10,7 @@ import com.lizl.mydiary.R
 import com.lizl.mydiary.UiApplication
 import com.lizl.mydiary.bean.DiaryBean
 import com.lizl.mydiary.config.AppConfig
+import com.lizl.mydiary.config.ConfigConstant
 import com.lizl.mydiary.constant.AppConstant
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
@@ -20,6 +22,8 @@ import java.util.*
 
 object BackupUtil
 {
+    private val TAG = "BackupUtil"
+
     private val backupFilePath = PathUtils.getExternalStoragePath() + "/DiaryBackup"
     private val backupTempFilePath = "$backupFilePath/temp"
     private val backupTempImageFilePath = "$backupFilePath/temp/picture"
@@ -28,6 +32,8 @@ object BackupUtil
     private const val autoBackupFileName = "autoBackup"
 
     private val channel = Channel<BackupJob>()
+
+    private var isFirstGetData = true
 
     fun init()
     {
@@ -40,10 +46,23 @@ object BackupUtil
         }
 
         val autoBackupPeriod = AppConfig.getBackupConfig().getAppAutoBackupInterval()
-        if (AppConfig.getBackupConfig().isAutoBackup() && autoBackupPeriod > 0
+        if (AppConfig.getBackupConfig().isAutoBackup() && autoBackupPeriod > ConfigConstant.APP_AUTO_BACKUP_PERIOD_RIGHT_NOW
             && System.currentTimeMillis() - AppConfig.getBackupConfig().getLastAutoBackupTime() > autoBackupPeriod)
         {
             autoBackup()
+        }
+
+        DiaryUtil.diaryLiveData.observeForever {
+            if (isFirstGetData)
+            {
+                isFirstGetData = false
+                return@observeForever
+            }
+            if (AppConfig.getBackupConfig().isAutoBackup() && AppConfig.getBackupConfig()
+                        .getAppAutoBackupInterval() == ConfigConstant.APP_AUTO_BACKUP_PERIOD_RIGHT_NOW)
+            {
+                autoBackup()
+            }
         }
     }
 
@@ -57,7 +76,7 @@ object BackupUtil
         }
     }
 
-    fun autoBackup()
+    private fun autoBackup()
     {
         GlobalScope.launch {
             channel.send(BackupJob(autoBackupFileName) {
@@ -106,6 +125,7 @@ object BackupUtil
         }
         catch (e: Exception)
         {
+            Log.e(TAG, "backupData error:", e)
             FileUtils.deleteDir(backupTempFilePath)
             callback.invoke(false)
         }
@@ -163,6 +183,7 @@ object BackupUtil
             }
             catch (e: Exception)
             {
+                Log.e(TAG, "restoreData error:", e)
                 FileUtil.deleteFile(backupTempFilePath)
                 callback.invoke(false, AppConstant.RESTORE_DATA_FAILED_WRONG_BACKUP_FILE)
             }
