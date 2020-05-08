@@ -38,9 +38,8 @@ object BackupUtil
     fun init()
     {
         GlobalScope.launch {
-            while (true)
+            for (job in channel)
             {
-                val job = channel.receive()
                 backupData(job.backupFileName, job.callback)
             }
         }
